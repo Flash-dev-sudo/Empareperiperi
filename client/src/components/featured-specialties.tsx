@@ -6,23 +6,23 @@ const specialties = [
     name: "Peri Peri Wings",
     price: "£4.20",
     description: "Flame-grilled chicken wings marinated in our signature peri peri sauce",
-    image: "https://images.unsplash.com/photo-1608039755401-742074f0548d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400",
+    image: "@assets/ChatGPT Image May 22, 2025, 07_44_19 PM_1750005388242.png",
     spiceLevel: 3,
     badge: "Spicy Level"
   },
   {
-    name: "Whole Grilled Chicken",
-    price: "£10.50",
-    description: "Tender whole chicken grilled with authentic peri peri spices",
-    image: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400",
+    name: "Quarter Grilled Chicken",
+    price: "£7.50",
+    description: "Tender quarter chicken grilled with authentic peri peri spices",
+    image: "@assets/ChatGPT Image May 22, 2025, 10_07_25 PM_1750005388243.png",
     spiceLevel: 2,
     badge: "Medium Spice"
   },
   {
-    name: "Stone Baked Pizza",
-    price: "£8.50",
-    description: "Fresh stone baked pizzas with premium toppings and artisan dough",
-    image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400",
+    name: "Peri Peri Burger",
+    price: "£5.50",
+    description: "Juicy chicken burger with fresh vegetables and signature peri peri sauce",
+    image: "@assets/ChatGPT Image May 19, 2025, 12_03_53 PM_1750005388240.png",
     spiceLevel: 0,
     badge: "Customer Favorite",
     isStarRating: true

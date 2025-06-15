@@ -2,36 +2,52 @@ import { useState } from "react";
 
 const galleryImages = [
   {
-    src: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=400",
-    alt: "Grilled peri peri chicken"
+    src: "@assets/ChatGPT Image May 17, 2025, 05_58_52 PM_1750005342081.png",
+    alt: "Emparo's signature grilled peri peri chicken strips with rice and fresh salad"
   },
   {
-    src: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=400",
-    alt: "Fresh stone baked pizza"
+    src: "@assets/ChatGPT Image May 19, 2025, 12_03_53 PM_1750005388240.png",
+    alt: "Emparo's delicious peri peri chicken burger with crispy coating and fries"
   },
   {
-    src: "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=400",
-    alt: "Spicy peri peri wings"
+    src: "@assets/ChatGPT Image May 19, 2025, 12_29_07 PM_1750005388241.png",
+    alt: "Emparo's glazed peri peri chicken wings with spiced rice and fresh salad"
   },
   {
-    src: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=400",
-    alt: "Gourmet peri peri burger"
+    src: "@assets/ChatGPT Image May 22, 2025, 06_51_58 PM_1750005388241.png",
+    alt: "Emparo's crispy falafels in tortilla wrap with chips and sauces"
   },
   {
-    src: "https://images.unsplash.com/photo-1518013431117-eb1465fa5752?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=400",
-    alt: "Loaded peri peri chips"
+    src: "@assets/ChatGPT Image May 22, 2025, 07_35_09 PM_1750005388242.png",
+    alt: "Emparo's family feast - variety of burgers, grilled chicken and wraps"
   },
   {
-    src: "https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=400",
-    alt: "Mixed grill platter"
+    src: "@assets/ChatGPT Image May 22, 2025, 07_44_19 PM_1750005388242.png",
+    alt: "Emparo's crispy peri peri chicken wings with golden fries"
   },
   {
-    src: "https://images.unsplash.com/photo-1506368249639-73a05d6f6488?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=400",
-    alt: "Fresh peri peri spices"
+    src: "@assets/ChatGPT Image May 22, 2025, 10_07_25 PM_1750005388243.png",
+    alt: "Emparo's perfectly grilled quarter chicken pieces with fresh garnish"
   },
   {
-    src: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=400",
-    alt: "Creamy milkshake"
+    src: "@assets/ChatGPT Image May 22, 2025, 10_36_30 PM_1750005451474.png",
+    alt: "Emparo's golden fried chicken pieces - crispy and delicious"
+  },
+  {
+    src: "@assets/ChatGPT Image May 22, 2025, 10_32_14 PM_1750005451473.png",
+    alt: "Emparo Peri Peri branded smoothie - refreshing and creamy"
+  },
+  {
+    src: "@assets/ChatGPT Image May 19, 2025, 12_34_06 PM_1750005435412.png",
+    alt: "Emparo's golden fries with signature sauces"
+  },
+  {
+    src: "@assets/ChatGPT Image May 22, 2025, 09_20_56 PM_1750005435413.png",
+    alt: "Emparo's glazed peri peri chicken wings - perfectly cooked"
+  },
+  {
+    src: "@assets/ChatGPT Image May 22, 2025, 10_24_05 PM_1750005435414.png",
+    alt: "Emparo's crispy chicken nuggets - golden and crunchy"
   }
 ];
 

@@ -86,8 +86,8 @@ export default function Hero() {
             {/* Main Hero Image */}
             <div className="relative rounded-3xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
               <img 
-                src="@assets/ChatGPT Image May 17, 2025, 05_58_52 PM_1750005342081.png" 
-                alt="Emparo's signature grilled peri peri chicken strips with rice and fresh salad" 
+                src="@assets/ChatGPT Image May 22, 2025, 08_27_31 PM_1750005435412.png" 
+                alt="Emparo's perfectly grilled peri peri chicken with flames - authentic flame-grilled experience" 
                 className="w-full h-auto"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>

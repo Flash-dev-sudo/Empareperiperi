@@ -1,6 +1,7 @@
 import Navigation from "@/components/navigation";
 import Hero from "@/components/hero";
 import FeaturedSpecialties from "@/components/featured-specialties";
+import MenuShowcase from "@/components/menu-showcase";
 import MenuSection from "@/components/menu-section";
 import AboutSection from "@/components/about-section";
 import Gallery from "@/components/gallery";
@@ -13,6 +14,7 @@ export default function Home() {
       <Navigation />
       <Hero />
       <FeaturedSpecialties />
+      <MenuShowcase />
       <MenuSection />
       <AboutSection />
       <Gallery />
