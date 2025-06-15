@@ -2,37 +2,37 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const showcaseItems = [
   {
-    image: "@assets/ChatGPT Image May 19, 2025, 09_40_38 PM_1750005435412.png",
+    image: "/attached_assets/ChatGPT Image May 19, 2025, 09_40_38 PM_1750005435412.png",
     title: "Crispy Chicken Burger",
     description: "Golden crispy chicken with fresh salad and fries",
     price: "£5.50"
   },
   {
-    image: "@assets/ChatGPT Image May 22, 2025, 09_38_22 PM_1750005435413.png",
+    image: "/attached_assets/ChatGPT Image May 22, 2025, 09_38_22 PM_1750005435413.png",
     title: "Peri Peri Wrap",
     description: "Spicy chicken strips wrapped with fresh vegetables",
     price: "£4.50"
   },
   {
-    image: "@assets/ChatGPT Image May 22, 2025, 09_20_56 PM_1750005435413.png",
+    image: "/attached_assets/ChatGPT Image May 22, 2025, 09_20_56 PM_1750005435413.png",
     title: "Glazed Peri Wings",
     description: "Perfectly glazed wings with authentic peri peri sauce",
     price: "£4.20"
   },
   {
-    image: "@assets/ChatGPT Image May 19, 2025, 12_34_06 PM_1750005435412.png",
+    image: "/attached_assets/ChatGPT Image May 19, 2025, 12_34_06 PM_1750005435412.png",
     title: "Golden Fries",
     description: "Crispy golden fries with signature sauces",
     price: "£3.00"
   },
   {
-    image: "@assets/ChatGPT Image May 22, 2025, 10_21_07 PM_1750005435414.png",
+    image: "/attached_assets/ChatGPT Image May 22, 2025, 10_21_07 PM_1750005435414.png",
     title: "Chicken Strips",
     description: "Tender crispy chicken strips - perfectly seasoned",
     price: "£4.70"
   },
   {
-    image: "@assets/ChatGPT Image May 22, 2025, 10_24_05 PM_1750005435414.png",
+    image: "/attached_assets/ChatGPT Image May 22, 2025, 10_24_05 PM_1750005435414.png",
     title: "Chicken Nuggets",
     description: "Golden crispy nuggets - a family favorite",
     price: "£4.00"

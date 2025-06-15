@@ -6,7 +6,7 @@ const specialties = [
     name: "Peri Peri Wings",
     price: "£4.20",
     description: "Flame-grilled chicken wings marinated in our signature peri peri sauce",
-    image: "@assets/ChatGPT Image May 22, 2025, 07_44_19 PM_1750005388242.png",
+    image: "/attached_assets/ChatGPT Image May 22, 2025, 07_44_19 PM_1750005388242.png",
     spiceLevel: 3,
     badge: "Spicy Level"
   },
@@ -14,7 +14,7 @@ const specialties = [
     name: "Quarter Grilled Chicken",
     price: "£7.50",
     description: "Tender quarter chicken grilled with authentic peri peri spices",
-    image: "@assets/ChatGPT Image May 22, 2025, 10_07_25 PM_1750005388243.png",
+    image: "/attached_assets/ChatGPT Image May 22, 2025, 10_07_25 PM_1750005388243.png",
     spiceLevel: 2,
     badge: "Medium Spice"
   },
@@ -22,7 +22,7 @@ const specialties = [
     name: "Peri Peri Burger",
     price: "£5.50",
     description: "Juicy chicken burger with fresh vegetables and signature peri peri sauce",
-    image: "@assets/ChatGPT Image May 19, 2025, 12_03_53 PM_1750005388240.png",
+    image: "/attached_assets/ChatGPT Image May 19, 2025, 12_03_53 PM_1750005388240.png",
     spiceLevel: 0,
     badge: "Customer Favorite",
     isStarRating: true

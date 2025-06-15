@@ -2,51 +2,51 @@ import { useState } from "react";
 
 const galleryImages = [
   {
-    src: "@assets/ChatGPT Image May 17, 2025, 05_58_52 PM_1750005342081.png",
+    src: "/attached_assets/ChatGPT Image May 17, 2025, 05_58_52 PM_1750005342081.png",
     alt: "Emparo's signature grilled peri peri chicken strips with rice and fresh salad"
   },
   {
-    src: "@assets/ChatGPT Image May 19, 2025, 12_03_53 PM_1750005388240.png",
+    src: "/attached_assets/ChatGPT Image May 19, 2025, 12_03_53 PM_1750005388240.png",
     alt: "Emparo's delicious peri peri chicken burger with crispy coating and fries"
   },
   {
-    src: "@assets/ChatGPT Image May 19, 2025, 12_29_07 PM_1750005388241.png",
+    src: "/attached_assets/ChatGPT Image May 19, 2025, 12_29_07 PM_1750005388241.png",
     alt: "Emparo's glazed peri peri chicken wings with spiced rice and fresh salad"
   },
   {
-    src: "@assets/ChatGPT Image May 22, 2025, 06_51_58 PM_1750005388241.png",
+    src: "/attached_assets/ChatGPT Image May 22, 2025, 06_51_58 PM_1750005388241.png",
     alt: "Emparo's crispy falafels in tortilla wrap with chips and sauces"
   },
   {
-    src: "@assets/ChatGPT Image May 22, 2025, 07_35_09 PM_1750005388242.png",
+    src: "/attached_assets/ChatGPT Image May 22, 2025, 07_35_09 PM_1750005388242.png",
     alt: "Emparo's family feast - variety of burgers, grilled chicken and wraps"
   },
   {
-    src: "@assets/ChatGPT Image May 22, 2025, 07_44_19 PM_1750005388242.png",
+    src: "/attached_assets/ChatGPT Image May 22, 2025, 07_44_19 PM_1750005388242.png",
     alt: "Emparo's crispy peri peri chicken wings with golden fries"
   },
   {
-    src: "@assets/ChatGPT Image May 22, 2025, 10_07_25 PM_1750005388243.png",
+    src: "/attached_assets/ChatGPT Image May 22, 2025, 10_07_25 PM_1750005388243.png",
     alt: "Emparo's perfectly grilled quarter chicken pieces with fresh garnish"
   },
   {
-    src: "@assets/ChatGPT Image May 22, 2025, 10_36_30 PM_1750005451474.png",
+    src: "/attached_assets/ChatGPT Image May 22, 2025, 10_36_30 PM_1750005451474.png",
     alt: "Emparo's golden fried chicken pieces - crispy and delicious"
   },
   {
-    src: "@assets/ChatGPT Image May 22, 2025, 10_32_14 PM_1750005451473.png",
+    src: "/attached_assets/ChatGPT Image May 22, 2025, 10_32_14 PM_1750005451473.png",
     alt: "Emparo Peri Peri branded smoothie - refreshing and creamy"
   },
   {
-    src: "@assets/ChatGPT Image May 19, 2025, 12_34_06 PM_1750005435412.png",
+    src: "/attached_assets/ChatGPT Image May 19, 2025, 12_34_06 PM_1750005435412.png",
     alt: "Emparo's golden fries with signature sauces"
   },
   {
-    src: "@assets/ChatGPT Image May 22, 2025, 09_20_56 PM_1750005435413.png",
+    src: "/attached_assets/ChatGPT Image May 22, 2025, 09_20_56 PM_1750005435413.png",
     alt: "Emparo's glazed peri peri chicken wings - perfectly cooked"
   },
   {
-    src: "@assets/ChatGPT Image May 22, 2025, 10_24_05 PM_1750005435414.png",
+    src: "/attached_assets/ChatGPT Image May 22, 2025, 10_24_05 PM_1750005435414.png",
     alt: "Emparo's crispy chicken nuggets - golden and crunchy"
   }
 ];
