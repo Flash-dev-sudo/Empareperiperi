@@ -86,8 +86,8 @@ export default function Hero() {
             {/* Main Hero Image */}
             <div className="relative rounded-3xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
               <img 
-                src="https://images.unsplash.com/photo-1527477396000-e27163b481c2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
-                alt="Delicious peri peri chicken wings" 
+                src="@assets/ChatGPT Image May 17, 2025, 05_58_52 PM_1750005342081.png" 
+                alt="Emparo's signature grilled peri peri chicken strips with rice and fresh salad" 
                 className="w-full h-auto"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
