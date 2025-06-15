@@ -12,6 +12,53 @@ export interface MenuCategory {
 
 export const menuData: MenuCategory[] = [
   {
+    category: "Starters",
+    icon: "🟠",
+    items: [
+      { name: "Chips", price: "£2.50" },
+      { name: "Peri Peri Chips", price: "£3.00" },
+      { name: "Chips with Cheese", price: "£4.00" },
+      { name: "Potato Wedges", price: "£3.00" },
+      { name: "Potato Wedges with Cheese", price: "£4.00" },
+      { name: "5 Gamberoni", price: "£5.00" },
+      { name: "Fish Fingers", price: "£4.00" },
+      { name: "5 Calamari", price: "£4.50" },
+      { name: "10 Onion Rings", price: "£4.50" },
+      { name: "Mozzarella Sticks", price: "£4.00" },
+      { name: "Rice", price: "£2.50" },
+      { name: "Salad", price: "£2.50" },
+      { name: "Coleslaw", price: "£3.00" }
+    ]
+  },
+  {
+    category: "Buckets",
+    icon: "🍗",
+    items: [
+      { name: "Wings Bucket", price: "£13.50", description: "15 Wings, 2 Fries & 1 Bottle Drink" },
+      { name: "Mix Bucket", price: "£20.00", description: "2 Strip Burgers, 2 Fried Wraps, 6 Fried Wings, 1 Box Chips & 1 Bottle Drink" }
+    ]
+  },
+  {
+    category: "Desserts",
+    icon: "🍰",
+    items: [
+      { name: "Chocolate Fudge Cake", price: "£3.00" },
+      { name: "Strawberry Cheesecake", price: "£3.00" },
+      { name: "Ben & Jerry Ice Cream", price: "£6.49" }
+    ]
+  },
+  {
+    category: "Shakes",
+    icon: "🥤",
+    items: [
+      { name: "Kinder Bueno Shake", price: "£3.50" },
+      { name: "Dates Shake", price: "£3.50" },
+      { name: "Mango Shake", price: "£3.50" },
+      { name: "Oreo Shake", price: "£3.50" },
+      { name: "Lotus Biscoff Shake", price: "£3.50" }
+    ]
+  },
+  {
     category: "Peri Peri Chicken",
     icon: "🌯",
     items: [
@@ -86,22 +133,10 @@ export const menuData: MenuCategory[] = [
     ]
   },
   {
-    category: "Starters",
-    icon: "🟠",
+    category: "Sides & Add-ons",
+    icon: "🍟",
     items: [
-      { name: "Chips", price: "£2.50" },
-      { name: "Peri Peri Chips", price: "£3.00" },
-      { name: "Chips with Cheese", price: "£4.00" },
-      { name: "Potato Wedges", price: "£3.00" },
-      { name: "Potato Wedges with Cheese", price: "£4.00" },
-      { name: "5 Gamberoni", price: "£5.00" },
-      { name: "Fish Fingers", price: "£4.00" },
-      { name: "5 Calamari", price: "£4.50" },
-      { name: "10 Onion Rings", price: "£4.50" },
-      { name: "Mozzarella Sticks", price: "£4.00" },
-      { name: "Rice", price: "£2.50" },
-      { name: "Salad", price: "£2.50" },
-      { name: "Coleslaw", price: "£3.00" },
+      { name: "Add Fries & Drink", price: "£1.80" },
       { name: "6 Nuggets", price: "£3.00" },
       { name: "6 Buffalo Wings", price: "£4.50" },
       { name: "6 BBQ Wings", price: "£4.50" },

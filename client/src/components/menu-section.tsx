@@ -3,32 +3,44 @@ import { menuData } from "@/data/menu";
 import { Drumstick, Flame, Pizza, Ham, Utensils, SquareDashedMousePointer } from "lucide-react";
 
 const categoryIcons = {
+  "Starters": SquareDashedMousePointer,
+  "Buckets": Drumstick,
+  "Desserts": Pizza,
+  "Shakes": Utensils,
   "Peri Peri Chicken": Drumstick,
   "Grilled Chicken": Flame,
   "Pizzas": Pizza,
   "Burgers & More": Ham,
   "Platters": Utensils,
-  "Starters": SquareDashedMousePointer
+  "Sides & Add-ons": SquareDashedMousePointer
 };
 
 const categoryColors = {
+  "Starters": "bg-emparo-yellow text-emparo-dark",
+  "Buckets": "bg-emparo-orange",
+  "Desserts": "bg-emparo-red-light",
+  "Shakes": "bg-emparo-red",
   "Peri Peri Chicken": "bg-emparo-orange",
   "Grilled Chicken": "bg-emparo-red",
   "Pizzas": "bg-emparo-yellow text-emparo-dark",
   "Burgers & More": "bg-emparo-red-light",
   "Platters": "bg-emparo-dark",
-  "Starters": "bg-emparo-yellow text-emparo-dark"
+  "Sides & Add-ons": "bg-emparo-orange"
 };
 
 export default function MenuSection() {
   return (
-    <section id="menu" className="py-16 bg-emparo-cream">
+    <section id="menu" className="py-20 bg-gradient-to-b from-white to-emparo-cream">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-emparo-dark mb-4">
-            Our <span className="text-emparo-orange">Full Menu</span>
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center bg-emparo-orange/10 border border-emparo-orange/20 px-6 py-3 rounded-full mb-6">
+            <Utensils className="w-5 h-5 text-emparo-orange mr-2" />
+            <span className="text-emparo-orange font-bold">Our Menu</span>
+          </div>
+          <h2 className="text-5xl md:text-6xl font-black text-emparo-dark mb-6">
+            Authentic <span className="text-emparo-orange">Peri Peri</span> Experience
           </h2>
-          <p className="text-xl text-gray-600">Fresh ingredients, authentic flavors, unbeatable taste</p>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">Fresh ingredients, authentic flavors, unbeatable taste delivered daily</p>
         </div>
         
         <div className="grid lg:grid-cols-2 gap-8">
@@ -37,19 +49,30 @@ export default function MenuSection() {
             const colorClass = categoryColors[category.category as keyof typeof categoryColors] || "bg-emparo-orange";
             
             return (
-              <Card key={index} className={`bg-white rounded-2xl shadow-lg p-8 ${category.category === "Platters" ? "lg:col-span-2" : ""}`}>
-                <CardHeader className="p-0 mb-6">
-                  <div className="flex items-center">
-                    <div className={`${colorClass} p-3 rounded-full mr-4`}>
-                      <IconComponent className="text-white text-xl w-6 h-6" />
+              <Card key={index} className={`bg-white rounded-3xl shadow-xl border-2 border-gray-100 hover:border-emparo-orange/30 transition-all duration-300 p-8 ${category.category === "Platters" ? "lg:col-span-2" : ""} hover:shadow-2xl transform hover:-translate-y-1`}>
+                <CardHeader className="p-0 mb-8">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className={`${colorClass} p-4 rounded-2xl mr-4 shadow-lg`}>
+                        <IconComponent className="text-white w-8 h-8" />
+                      </div>
+                      <div>
+                        <CardTitle className="text-3xl font-black text-emparo-dark">{category.category}</CardTitle>
+                        <p className="text-emparo-orange font-semibold">{category.icon} Authentic & Fresh</p>
+                      </div>
                     </div>
-                    <CardTitle className="text-2xl font-bold text-emparo-dark">{category.icon} {category.category}</CardTitle>
+                    {category.category === "Pizzas" && (
+                      <div className="bg-emparo-yellow/20 border border-emparo-yellow px-4 py-2 rounded-full">
+                        <span className="text-emparo-dark font-bold text-sm">Stone Baked</span>
+                      </div>
+                    )}
                   </div>
                 </CardHeader>
                 <CardContent className="p-0">
                   {category.category === "Pizzas" && (
-                    <div className="mb-4">
-                      <p className="text-emparo-orange font-bold text-lg">All pizzas £8.50</p>
+                    <div className="mb-6 bg-emparo-orange/10 rounded-2xl p-4 border border-emparo-orange/20">
+                      <p className="text-emparo-orange font-bold text-xl">All pizzas £8.50</p>
+                      <p className="text-gray-600 text-sm mt-1">Fresh stone baked daily</p>
                     </div>
                   )}
                   
