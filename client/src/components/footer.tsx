@@ -51,9 +51,9 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-lg mb-4 text-emparo-orange">Contact Info</h4>
             <div className="space-y-2 text-gray-400">
-              <p><i className="fas fa-phone mr-2 text-emparo-orange"></i>020 8444 0040</p>
-              <p><i className="fas fa-clock mr-2 text-emparo-orange"></i>Daily 4:00 PM - Late</p>
-              <p><i className="fas fa-map-marker-alt mr-2 text-emparo-orange"></i>London, UK</p>
+              <p><i className="fas fa-phone mr-2 text-emparo-orange"></i>020 3441 6940</p>
+              <p><i className="fas fa-clock mr-2 text-emparo-orange"></i>Daily 1:00 PM - 4:00 AM</p>
+              <p><i className="fas fa-map-marker-alt mr-2 text-emparo-orange"></i>24 Blackstock Rd, N4 2DW</p>
             </div>
           </div>
         </div>

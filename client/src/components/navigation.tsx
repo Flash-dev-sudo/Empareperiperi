@@ -38,9 +38,9 @@ export default function Navigation() {
           
           {/* Order Button */}
           <div className="flex items-center space-x-4">
-            <a href="tel:02084440040" className="hidden sm:flex items-center space-x-2 bg-emparo-orange hover:bg-emparo-orange-light px-4 py-2 rounded-full transition-colors">
+            <a href="tel:02034416940" className="hidden sm:flex items-center space-x-2 bg-emparo-orange hover:bg-emparo-orange-light px-4 py-2 rounded-full transition-colors">
               <Phone className="w-4 h-4" />
-              <span className="font-semibold">020 8444 0040</span>
+              <span className="font-semibold">020 3441 6940</span>
             </a>
             
             {/* Mobile Menu Button */}
@@ -64,9 +64,9 @@ export default function Navigation() {
               <button onClick={() => scrollToSection("about")} className="hover:text-emparo-orange transition-colors text-left">About</button>
               <button onClick={() => scrollToSection("gallery")} className="hover:text-emparo-orange transition-colors text-left">Gallery</button>
               <button onClick={() => scrollToSection("contact")} className="hover:text-emparo-orange transition-colors text-left">Contact</button>
-              <a href="tel:02084440040" className="bg-emparo-orange text-white px-4 py-2 rounded-full text-center flex items-center justify-center space-x-2">
+              <a href="tel:02034416940" className="bg-emparo-orange text-white px-4 py-2 rounded-full text-center flex items-center justify-center space-x-2">
                 <Phone className="w-4 h-4" />
-                <span>020 8444 0040</span>
+                <span>020 3441 6940</span>
               </a>
             </div>
           </div>

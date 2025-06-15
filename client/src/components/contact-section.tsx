@@ -27,9 +27,9 @@ export default function ContactSection() {
             </div>
             <h3 className="text-2xl font-bold mb-4 text-emparo-orange">Location</h3>
             <div className="text-gray-300 leading-relaxed mb-4">
-              <p>Emparo Peri Peri</p>
-              <p>Fresh Stone Baked Pizza</p>
-              <p>London, UK</p>
+              <p>24 Blackstock Rd</p>
+              <p>Finsbury Park</p>
+              <p>London N4 2DW</p>
             </div>
             <Button className="bg-emparo-orange hover:bg-emparo-orange-light">
               <Navigation className="mr-2 w-4 h-4" />
@@ -44,11 +44,11 @@ export default function ContactSection() {
             </div>
             <h3 className="text-2xl font-bold mb-4 text-emparo-orange">Order Now</h3>
             <p className="text-gray-300 mb-4">Call us for takeaway or delivery</p>
-            <a href="tel:02084440040" className="text-2xl font-bold text-emparo-yellow hover:text-white transition-colors block mb-4">
-              020 8444 0040
+            <a href="tel:02034416940" className="text-2xl font-bold text-emparo-yellow hover:text-white transition-colors block mb-4">
+              020 3441 6940
             </a>
             <Button className="bg-emparo-red hover:bg-emparo-red-light" asChild>
-              <a href="tel:02084440040">
+              <a href="tel:02034416940">
                 <Phone className="mr-2 w-4 h-4" />
                 Call Now
               </a>
@@ -63,12 +63,8 @@ export default function ContactSection() {
             <h3 className="text-2xl font-bold mb-4 text-emparo-orange">Opening Hours</h3>
             <div className="text-gray-300 space-y-2 mb-4">
               <div className="flex justify-between">
-                <span>Monday - Thursday</span>
-                <span>4:00 PM - 11:00 PM</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Friday - Sunday</span>
-                <span>4:00 PM - 12:00 AM</span>
+                <span>Daily</span>
+                <span>1:00 PM - 4:00 AM</span>
               </div>
             </div>
             <div className="text-emparo-yellow font-semibold flex items-center justify-center">
@@ -85,7 +81,7 @@ export default function ContactSection() {
             <p className="text-lg mb-6 opacity-90">Order now and taste the authentic flavors of peri peri cuisine</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button className="bg-white text-emparo-dark hover:bg-gray-100" asChild>
-                <a href="tel:02084440040">
+                <a href="tel:02034416940">
                   <Phone className="mr-2 w-4 h-4" />
                   Call to Order
                 </a>
