@@ -30,17 +30,17 @@ const categoryColors = {
 
 export default function MenuSection() {
   return (
-    <section id="menu" className="py-20 bg-gradient-to-b from-white to-emparo-cream">
+    <section id="menu" className="py-20 bg-emparo-dark">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center bg-emparo-orange/10 border border-emparo-orange/20 px-6 py-3 rounded-full mb-6">
-            <Utensils className="w-5 h-5 text-emparo-orange mr-2" />
-            <span className="text-emparo-orange font-bold">Our Menu</span>
+          <div className="inline-flex items-center bg-emparo-orange px-8 py-4 rounded-full mb-8 shadow-2xl">
+            <Utensils className="w-6 h-6 text-emparo-dark mr-3" />
+            <span className="text-emparo-dark font-black text-xl">OUR MENU</span>
           </div>
-          <h2 className="text-5xl md:text-6xl font-black text-emparo-dark mb-6">
-            Authentic <span className="text-emparo-orange">Peri Peri</span> Experience
+          <h2 className="text-6xl md:text-8xl font-black text-white mb-8">
+            AUTHENTIC <span className="text-emparo-orange">PERI PERI</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">Fresh ingredients, authentic flavors, unbeatable taste delivered daily</p>
+          <p className="text-2xl text-emparo-yellow max-w-3xl mx-auto font-bold">FRESH INGREDIENTS • AUTHENTIC FLAVORS • UNBEATABLE TASTE</p>
         </div>
         
         <div className="grid lg:grid-cols-3 gap-8">
@@ -49,7 +49,7 @@ export default function MenuSection() {
             const colorClass = categoryColors[category.category as keyof typeof categoryColors] || "bg-emparo-orange";
             
             return (
-              <Card key={index} className={`bg-white rounded-3xl shadow-xl border-2 border-gray-100 hover:border-emparo-orange/30 transition-all duration-300 p-6 ${category.category === "Platters" ? "lg:col-span-3" : ""} hover:shadow-2xl transform hover:-translate-y-1`}>
+              <Card key={index} className={`bg-emparo-darker border-2 border-emparo-orange/30 rounded-3xl shadow-2xl hover:border-emparo-orange transition-all duration-300 p-6 ${category.category === "Platters" ? "lg:col-span-3" : ""} hover:shadow-emparo-orange/20 hover:shadow-2xl transform hover:-translate-y-2`}>
                 <CardHeader className="p-0 mb-8">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
@@ -57,8 +57,8 @@ export default function MenuSection() {
                         <IconComponent className="text-white w-8 h-8" />
                       </div>
                       <div>
-                        <CardTitle className="text-3xl font-black text-emparo-dark">{category.category}</CardTitle>
-                        <p className="text-emparo-orange font-semibold">{category.icon} Authentic & Fresh</p>
+                        <CardTitle className="text-3xl font-black text-white">{category.category}</CardTitle>
+                        <p className="text-emparo-orange font-bold">{category.icon} AUTHENTIC & FRESH</p>
                       </div>
                     </div>
                     {category.category === "Pizzas" && (
@@ -70,9 +70,9 @@ export default function MenuSection() {
                 </CardHeader>
                 <CardContent className="p-0">
                   {category.category === "Pizzas" && (
-                    <div className="mb-6 bg-emparo-orange/10 rounded-2xl p-4 border border-emparo-orange/20">
-                      <p className="text-emparo-orange font-bold text-xl">All pizzas £8.50</p>
-                      <p className="text-gray-600 text-sm mt-1">Fresh stone baked daily</p>
+                    <div className="mb-6 bg-emparo-orange rounded-2xl p-4 border border-emparo-yellow">
+                      <p className="text-emparo-dark font-black text-xl">ALL PIZZAS £8.50</p>
+                      <p className="text-emparo-dark text-sm mt-1 font-bold">FRESH STONE BAKED DAILY</p>
                     </div>
                   )}
                   
