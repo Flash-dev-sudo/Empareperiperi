@@ -31,9 +31,11 @@ export default function ContactSection() {
               <p>Finsbury Park</p>
               <p>London N4 2DW</p>
             </div>
-            <Button className="bg-emparo-orange hover:bg-emparo-orange-light">
-              <Navigation className="mr-2 w-4 h-4" />
-              Get Directions
+            <Button className="bg-emparo-orange hover:bg-emparo-orange-light" asChild>
+              <a href="https://maps.google.com/?q=24+Blackstock+Rd,+Finsbury+Park,+London+N4+2DW" target="_blank" rel="noopener noreferrer">
+                <Navigation className="mr-2 w-4 h-4" />
+                Get Directions
+              </a>
             </Button>
           </div>
           

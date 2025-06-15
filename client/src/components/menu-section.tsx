@@ -43,13 +43,13 @@ export default function MenuSection() {
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">Fresh ingredients, authentic flavors, unbeatable taste delivered daily</p>
         </div>
         
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-3 gap-8">
           {menuData.map((category, index) => {
             const IconComponent = categoryIcons[category.category as keyof typeof categoryIcons] || Utensils;
             const colorClass = categoryColors[category.category as keyof typeof categoryColors] || "bg-emparo-orange";
             
             return (
-              <Card key={index} className={`bg-white rounded-3xl shadow-xl border-2 border-gray-100 hover:border-emparo-orange/30 transition-all duration-300 p-8 ${category.category === "Platters" ? "lg:col-span-2" : ""} hover:shadow-2xl transform hover:-translate-y-1`}>
+              <Card key={index} className={`bg-white rounded-3xl shadow-xl border-2 border-gray-100 hover:border-emparo-orange/30 transition-all duration-300 p-6 ${category.category === "Platters" ? "lg:col-span-3" : ""} hover:shadow-2xl transform hover:-translate-y-1`}>
                 <CardHeader className="p-0 mb-8">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
