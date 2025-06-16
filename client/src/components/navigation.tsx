@@ -113,30 +113,36 @@ export default function Navigation() {
         </div>
 
         {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden bg-white border-t border-emparo-orange/20 py-4">
-            <div className="flex flex-col space-y-4">
-              {menuItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className="text-emparo-dark hover:text-emparo-orange font-semibold text-left transition-colors"
-                >
-                  {item.label}
-                </button>
-              ))}
-              <Button 
-                className="bg-emparo-orange hover:bg-emparo-orange/90 text-white px-6 py-3 rounded-2xl font-bold w-full mt-4"
-                asChild
+        <div className={`md:hidden bg-white border-t border-emparo-orange/20 overflow-hidden transition-all duration-300 ${
+          isMenuOpen ? 'max-h-96 py-4' : 'max-h-0 py-0'
+        }`}>
+          <div className="flex flex-col space-y-4">
+            {menuItems.map((item, index) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className={`text-emparo-dark hover:text-emparo-orange font-semibold text-left transition-all duration-300 transform ${
+                  isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'
+                }`}
+                style={{ transitionDelay: `${index * 100}ms` }}
               >
-                <a href="tel:02034416940">
-                  <Phone className="mr-2 w-4 h-4" />
-                  Call: 020 3441 6940
-                </a>
-              </Button>
-            </div>
+                {item.label}
+              </button>
+            ))}
+            <Button 
+              className={`bg-emparo-orange hover:bg-emparo-orange/90 text-white px-6 py-3 rounded-2xl font-bold w-full mt-4 transition-all duration-300 transform ${
+                isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'
+              }`}
+              style={{ transitionDelay: '400ms' }}
+              asChild
+            >
+              <a href="tel:02034416940">
+                <Phone className="mr-2 w-4 h-4 animate-pulse" />
+                Call: 020 3441 6940
+              </a>
+            </Button>
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );

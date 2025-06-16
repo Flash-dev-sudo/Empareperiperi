@@ -8,6 +8,7 @@ import AboutSection from "@/components/about-section";
 import Gallery from "@/components/gallery";
 import ContactSection from "@/components/contact-section";
 import Footer from "@/components/footer";
+import FloatingOrderButton from "@/components/floating-order-button";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <Gallery />
       <ContactSection />
       <Footer />
+      <FloatingOrderButton />
     </div>
   );
 }
