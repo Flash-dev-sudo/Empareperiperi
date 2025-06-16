@@ -1,60 +1,75 @@
-import { Award } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { MapPin, Clock, Phone, Star } from "lucide-react";
+import chicken1 from "@assets/ChatGPT Image May 19, 2025, 09_37_01 PM_1750005342085.png";
 
 export default function AboutSection() {
   return (
-    <section id="about" className="py-16 bg-white">
+    <section id="about" className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content */}
           <div>
-            <h2 className="text-4xl md:text-5xl font-bold text-emparo-dark mb-6">
-              About <span className="text-emparo-orange">Emparo</span>
+            <h2 className="text-5xl md:text-6xl font-black text-emparo-dark mb-6">
+              Marinated <br />
+              For <br />
+              <span className="text-emparo-orange">24 Hours.</span>
             </h2>
-            <div className="space-y-4 text-lg text-gray-600">
-              <p>
-                At Emparo Peri Peri, we're passionate about bringing you the authentic taste of flame-grilled peri peri cuisine. Our journey began with a simple mission: to serve fresh, flavorful food that ignites your senses.
-              </p>
-              <p>
-                Every dish is crafted with premium ingredients, from our signature peri peri marinades to our fresh stone-baked pizzas. We believe in quality, authenticity, and the perfect balance of spice that makes every meal memorable.
-              </p>
-              <p>
-                Our expert chefs use traditional grilling techniques combined with secret spice blends to create the perfect peri peri experience. Whether you're craving our famous grilled chicken or exploring our diverse menu, we promise fresh food made with love.
-              </p>
-            </div>
             
-            <div className="grid grid-cols-2 gap-6 mt-8">
-              <div className="text-center p-4 bg-emparo-cream rounded-lg">
-                <div className="text-2xl font-bold text-emparo-orange mb-1">5+</div>
-                <div className="text-sm text-gray-600">Years Serving</div>
-              </div>
-              <div className="text-center p-4 bg-emparo-cream rounded-lg">
-                <div className="text-2xl font-bold text-emparo-orange mb-1">Fresh</div>
-                <div className="text-sm text-gray-600">Daily Prep</div>
-              </div>
-              <div className="text-center p-4 bg-emparo-cream rounded-lg">
-                <div className="text-2xl font-bold text-emparo-orange mb-1">100%</div>
-                <div className="text-sm text-gray-600">Halal</div>
-              </div>
-              <div className="text-center p-4 bg-emparo-cream rounded-lg">
-                <div className="text-2xl font-bold text-emparo-orange mb-1">Local</div>
-                <div className="text-sm text-gray-600">Community</div>
+            <p className="text-xl text-emparo-dark mb-6 font-medium">
+              Marinated for twenty-four hours, steam cooked, grilled to order.
+            </p>
+            
+            <p className="text-lg text-emparo-dark/80 mb-8 leading-relaxed">
+              This is the secret behind our chicken. However, we also do so much more, including beef 
+              burgers made from 99% British and Irish beef. Click below to find out more about our tasty 
+              menu offerings.
+            </p>
+            
+            <div className="bg-emparo-cream rounded-3xl p-8">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="flex items-center">
+                  <MapPin className="w-6 h-6 text-emparo-orange mr-3" />
+                  <div>
+                    <p className="font-bold text-emparo-dark">Location</p>
+                    <p className="text-emparo-dark/70 text-sm">24 Blackstock Rd, N4 2DW</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center">
+                  <Clock className="w-6 h-6 text-emparo-orange mr-3" />
+                  <div>
+                    <p className="font-bold text-emparo-dark">Hours</p>
+                    <p className="text-emparo-dark/70 text-sm">Daily 1 PM–4 AM</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center">
+                  <Phone className="w-6 h-6 text-emparo-orange mr-3" />
+                  <div>
+                    <p className="font-bold text-emparo-dark">Phone</p>
+                    <p className="text-emparo-dark/70 text-sm">020 3441 6940</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center">
+                  <Star className="w-6 h-6 text-emparo-orange mr-3" />
+                  <div>
+                    <p className="font-bold text-emparo-dark">Quality</p>
+                    <p className="text-emparo-dark/70 text-sm">100% Halal</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           
+          {/* Right Content - Image */}
           <div className="relative">
-            <img 
-              src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
-              alt="Warm restaurant interior" 
-              className="rounded-2xl shadow-xl w-full h-auto" 
-            />
-            
-            {/* Overlay Card */}
-            <div className="absolute -bottom-6 -left-6 bg-emparo-dark text-white p-6 rounded-xl shadow-lg max-w-sm">
-              <div className="flex items-center space-x-3 mb-2">
-                <Award className="text-emparo-yellow w-6 h-6" />
-                <span className="font-bold text-emparo-yellow">Quality Promise</span>
-              </div>
-              <p className="text-sm">Fresh ingredients, authentic recipes, and exceptional service - that's our commitment to you.</p>
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+              <img 
+                src={chicken1}
+                alt="Emparo's perfectly marinated peri peri chicken" 
+                className="w-full h-auto"
+              />
             </div>
           </div>
         </div>

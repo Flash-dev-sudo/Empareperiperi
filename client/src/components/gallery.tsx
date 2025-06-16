@@ -1,96 +1,104 @@
-import { useState } from "react";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Instagram, Facebook, Star } from "lucide-react";
+
+// Import authentic food images
+import pizza1 from "@assets/ChatGPT Image May 18, 2025, 11_28_06 AM_1750005342083.png";
+import pizza2 from "@assets/ChatGPT Image May 18, 2025, 11_58_25 AM_1750005342083.png";
+import chicken1 from "@assets/ChatGPT Image May 18, 2025, 12_05_21 PM_1750005342083.png";
+import chicken2 from "@assets/ChatGPT Image May 18, 2025, 12_22_28 PM_1750005342083.png";
+import chicken3 from "@assets/ChatGPT Image May 18, 2025, 12_32_31 PM_1750005342084.png";
+import chicken4 from "@assets/ChatGPT Image May 18, 2025, 12_40_20 PM_1750005342084.png";
 
 const galleryImages = [
   {
-    src: "/attached_assets/ChatGPT Image May 17, 2025, 05_58_52 PM_1750005342081.png",
-    alt: "Emparo's signature grilled peri peri chicken strips with rice and fresh salad"
+    src: pizza1,
+    alt: "Emparo's signature stone-baked pizza with fresh toppings",
+    category: "Pizza"
   },
   {
-    src: "/attached_assets/ChatGPT Image May 19, 2025, 12_03_53 PM_1750005388240.png",
-    alt: "Emparo's delicious peri peri chicken burger with crispy coating and fries"
+    src: chicken1,
+    alt: "Perfectly grilled peri peri chicken with authentic spices",
+    category: "Chicken"
   },
   {
-    src: "/attached_assets/ChatGPT Image May 19, 2025, 12_29_07 PM_1750005388241.png",
-    alt: "Emparo's glazed peri peri chicken wings with spiced rice and fresh salad"
+    src: pizza2,
+    alt: "Fresh stone-baked pizza with premium ingredients",
+    category: "Pizza"
   },
   {
-    src: "/attached_assets/ChatGPT Image May 22, 2025, 06_51_58 PM_1750005388241.png",
-    alt: "Emparo's crispy falafels in tortilla wrap with chips and sauces"
+    src: chicken2,
+    alt: "Flame-grilled peri peri chicken pieces",
+    category: "Chicken"
   },
   {
-    src: "/attached_assets/ChatGPT Image May 22, 2025, 07_35_09 PM_1750005388242.png",
-    alt: "Emparo's family feast - variety of burgers, grilled chicken and wraps"
+    src: chicken3,
+    alt: "Authentic peri peri chicken with traditional marinade",
+    category: "Chicken"
   },
   {
-    src: "/attached_assets/ChatGPT Image May 22, 2025, 07_44_19 PM_1750005388242.png",
-    alt: "Emparo's crispy peri peri chicken wings with golden fries"
-  },
-  {
-    src: "/attached_assets/ChatGPT Image May 22, 2025, 10_07_25 PM_1750005388243.png",
-    alt: "Emparo's perfectly grilled quarter chicken pieces with fresh garnish"
-  },
-  {
-    src: "/attached_assets/ChatGPT Image May 22, 2025, 10_36_30 PM_1750005451474.png",
-    alt: "Emparo's golden fried chicken pieces - crispy and delicious"
-  },
-  {
-    src: "/attached_assets/ChatGPT Image May 22, 2025, 10_32_14 PM_1750005451473.png",
-    alt: "Emparo Peri Peri branded smoothie - refreshing and creamy"
-  },
-  {
-    src: "/attached_assets/ChatGPT Image May 19, 2025, 12_34_06 PM_1750005435412.png",
-    alt: "Emparo's golden fries with signature sauces"
-  },
-  {
-    src: "/attached_assets/ChatGPT Image May 22, 2025, 09_20_56 PM_1750005435413.png",
-    alt: "Emparo's glazed peri peri chicken wings - perfectly cooked"
-  },
-  {
-    src: "/attached_assets/ChatGPT Image May 22, 2025, 10_24_05 PM_1750005435414.png",
-    alt: "Emparo's crispy chicken nuggets - golden and crunchy"
+    src: chicken4,
+    alt: "Grilled chicken with peri peri sauce and fresh sides",
+    category: "Chicken"
   }
 ];
 
 export default function Gallery() {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-
   return (
-    <section id="gallery" className="py-16 bg-emparo-cream">
+    <section className="py-20 bg-emparo-cream">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-emparo-dark mb-4">
-            Food <span className="text-emparo-orange">Gallery</span>
+        <div className="text-center mb-16">
+          <h2 className="text-5xl md:text-6xl font-black text-emparo-dark mb-4">
+            Follow us on our <span className="text-emparo-orange">Socials</span>
           </h2>
-          <p className="text-xl text-gray-600">A visual feast of our delicious creations</p>
+          <p className="text-xl text-emparo-dark max-w-2xl mx-auto font-medium">
+            Check out our Instagram and Facebook pages to hear about our latest offers
+          </p>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {galleryImages.map((image, index) => (
-            <img
-              key={index}
-              src={image.src}
-              alt={image.alt}
-              className="rounded-xl shadow-md hover:shadow-lg transition-shadow w-full h-48 object-cover cursor-pointer transform hover:scale-105 transition-transform duration-300"
-              onClick={() => setSelectedImage(image.src)}
-            />
+            <Card key={index} className="bg-white rounded-3xl shadow-lg overflow-hidden border-0 transition-all duration-300 hover:shadow-xl group">
+              <div className="relative overflow-hidden">
+                <img 
+                  src={image.src} 
+                  alt={image.alt} 
+                  className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" 
+                />
+                <div className="absolute bottom-4 left-4 bg-emparo-orange text-white px-3 py-1 rounded-full text-sm font-semibold">
+                  @Username
+                </div>
+                <div className="absolute bottom-4 right-4 bg-white/90 p-2 rounded-full">
+                  <Instagram className="w-5 h-5 text-emparo-orange" />
+                </div>
+              </div>
+            </Card>
           ))}
         </div>
-      </div>
-
-      {/* Modal */}
-      {selectedImage && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
-          onClick={() => setSelectedImage(null)}
-        >
-          <img
-            src={selectedImage}
-            alt="Gallery image"
-            className="max-w-full max-h-full rounded-lg shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          />
+        
+        <div className="text-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button 
+              className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:from-pink-600 hover:to-purple-700 transition-all"
+              asChild
+            >
+              <a href="#" target="_blank" rel="noopener noreferrer">
+                <Instagram className="mr-2 w-5 h-5" />
+                Follow on Instagram
+              </a>
+            </Button>
+            <Button 
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all"
+              asChild
+            >
+              <a href="#" target="_blank" rel="noopener noreferrer">
+                <Facebook className="mr-2 w-5 h-5" />
+                Like on Facebook
+              </a>
+            </Button>
+          </div>
         </div>
-      )}
+      </div>
     </section>
   );
 }
