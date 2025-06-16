@@ -37,10 +37,10 @@ export default function MenuSection() {
             <Utensils className="w-6 h-6 text-emparo-dark mr-3" />
             <span className="text-emparo-dark font-black text-xl">OUR MENU</span>
           </div>
-          <h2 className="text-6xl md:text-8xl font-black text-white mb-8">
-            AUTHENTIC <span className="text-emparo-orange">PERI PERI</span>
+          <h2 className="text-6xl md:text-8xl font-black text-white mb-8 text-shadow-strong">
+            AUTHENTIC <span className="text-emparo-orange text-shadow-strong">PERI PERI</span>
           </h2>
-          <p className="text-2xl text-emparo-yellow max-w-3xl mx-auto font-bold">FRESH INGREDIENTS • AUTHENTIC FLAVORS • UNBEATABLE TASTE</p>
+          <p className="text-2xl text-emparo-yellow max-w-3xl mx-auto font-bold text-shadow-lg">FRESH INGREDIENTS • AUTHENTIC FLAVORS • UNBEATABLE TASTE</p>
         </div>
         
         <div className="grid lg:grid-cols-3 gap-8">

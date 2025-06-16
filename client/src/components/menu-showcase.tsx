@@ -47,7 +47,7 @@ export default function MenuShowcase() {
           <h2 className="text-4xl md:text-5xl font-bold text-emparo-dark mb-4">
             Popular <span className="text-emparo-orange">Menu Items</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-emparo-dark max-w-2xl mx-auto font-semibold">
             Discover our most loved dishes, made fresh daily with authentic flavors
           </p>
         </div>

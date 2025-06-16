@@ -37,7 +37,7 @@ export default function FeaturedSpecialties() {
           <h2 className="text-4xl md:text-5xl font-bold text-emparo-dark mb-4">
             <span className="text-emparo-orange">Peri Peri</span> Specialties
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-emparo-dark max-w-2xl mx-auto font-semibold">
             Discover our signature peri peri dishes, grilled to perfection with authentic spices and served fresh daily
           </p>
         </div>

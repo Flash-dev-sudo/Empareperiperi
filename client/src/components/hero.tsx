@@ -21,6 +21,9 @@ export default function Hero() {
         />
       </div>
       
+      {/* Dark overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/60 z-5"></div>
+      
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className="text-center lg:text-left">
@@ -32,18 +35,20 @@ export default function Hero() {
             
             <div className="mb-8">
               <h1 className="text-6xl md:text-8xl font-black mb-6 leading-none">
-                <span className="text-emparo-orange drop-shadow-lg">EMPARO</span><br />
-                <span className="text-emparo-yellow drop-shadow-lg">PERI PERI</span>
+                <span className="text-emparo-orange text-shadow-strong">EMPARO</span><br />
+                <span className="text-emparo-yellow text-shadow-strong">PERI PERI</span>
               </h1>
-              <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 mb-6 border border-emparo-orange/20">
-                <p className="text-2xl md:text-3xl font-bold text-emparo-yellow mb-2 drop-shadow-lg">Fresh Stone Baked Pizza</p>
-                <p className="text-lg text-white font-semibold drop-shadow-lg">Authentic Grilled Chicken & Peri Peri Specialties</p>
+              <div className="bg-black/80 backdrop-blur-sm rounded-2xl p-6 mb-6 border border-emparo-orange/30">
+                <p className="text-2xl md:text-3xl font-bold text-emparo-yellow mb-2 text-shadow-lg">Fresh Stone Baked Pizza</p>
+                <p className="text-lg text-white font-bold text-shadow-lg">Authentic Grilled Chicken & Peri Peri Specialties</p>
               </div>
             </div>
             
-            <p className="text-xl md:text-2xl text-white mb-10 leading-relaxed font-medium drop-shadow-lg">
-              Experience the authentic taste of flame-grilled peri peri chicken, fresh stone-baked pizzas, and mouth-watering specialties that will ignite your taste buds.
-            </p>
+            <div className="bg-black/70 rounded-xl p-6 mb-10">
+              <p className="text-xl md:text-2xl text-white leading-relaxed font-bold">
+                Experience the authentic taste of flame-grilled peri peri chicken, fresh stone-baked pizzas, and mouth-watering specialties that will ignite your taste buds.
+              </p>
+            </div>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
               <Button 
