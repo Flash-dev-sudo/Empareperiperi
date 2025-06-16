@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Utensils, Phone, Flame, Star } from "lucide-react";
+import { Utensils, Phone } from "lucide-react";
+import pizza1 from "@assets/ChatGPT Image May 18, 2025, 11_28_06 AM_1750005342083.png";
 
 export default function Hero() {
   const scrollToSection = (id: string) => {
@@ -10,42 +11,22 @@ export default function Hero() {
   };
 
   return (
-    <section id="home" className="relative bg-gradient-to-br from-emparo-dark via-emparo-darker to-emparo-dark text-white min-h-screen flex items-center">
-      {/* Modern Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div 
-          className="absolute inset-0" 
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff6b35' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
-      </div>
-      
-      {/* Dark overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/60 z-5"></div>
-      
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+    <section id="home" className="hero-gradient min-h-screen">
+      <div className="container mx-auto px-4 py-20">
+        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+          {/* Left Content */}
           <div className="text-center lg:text-left">
-            {/* Premium Badge */}
-            <div className="inline-flex items-center bg-emparo-orange/20 backdrop-blur-sm border border-emparo-orange/30 px-4 py-2 rounded-full mb-6">
-              <Star className="w-4 h-4 text-emparo-yellow mr-2" />
-              <span className="text-sm font-semibold text-emparo-orange">Premium Quality Since 2019</span>
+            <h1 className="text-7xl md:text-9xl font-black mb-8 leading-none text-emparo-yellow">
+              PERI PERI
+            </h1>
+            
+            <div className="bg-emparo-dark rounded-3xl p-8 mb-8">
+              <p className="text-2xl md:text-3xl font-bold text-emparo-yellow mb-4">Fresh Stone Baked Pizza</p>
+              <p className="text-lg text-white font-medium">Authentic Grilled Chicken & Peri Peri Specialties</p>
             </div>
             
-            <div className="mb-8">
-              <h1 className="text-6xl md:text-8xl font-black mb-6 leading-none">
-                <span className="text-emparo-orange text-shadow-strong">EMPARO</span><br />
-                <span className="text-emparo-yellow text-shadow-strong">PERI PERI</span>
-              </h1>
-              <div className="bg-black/80 backdrop-blur-sm rounded-2xl p-6 mb-6 border border-emparo-orange/30">
-                <p className="text-2xl md:text-3xl font-bold text-emparo-yellow mb-2 text-shadow-lg">Fresh Stone Baked Pizza</p>
-                <p className="text-lg text-white font-bold text-shadow-lg">Authentic Grilled Chicken & Peri Peri Specialties</p>
-              </div>
-            </div>
-            
-            <div className="bg-black/70 rounded-xl p-6 mb-10">
-              <p className="text-xl md:text-2xl text-white leading-relaxed font-bold">
+            <div className="bg-emparo-dark rounded-3xl p-8 mb-10">
+              <p className="text-xl text-white leading-relaxed">
                 Experience the authentic taste of flame-grilled peri peri chicken, fresh stone-baked pizzas, and mouth-watering specialties that will ignite your taste buds.
               </p>
             </div>
@@ -53,14 +34,14 @@ export default function Hero() {
             <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
               <Button 
                 onClick={() => scrollToSection("menu")}
-                className="bg-gradient-to-r from-emparo-orange to-emparo-red hover:from-emparo-red hover:to-emparo-orange px-10 py-6 rounded-2xl text-xl font-bold transition-all transform hover:scale-105 shadow-2xl border-2 border-white/20"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-10 py-6 rounded-2xl text-xl font-bold transition-all"
               >
                 <Utensils className="mr-3 w-6 h-6" />
                 View Our Menu
               </Button>
               <Button 
                 variant="outline"
-                className="bg-white/10 backdrop-blur-sm border-2 border-emparo-yellow text-emparo-yellow hover:bg-emparo-yellow hover:text-emparo-dark px-10 py-6 rounded-2xl text-xl font-bold transition-all transform hover:scale-105"
+                className="bg-emparo-yellow text-emparo-dark hover:bg-emparo-yellow/90 px-10 py-6 rounded-2xl text-xl font-bold border-2 border-emparo-yellow transition-all"
                 asChild
               >
                 <a href="tel:02034416940">
@@ -69,51 +50,16 @@ export default function Hero() {
                 </a>
               </Button>
             </div>
-            
-            {/* Trust Indicators */}
-            <div className="flex flex-wrap gap-6 mt-10 justify-center lg:justify-start">
-              <div className="flex items-center text-emparo-orange">
-                <Star className="w-5 h-5 mr-2 fill-current" />
-                <span className="font-semibold">100% Halal</span>
-              </div>
-              <div className="flex items-center text-emparo-yellow">
-                <Flame className="w-5 h-5 mr-2" />
-                <span className="font-semibold">Fresh Daily</span>
-              </div>
-              <div className="flex items-center text-white">
-                <Star className="w-5 h-5 mr-2 fill-current" />
-                <span className="font-semibold">Premium Quality</span>
-              </div>
-            </div>
           </div>
           
+          {/* Right Content - Image */}
           <div className="relative">
-            {/* Main Hero Image */}
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl">
               <img 
-                src="/attached_assets/ChatGPT Image May 22, 2025, 08_27_31 PM_1750005435412.png" 
-                alt="Emparo's perfectly grilled peri peri chicken with flames - authentic flame-grilled experience" 
+                src={pizza1}
+                alt="Emparo Peri Peri delicious pizza" 
                 className="w-full h-auto"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-            </div>
-            
-            {/* Floating Offer Cards */}
-            <div className="absolute -top-6 -right-6 bg-gradient-to-r from-emparo-yellow to-emparo-orange text-emparo-dark px-6 py-4 rounded-2xl font-black text-lg shadow-2xl animate-bounce-slow transform -rotate-12">
-              <div className="flex items-center">
-                <Flame className="mr-2 w-5 h-5" />
-                SPICY DEALS!
-              </div>
-            </div>
-            
-            <div className="absolute -bottom-6 -left-6 bg-gradient-to-r from-emparo-red to-emparo-orange text-white px-6 py-4 rounded-2xl font-bold shadow-2xl transform rotate-6">
-              <div className="flex items-center">
-                <Star className="mr-2 w-5 h-5 fill-current" />
-                <div>
-                  <div className="text-sm">Open Daily</div>
-                  <div className="text-lg font-black">1PM - 4AM</div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
