@@ -35,13 +35,13 @@ export default function Hero() {
                 <span className="text-emparo-orange drop-shadow-lg">EMPARO</span><br />
                 <span className="text-emparo-yellow drop-shadow-lg">PERI PERI</span>
               </h1>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-6">
-                <p className="text-2xl md:text-3xl font-bold text-emparo-yellow mb-2">Fresh Stone Baked Pizza</p>
-                <p className="text-lg text-emparo-orange font-semibold">Authentic Grilled Chicken & Peri Peri Specialties</p>
+              <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 mb-6 border border-emparo-orange/20">
+                <p className="text-2xl md:text-3xl font-bold text-emparo-yellow mb-2 drop-shadow-lg">Fresh Stone Baked Pizza</p>
+                <p className="text-lg text-white font-semibold drop-shadow-lg">Authentic Grilled Chicken & Peri Peri Specialties</p>
               </div>
             </div>
             
-            <p className="text-xl md:text-2xl text-gray-200 mb-10 leading-relaxed font-light">
+            <p className="text-xl md:text-2xl text-white mb-10 leading-relaxed font-medium drop-shadow-lg">
               Experience the authentic taste of flame-grilled peri peri chicken, fresh stone-baked pizzas, and mouth-watering specialties that will ignite your taste buds.
             </p>
             

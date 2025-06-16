@@ -16,7 +16,7 @@ export default function ContactSection() {
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             Visit <span className="text-emparo-orange">Emparo</span>
           </h2>
-          <p className="text-xl text-gray-300">Find us, call us, or order online</p>
+          <p className="text-xl text-emparo-yellow">Find us, call us, or order online</p>
         </div>
         
         <div className="grid lg:grid-cols-3 gap-8">

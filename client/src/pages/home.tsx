@@ -1,8 +1,9 @@
 import Navigation from "@/components/navigation";
 import Hero from "@/components/hero";
-import FeaturedSpecialties from "@/components/featured-specialties";
+import FeaturedSpecialities from "@/components/featured-specialties";
 import MenuShowcase from "@/components/menu-showcase";
 import MenuSection from "@/components/menu-section";
+import CTABanner from "@/components/cta-banner";
 import AboutSection from "@/components/about-section";
 import Gallery from "@/components/gallery";
 import ContactSection from "@/components/contact-section";
@@ -13,9 +14,10 @@ export default function Home() {
     <div className="min-h-screen bg-emparo-cream text-emparo-dark">
       <Navigation />
       <Hero />
-      <FeaturedSpecialties />
+      <FeaturedSpecialities />
       <MenuShowcase />
       <MenuSection />
+      <CTABanner />
       <AboutSection />
       <Gallery />
       <ContactSection />
