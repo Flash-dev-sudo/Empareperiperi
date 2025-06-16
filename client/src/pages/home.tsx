@@ -1,6 +1,6 @@
 import Navigation from "@/components/navigation";
 import Hero from "@/components/hero";
-import FeaturedSpecialities from "@/components/featured-specialties";
+import FeaturedSpecialties from "@/components/featured-specialties";
 import MenuShowcase from "@/components/menu-showcase";
 import MenuSection from "@/components/menu-section";
 import CTABanner from "@/components/cta-banner";
@@ -14,7 +14,7 @@ export default function Home() {
     <div className="min-h-screen bg-emparo-cream text-emparo-dark">
       <Navigation />
       <Hero />
-      <FeaturedSpecialities />
+      <FeaturedSpecialties />
       <MenuShowcase />
       <MenuSection />
       <CTABanner />
