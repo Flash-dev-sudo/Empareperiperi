@@ -1,4 +1,4 @@
-import { Flame, MapPin, Phone, Clock, Instagram, Facebook } from "lucide-react";
+import { Flame, MapPin, Phone, Clock, Award } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -54,23 +54,21 @@ export default function Footer() {
             </div>
           </div>
           
-          {/* Follow Us */}
+          {/* Awards & Quality */}
           <div>
-            <h3 className="text-xl font-bold text-white mb-6">Follow Us</h3>
-            <p className="text-white/80 mb-4">Stay updated with our latest offers and new menu items</p>
-            <div className="flex space-x-4">
-              <a 
-                href="#" 
-                className="bg-gradient-to-r from-pink-500 to-purple-600 p-3 rounded-2xl hover:from-pink-600 hover:to-purple-700 transition-all"
-              >
-                <Instagram className="w-6 h-6 text-white" />
-              </a>
-              <a 
-                href="#" 
-                className="bg-blue-600 p-3 rounded-2xl hover:bg-blue-700 transition-all"
-              >
-                <Facebook className="w-6 h-6 text-white" />
-              </a>
+            <h3 className="text-xl font-bold text-white mb-6">Quality Promise</h3>
+            <p className="text-white/80 mb-4">Fresh ingredients, authentic flavors, premium quality since 2019</p>
+            <div className="flex items-center space-x-2 mb-3">
+              <Award className="w-5 h-5 text-emparo-orange" />
+              <span className="text-white/80 text-sm">Fresh Daily</span>
+            </div>
+            <div className="flex items-center space-x-2 mb-3">
+              <Award className="w-5 h-5 text-emparo-orange" />
+              <span className="text-white/80 text-sm">Authentic Recipes</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Award className="w-5 h-5 text-emparo-orange" />
+              <span className="text-white/80 text-sm">Premium Quality</span>
             </div>
           </div>
         </div>

@@ -26,13 +26,13 @@ export default function MenuSection() {
             const IconComponent = categoryIcons[category.category as keyof typeof categoryIcons] || Utensils;
             
             return (
-              <Card key={index} className="bg-emparo-cream rounded-3xl shadow-lg overflow-hidden border-0 transition-all duration-300 hover:shadow-xl">
+              <Card key={index} className="bg-emparo-cream rounded-3xl shadow-lg overflow-hidden border-0 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
                 <div className="p-8">
                   <div className="flex items-center mb-6">
-                    <div className="bg-emparo-orange p-4 rounded-2xl mr-4">
+                    <div className="bg-emparo-orange p-4 rounded-2xl mr-4 group-hover:bg-emparo-dark transition-colors group-hover:scale-110 transition-transform">
                       <IconComponent className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-3xl font-black text-emparo-dark">{category.category}</h3>
+                    <h3 className="text-3xl font-black text-emparo-dark group-hover:text-emparo-orange transition-colors">{category.category}</h3>
                   </div>
                   
                   {category.category === "Pizzas" && (
@@ -44,10 +44,10 @@ export default function MenuSection() {
                   
                   <div className="space-y-4">
                     {category.items.map((item, itemIndex) => (
-                      <div key={itemIndex} className="bg-white rounded-2xl p-4 border border-emparo-orange/20 shadow-sm">
+                      <div key={itemIndex} className="bg-white rounded-2xl p-4 border border-emparo-orange/20 shadow-sm hover:shadow-md hover:border-emparo-orange/40 transition-all duration-200 cursor-pointer hover:scale-[1.02]">
                         <div className="flex justify-between items-center mb-2">
-                          <h4 className="text-xl font-bold text-emparo-dark">{item.name}</h4>
-                          <span className="text-2xl font-black text-emparo-orange">{item.price}</span>
+                          <h4 className="text-xl font-bold text-emparo-dark hover:text-emparo-orange transition-colors">{item.name}</h4>
+                          <span className="text-2xl font-black text-emparo-orange hover:scale-110 transition-transform">{item.price}</span>
                         </div>
                         {item.description && (
                           <p className="text-emparo-dark/70 text-sm leading-relaxed">{item.description}</p>
