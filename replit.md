@@ -96,7 +96,7 @@ A full-stack restaurant website for Emparo Peri Peri, featuring an authentic per
 
 ## Changelog
 - June 23, 2025: Initial setup
-- June 23, 2025: Resolved Render deployment by creating vite.production.config.js that bypasses problematic imports in original config
+- June 23, 2025: Created simple Express.js server with CDN-based React - no build tools, direct deployment to Render
 
 ## User Preferences
 

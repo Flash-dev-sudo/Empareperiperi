@@ -4,8 +4,8 @@ services:
     env: node
     plan: starter
     region: oregon
-    buildCommand: "npm install && npx vite build --config vite.production.config.js && npx esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist"
-    startCommand: npm run start
+    buildCommand: "npm install"
+    startCommand: node simple-server.js
     healthCheckPath: /
     envVars:
       - key: NODE_ENV
