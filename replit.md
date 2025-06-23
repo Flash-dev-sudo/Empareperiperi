@@ -96,7 +96,7 @@ A full-stack restaurant website for Emparo Peri Peri, featuring an authentic per
 
 ## Changelog
 - June 23, 2025: Initial setup
-- June 23, 2025: Fixed Render deployment build issues with custom build script that bypasses vite.config.ts import problems
+- June 23, 2025: Resolved Render deployment by creating vite.production.config.js that bypasses problematic imports in original config
 
 ## User Preferences
 
