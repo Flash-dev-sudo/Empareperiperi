@@ -1,0 +1,16 @@
+{
+  "name": "emparo-peri-peri",
+  "version": "1.0.0",
+  "description": "Emparo Peri Peri Restaurant Website",
+  "main": "deploy-server.js",
+  "scripts": {
+    "start": "node deploy-server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT"
+}
