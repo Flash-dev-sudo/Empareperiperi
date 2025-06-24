@@ -96,7 +96,7 @@ A full-stack restaurant website for Emparo Peri Peri, featuring an authentic per
 
 ## Changelog
 - June 23, 2025: Initial setup
-- June 24, 2025: Fixed vite.config.ts top-level await issue, both local development and Render deployment working
+- June 24, 2025: Restored vite.config.ts without top-level await, fixed local development and Render deployment
 
 ## User Preferences
 
