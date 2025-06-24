@@ -1,14 +1,11 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(express.json());
 app.use(express.static('public'));
 
-// Simple HTML page with restaurant content
 const restaurantHTML = `
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +48,6 @@ const restaurantHTML = `
     </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #ff6b35;">
         <div class="container">
             <a class="navbar-brand fw-bold" href="#">Emparo Peri Peri</a>
@@ -68,7 +64,6 @@ const restaurantHTML = `
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section id="home" class="hero-section text-center">
         <div class="container">
             <h1 class="display-4 fw-bold mb-4">Emparo Peri Peri</h1>
@@ -78,7 +73,6 @@ const restaurantHTML = `
         </div>
     </section>
 
-    <!-- Menu Section -->
     <section id="menu" class="py-5">
         <div class="container">
             <h2 class="text-center mb-5">Our Menu</h2>
@@ -143,7 +137,6 @@ const restaurantHTML = `
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section id="contact" class="py-5 bg-light">
         <div class="container">
             <h2 class="text-center mb-5">Visit Us</h2>
@@ -167,7 +160,6 @@ const restaurantHTML = `
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="py-4 text-center" style="background-color: #333; color: white;">
         <div class="container">
             <p>&copy; 2025 Emparo Peri Peri. All rights reserved.</p>
@@ -179,7 +171,6 @@ const restaurantHTML = `
 </html>
 `;
 
-// Routes
 app.get('/', (req, res) => {
     res.send(restaurantHTML);
 });
@@ -188,7 +179,6 @@ app.get('/health', (req, res) => {
     res.json({ status: 'ok', service: 'Emparo Peri Peri' });
 });
 
-// API endpoint for menu
 app.get('/api/menu', (req, res) => {
     const menu = {
         chicken: [
@@ -211,4 +201,4 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`Emparo Peri Peri server running on port ${PORT}`);
 });
 
-module.exports = app;
+export default app;
