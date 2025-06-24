@@ -1,0 +1,49 @@
+Your free instance will spin down with inactivity, which can delay requests by 50 seconds or more.
+Upgrade now
+June 24, 2025 at 9:39 PM
+in progress
+405d75b
+Use simpler server for development and deployment to prevent Vite errors Replaced Vite server with simple-server.js for local development and deployment to address Vite configuration issues. Replit-Commit-Author: Agent Replit-Commit-Session-Id: 0ec975cf-7d91-4ac5-8e23-7f13f9c4b3ac Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/0a6ea2da-376e-44eb-a675-00990d2a73b1/60e25b93-87ad-4bc8-b43d-de447c5b0068.jpg
+Cancel deploy
+
+All logs
+Search
+Search
+
+Live tail
+GMT+1
+
+Menu
+==> Cloning from https://github.com/Flash-dev-sudo/Empareperiperi
+==> Checking out commit 405d75b95031b64d3f8f01853d1b261cf2874084 in branch main
+==> Downloading cache...
+==> Transferred 137MB in 7s. Extraction took 3s.
+==> Requesting Node.js version 20
+==> Using Node.js version 20.19.3 via /opt/render/project/src/.nvmrc
+==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+==> Using Bun version 1.1.0 (default)
+==> Docs on specifying a Bun version: https://render.com/docs/bun-version
+==> Running build command 'npm install'...
+added 99 packages, changed 1 package, and audited 216 packages in 2s
+33 packages are looking for funding
+  run `npm fund` for details
+4 moderate severity vulnerabilities
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+Run `npm audit` for details.
+==> Uploading build...
+==> Uploaded in 11.3s. Compression took 2.1s
+==> Build successful 🎉
+==> Deploying...
+==> Running 'npm run start'
+> emparo-peri-peri@1.0.0 start
+> node simple-server.js
+Emparo Peri Peri server running on port 10000
+Error: ENOENT: no such file or directory, stat '/opt/render/project/src/dist/public/index.html'
+==> Your service is live 🎉
+==> 
+==> ///////////////////////////////////////////////////////////
+==> 
+==> Available at your primary URL https://empareperiperi.onrender.com
+==> 
+==> ///////////////////////////////////////////////////////////

@@ -96,7 +96,7 @@ A full-stack restaurant website for Emparo Peri Peri, featuring an authentic per
 
 ## Changelog
 - June 23, 2025: Initial setup
-- June 24, 2025: Switched to simple-server.js for both dev and deployment, avoiding complex Vite server issues
+- June 24, 2025: Added build script to package.json and ensured React build files are included for Render deployment
 
 ## User Preferences
 
