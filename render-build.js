@@ -302,7 +302,7 @@ const html = `<!DOCTYPE html>
             React.createElement('div', { key: 'price-badge' }, [
               React.createElement('span', {
                 style: { fontSize: '1.25rem', fontWeight: '700', color: '#ff6b35' }
-              }, \`£\${item.price}\`),
+              }, '£' + item.price),
               item.is_customer_favorite === 1 && React.createElement('span', {
                 style: {
                   backgroundColor: '#fbbf24',
@@ -442,7 +442,7 @@ const html = `<!DOCTYPE html>
               }, [
                 React.createElement('div', { key: 'item-info' }, [
                   React.createElement('div', { style: { fontWeight: '600' } }, item.name),
-                  React.createElement('div', { style: { color: '#666', fontSize: '0.9rem' } }, `£${item.price} each`)
+                  React.createElement('div', { style: { color: '#666', fontSize: '0.9rem' } }, '£' + item.price + ' each')
                 ]),
                 React.createElement('div', {
                   key: 'quantity-controls',
@@ -495,7 +495,7 @@ const html = `<!DOCTYPE html>
               React.createElement('div', {
                 key: 'total',
                 style: { fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1rem' }
-              }, `Total: £${getCartTotal()}`),
+              }, 'Total: £' + getCartTotal()),
               
               !showOrderForm ? React.createElement('button', {
                 key: 'checkout-btn',
