@@ -1,15 +1,15 @@
-import { pgTable, text, integer, serial, timestamp } from "drizzle-orm/pg-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
+export const users = sqliteTable("users", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
 });
 
-export const menuItems = pgTable("menu_items", {
-  id: serial("id").primaryKey(),
+export const menuItems = sqliteTable("menu_items", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
   category: text("category").notNull(),
   price: text("price").notNull(),
@@ -18,11 +18,11 @@ export const menuItems = pgTable("menu_items", {
   spiceLevel: integer("spice_level").default(0),
   isAvailable: integer("is_available").default(1),
   isCustomerFavorite: integer("is_customer_favorite").default(0),
-  createdAt: timestamp("created_at").defaultNow(),
+  createdAt: text("created_at").default("datetime('now')"),
 });
 
-export const orders = pgTable("orders", {
-  id: serial("id").primaryKey(),
+export const orders = sqliteTable("orders", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   customerName: text("customer_name").notNull(),
   customerPhone: text("customer_phone").notNull(),
   customerEmail: text("customer_email"),
@@ -32,17 +32,17 @@ export const orders = pgTable("orders", {
   orderType: text("order_type").notNull(),
   deliveryAddress: text("delivery_address"),
   notes: text("notes"),
-  createdAt: timestamp("created_at").defaultNow(),
+  createdAt: text("created_at").default("datetime('now')"),
 });
 
-export const gallery = pgTable("gallery", {
-  id: serial("id").primaryKey(),
+export const gallery = sqliteTable("gallery", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   title: text("title").notNull(),
   description: text("description"),
   imageUrl: text("image_url").notNull(),
   category: text("category").default("food"),
   isActive: integer("is_active").default(1),
-  createdAt: timestamp("created_at").defaultNow(),
+  createdAt: text("created_at").default("datetime('now')"),
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({

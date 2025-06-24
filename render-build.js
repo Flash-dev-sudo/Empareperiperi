@@ -1,0 +1,442 @@
+const fs = require('fs');
+const path = require('path');
+
+console.log('Building dynamic React application for Render...');
+
+// Create React build index.html for the dynamic application
+const html = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emparo Peri Peri - Authentic Peri Peri Restaurant | Fresh Stone Baked Pizza</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: #f8f9fa;
+      }
+      .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-size: 1.2rem;
+        color: #666;
+      }
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #ff6b35;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 1rem;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="loading">
+        <div class="spinner"></div>
+        Loading Emparo Peri Peri...
+      </div>
+    </div>
+    
+    <script type="text/babel">
+      const { useState, useEffect } = React;
+      
+      function Navigation() {
+        const [currentPath, setCurrentPath] = useState(window.location.pathname);
+        const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+        const navItems = [
+          { name: "Home", path: "/" },
+          { name: "Menu", path: "/menu" },
+          { name: "About", path: "/about" },
+          { name: "Contact", path: "/contact" }
+        ];
+
+        const navigate = (path) => {
+          window.history.pushState({}, '', path);
+          setCurrentPath(path);
+          setIsMobileMenuOpen(false);
+        };
+
+        return React.createElement('nav', {
+          style: {
+            backgroundColor: 'white',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+            position: 'sticky',
+            top: 0,
+            zIndex: 50
+          }
+        }, [
+          React.createElement('div', {
+            key: 'nav-container',
+            style: {
+              maxWidth: '1200px',
+              margin: '0 auto',
+              padding: '0 1rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              height: '64px'
+            }
+          }, [
+            React.createElement('div', {
+              key: 'logo',
+              onClick: () => navigate('/'),
+              style: {
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer'
+              }
+            }, [
+              React.createElement('div', {
+                key: 'logo-icon',
+                style: {
+                  width: '40px',
+                  height: '40px',
+                  backgroundColor: '#ff6b35',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: '0.5rem'
+                }
+              }, '🌶️'),
+              React.createElement('div', { key: 'logo-text' }, [
+                React.createElement('div', {
+                  key: 'brand',
+                  style: { fontWeight: 'bold', color: '#333' }
+                }, 'EMPARO'),
+                React.createElement('div', {
+                  key: 'tagline',
+                  style: { fontSize: '0.75rem', color: '#ff6b35', fontWeight: '500' }
+                }, 'PERI PERI')
+              ])
+            ]),
+            React.createElement('div', {
+              key: 'desktop-nav',
+              style: {
+                display: window.innerWidth > 768 ? 'flex' : 'none',
+                alignItems: 'center',
+                gap: '2rem'
+              }
+            }, [
+              ...navItems.map(item => 
+                React.createElement('span', {
+                  key: item.path,
+                  onClick: () => navigate(item.path),
+                  style: {
+                    padding: '0.5rem 1rem',
+                    cursor: 'pointer',
+                    color: currentPath === item.path ? '#ff6b35' : '#666',
+                    fontWeight: currentPath === item.path ? '600' : '400',
+                    borderBottom: currentPath === item.path ? '2px solid #ff6b35' : 'none'
+                  }
+                }, item.name)
+              ),
+              React.createElement('a', {
+                key: 'phone',
+                href: 'tel:02034416940',
+                style: {
+                  backgroundColor: '#ff6b35',
+                  color: 'white',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '0.5rem',
+                  textDecoration: 'none',
+                  fontWeight: '500'
+                }
+              }, '020 3441 6940')
+            ])
+          ])
+        ]);
+      }
+
+      function MenuCard({ item }) {
+        const getSpiceIndicator = (level) => {
+          if (level === 0) return null;
+          const flames = '🌶️'.repeat(level);
+          const spiceText = level === 1 ? 'Mild' : level === 2 ? 'Medium' : 'Hot';
+          return React.createElement('div', {
+            style: { display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem' }
+          }, [flames, spiceText]);
+        };
+
+        return React.createElement('div', {
+          key: item.id,
+          style: {
+            backgroundColor: 'white',
+            padding: '1.5rem',
+            borderRadius: '12px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            borderLeft: '4px solid #ff6b35',
+            transition: 'transform 0.3s ease',
+            cursor: 'pointer'
+          },
+          onMouseEnter: (e) => e.target.style.transform = 'translateY(-2px)',
+          onMouseLeave: (e) => e.target.style.transform = 'translateY(0)'
+        }, [
+          React.createElement('div', {
+            key: 'header',
+            style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }
+          }, [
+            React.createElement('h3', {
+              key: 'name',
+              style: { fontWeight: '600', color: '#333', margin: 0 }
+            }, item.name),
+            React.createElement('div', { key: 'price-badge' }, [
+              React.createElement('span', {
+                style: { fontSize: '1.25rem', fontWeight: '700', color: '#ff6b35' }
+              }, \`£\${item.price}\`),
+              item.iscustomerfavorite === 1 && React.createElement('span', {
+                style: {
+                  backgroundColor: '#fbbf24',
+                  color: 'white',
+                  fontSize: '0.75rem',
+                  padding: '0.25rem 0.5rem',
+                  borderRadius: '1rem',
+                  marginLeft: '0.5rem'
+                }
+              }, '⭐ Favorite')
+            ])
+          ]),
+          item.description && React.createElement('p', {
+            key: 'description',
+            style: { color: '#666', fontSize: '0.9rem', marginBottom: '1rem', lineHeight: '1.4' }
+          }, item.description),
+          React.createElement('div', {
+            key: 'footer',
+            style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' }
+          }, [
+            getSpiceIndicator(item.spicelevel),
+            React.createElement('button', {
+              style: {
+                backgroundColor: '#ff6b35',
+                color: 'white',
+                border: 'none',
+                padding: '0.5rem 1rem',
+                borderRadius: '0.5rem',
+                cursor: 'pointer',
+                fontWeight: '500'
+              }
+            }, 'Add to Order')
+          ])
+        ]);
+      }
+
+      function HomePage({ menuItems }) {
+        const specialtyItems = menuItems.filter(item => 
+          item.category === 'Peri Peri Specialties' || item.iscustomerfavorite === 1
+        ).slice(0, 3);
+
+        return React.createElement('div', {}, [
+          React.createElement('div', {
+            key: 'hero',
+            style: {
+              background: 'linear-gradient(135deg, #ff6b35, #f7931e)',
+              color: 'white',
+              padding: '4rem 2rem',
+              textAlign: 'center'
+            }
+          }, [
+            React.createElement('h1', {
+              style: { fontSize: '3.5rem', marginBottom: '1rem', textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }
+            }, '🌶️ PERI PERI'),
+            React.createElement('p', {
+              style: { fontSize: '1.5rem', marginBottom: '2rem', opacity: 0.9 }
+            }, 'Authentic Grilled Chicken & Peri Peri Specialties'),
+            React.createElement('div', {
+              style: { display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }
+            }, [
+              React.createElement('button', {
+                key: 'menu-btn',
+                onClick: () => window.history.pushState({}, '', '/menu'),
+                style: {
+                  backgroundColor: '#3b82f6',
+                  color: 'white',
+                  padding: '1rem 2rem',
+                  border: 'none',
+                  borderRadius: '0.5rem',
+                  fontSize: '1.1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer'
+                }
+              }, 'View Menu'),
+              React.createElement('a', {
+                key: 'order-btn',
+                href: 'tel:02034416940',
+                style: {
+                  backgroundColor: '#f97316',
+                  color: 'white',
+                  padding: '1rem 2rem',
+                  borderRadius: '0.5rem',
+                  textDecoration: 'none',
+                  fontSize: '1.1rem',
+                  fontWeight: '600'
+                }
+              }, 'Order Now: 020 3441 6940')
+            ])
+          ]),
+          React.createElement('div', {
+            key: 'specialties',
+            style: { padding: '4rem 2rem', maxWidth: '1200px', margin: '0 auto' }
+          }, [
+            React.createElement('h2', {
+              style: { textAlign: 'center', fontSize: '2.5rem', marginBottom: '3rem', color: '#333' }
+            }, 'Peri Peri Specialties'),
+            React.createElement('div', {
+              style: {
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '2rem'
+              }
+            }, specialtyItems.map(item => React.createElement(MenuCard, { key: item.id, item })))
+          ])
+        ]);
+      }
+
+      function MenuPage({ menuItems }) {
+        const categories = ['Peri Peri Specialties', 'Starters', 'Platters', 'Mains', 'Pizzas', 'Chicken', 'Milkshakes'];
+        
+        const getCategoryIcon = (category) => {
+          const icons = {
+            'Starters': '🍟',
+            'Platters': '🍽️',
+            'Mains': '🍔',
+            'Pizzas': '🍕',
+            'Chicken': '🍗',
+            'Milkshakes': '🥤',
+            'Peri Peri Specialties': '🌶️'
+          };
+          return icons[category] || '🍽️';
+        };
+
+        return React.createElement('div', {}, [
+          React.createElement('div', {
+            key: 'menu-hero',
+            style: {
+              background: 'linear-gradient(135deg, #ff6b35, #f7931e)',
+              color: 'white',
+              padding: '3rem 2rem',
+              textAlign: 'center'
+            }
+          }, [
+            React.createElement('h1', {
+              style: { fontSize: '3rem', marginBottom: '1rem' }
+            }, 'Our Menu'),
+            React.createElement('p', {
+              style: { fontSize: '1.2rem', opacity: 0.9 }
+            }, 'Discover our signature peri peri dishes, grilled to perfection')
+          ]),
+          React.createElement('div', {
+            key: 'menu-content',
+            style: { maxWidth: '1200px', margin: '0 auto', padding: '2rem' }
+          }, categories.map(category => {
+            const categoryItems = menuItems.filter(item => item.category === category);
+            if (categoryItems.length === 0) return null;
+
+            return React.createElement('div', {
+              key: category,
+              style: { marginBottom: '3rem' }
+            }, [
+              React.createElement('div', {
+                key: 'category-header',
+                style: { display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }
+              }, [
+                React.createElement('span', {
+                  style: { fontSize: '2rem' }
+                }, getCategoryIcon(category)),
+                React.createElement('h2', {
+                  style: { fontSize: '2rem', fontWeight: '700', color: '#333' }
+                }, category)
+              ]),
+              React.createElement('div', {
+                key: 'category-items',
+                style: {
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+                  gap: '1.5rem'
+                }
+              }, categoryItems.map(item => React.createElement(MenuCard, { key: item.id, item })))
+            ]);
+          }))
+        ]);
+      }
+
+      function App() {
+        const [menuItems, setMenuItems] = useState([]);
+        const [currentPath, setCurrentPath] = useState(window.location.pathname);
+        const [loading, setLoading] = useState(true);
+
+        useEffect(() => {
+          fetch('/api/menu')
+            .then(res => res.json())
+            .then(data => {
+              setMenuItems(data);
+              setLoading(false);
+            })
+            .catch(err => {
+              console.error('Failed to load menu:', err);
+              setLoading(false);
+            });
+
+          const handlePopState = () => {
+            setCurrentPath(window.location.pathname);
+          };
+          window.addEventListener('popstate', handlePopState);
+          return () => window.removeEventListener('popstate', handlePopState);
+        }, []);
+
+        if (loading) {
+          return React.createElement('div', {
+            className: 'loading'
+          }, [
+            React.createElement('div', { className: 'spinner' }),
+            'Loading Emparo Peri Peri...'
+          ]);
+        }
+
+        return React.createElement('div', {}, [
+          React.createElement(Navigation, { key: 'nav' }),
+          currentPath === '/' 
+            ? React.createElement(HomePage, { key: 'home', menuItems })
+            : currentPath === '/menu'
+            ? React.createElement(MenuPage, { key: 'menu', menuItems })
+            : React.createElement('div', {
+                key: 'not-found',
+                style: { padding: '4rem 2rem', textAlign: 'center' }
+              }, [
+                React.createElement('h1', {}, 'Page Not Found'),
+                React.createElement('p', {}, 'The page you are looking for does not exist.')
+              ])
+        ]);
+      }
+
+      ReactDOM.render(React.createElement(App), document.getElementById('root'));
+    </script>
+  </body>
+</html>`;
+
+// Ensure dist/public directory exists
+if (!fs.existsSync('dist')) fs.mkdirSync('dist');
+if (!fs.existsSync('dist/public')) fs.mkdirSync('dist/public');
+
+fs.writeFileSync('dist/public/index.html', html);
+console.log('✅ Created dynamic React application for Render deployment');
+console.log('✅ Application includes navigation, menu display, and database integration');
