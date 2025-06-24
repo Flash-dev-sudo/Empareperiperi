@@ -96,7 +96,7 @@ A full-stack restaurant website for Emparo Peri Peri, featuring an authentic per
 
 ## Changelog
 - June 23, 2025: Initial setup
-- June 24, 2025: Fixed Render deployment by making build process work during deployment instead of committing build files
+- June 24, 2025: Fixed TailwindCSS PostCSS configuration and confirmed build process works for Render deployment
 
 ## User Preferences
 
