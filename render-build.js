@@ -134,6 +134,7 @@ const html = `<!DOCTYPE html>
           window.history.pushState({}, '', path);
           setCurrentPath(path);
           setIsMobileMenuOpen(false);
+          window.dispatchEvent(new Event('locationchange'));
         };
 
         return React.createElement('nav', {
@@ -644,7 +645,10 @@ const html = `<!DOCTYPE html>
       function HomePage({ menuItems, onAddToCart }) {
         const specialtyItems = menuItems.filter(item => 
           item.category === 'Peri Peri Specialties' || item.is_customer_favorite === 1
-        ).slice(0, 6);
+        ).slice(0, 8);
+        
+        console.log('Total menu items:', menuItems.length);
+        console.log('Specialty items:', specialtyItems.length);
 
         return React.createElement('div', {}, [
           React.createElement('div', {
@@ -667,7 +671,10 @@ const html = `<!DOCTYPE html>
             }, [
               React.createElement('button', {
                 key: 'menu-btn',
-                onClick: () => window.history.pushState({}, '', '/menu'),
+                onClick: () => {
+                  window.history.pushState({}, '', '/menu');
+                  window.dispatchEvent(new Event('locationchange'));
+                },
                 style: {
                   backgroundColor: '#3b82f6',
                   color: 'white',
@@ -699,8 +706,11 @@ const html = `<!DOCTYPE html>
             style: { padding: '4rem 2rem', maxWidth: '1200px', margin: '0 auto' }
           }, [
             React.createElement('h2', {
-              style: { textAlign: 'center', fontSize: '2.5rem', marginBottom: '3rem', color: '#333' }
-            }, 'Peri Peri Specialties'),
+              style: { textAlign: 'center', fontSize: '2.5rem', marginBottom: '1rem', color: '#333' }
+            }, 'Featured Menu Items'),
+            React.createElement('p', {
+              style: { textAlign: 'center', fontSize: '1.1rem', color: '#666', marginBottom: '3rem' }
+            }, 'Our signature peri peri specialties and customer favorites'),
             React.createElement('div', {
               style: {
                 display: 'grid',
@@ -714,7 +724,10 @@ const html = `<!DOCTYPE html>
             }, [
               React.createElement('button', {
                 key: 'menu-btn',
-                onClick: () => window.history.pushState({}, '', '/menu'),
+                onClick: () => {
+                  window.history.pushState({}, '', '/menu');
+                  window.dispatchEvent(new Event('locationchange'));
+                },
                 style: {
                   backgroundColor: '#ff6b35',
                   color: 'white',
@@ -818,11 +831,17 @@ const html = `<!DOCTYPE html>
               setLoading(false);
             });
 
-          const handlePopState = () => {
+          const handleLocationChange = () => {
             setCurrentPath(window.location.pathname);
           };
-          window.addEventListener('popstate', handlePopState);
-          return () => window.removeEventListener('popstate', handlePopState);
+          
+          window.addEventListener('popstate', handleLocationChange);
+          window.addEventListener('locationchange', handleLocationChange);
+          
+          return () => {
+            window.removeEventListener('popstate', handleLocationChange);
+            window.removeEventListener('locationchange', handleLocationChange);
+          };
         }, []);
 
         if (loading) {
