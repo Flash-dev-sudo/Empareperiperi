@@ -276,64 +276,84 @@
           key: item.id,
           style: {
             backgroundColor: 'white',
-            padding: '1.5rem',
             borderRadius: '12px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
             borderLeft: '4px solid #ff6b35',
             transition: 'transform 0.3s ease',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            overflow: 'hidden'
           },
           onMouseEnter: (e) => e.target.style.transform = 'translateY(-2px)',
           onMouseLeave: (e) => e.target.style.transform = 'translateY(0)'
         }, [
-          React.createElement('div', {
-            key: 'header',
-            style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }
+          item.image && React.createElement('div', {
+            key: 'image',
+            style: {
+              width: '100%',
+              height: '200px',
+              backgroundImage: 'url(' + item.image + ')',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              position: 'relative'
+            }
           }, [
-            React.createElement('h3', {
-              key: 'name',
-              style: { fontWeight: '600', color: '#333', margin: 0 }
-            }, item.name),
-            React.createElement('div', { key: 'price-badge' }, [
-              React.createElement('span', {
-                style: { fontSize: '1.25rem', fontWeight: '700', color: '#ff6b35' }
-              }, '£' + item.price),
-              item.is_customer_favorite === 1 && React.createElement('span', {
-                style: {
-                  backgroundColor: '#fbbf24',
-                  color: 'white',
-                  fontSize: '0.75rem',
-                  padding: '0.25rem 0.5rem',
-                  borderRadius: '1rem',
-                  marginLeft: '0.5rem'
-                }
-              }, '⭐ Favorite')
-            ])
-          ]),
-          item.description && React.createElement('p', {
-            key: 'description',
-            style: { color: '#666', fontSize: '0.9rem', marginBottom: '1rem', lineHeight: '1.4' }
-          }, item.description),
-          React.createElement('div', {
-            key: 'footer',
-            style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' }
-          }, [
-            getSpiceIndicator(item.spice_level),
-            React.createElement('button', {
-              onClick: () => onAddToCart(item),
+            item.is_customer_favorite === 1 && React.createElement('div', {
+              key: 'favorite-badge',
               style: {
-                backgroundColor: '#ff6b35',
+                position: 'absolute',
+                top: '10px',
+                right: '10px',
+                backgroundColor: '#fbbf24',
                 color: 'white',
-                border: 'none',
-                padding: '0.5rem 1rem',
-                borderRadius: '0.5rem',
-                cursor: 'pointer',
-                fontWeight: '500',
-                transition: 'background-color 0.2s'
-              },
-              onMouseEnter: (e) => e.target.style.backgroundColor = '#e55a2b',
-              onMouseLeave: (e) => e.target.style.backgroundColor = '#ff6b35'
-            }, 'Add to Cart')
+                fontSize: '0.75rem',
+                padding: '0.25rem 0.5rem',
+                borderRadius: '1rem',
+                fontWeight: 'bold'
+              }
+            }, '⭐ Favorite')
+          ]),
+          React.createElement('div', {
+            key: 'content',
+            style: { padding: '1.5rem' }
+          }, [
+            React.createElement('div', {
+              key: 'header',
+              style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }
+            }, [
+              React.createElement('h3', {
+                key: 'name',
+                style: { fontWeight: '600', color: '#333', margin: 0, flex: 1 }
+              }, item.name),
+              React.createElement('span', {
+                key: 'price',
+                style: { fontSize: '1.25rem', fontWeight: '700', color: '#ff6b35' }
+              }, '£' + item.price)
+            ]),
+            item.description && React.createElement('p', {
+              key: 'description',
+              style: { color: '#666', fontSize: '0.9rem', marginBottom: '1rem', lineHeight: '1.4' }
+            }, item.description),
+            React.createElement('div', {
+              key: 'footer',
+              style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' }
+            }, [
+              getSpiceIndicator(item.spice_level),
+              React.createElement('button', {
+                onClick: () => onAddToCart(item),
+                style: {
+                  backgroundColor: '#ff6b35',
+                  color: 'white',
+                  border: 'none',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '0.5rem',
+                  cursor: 'pointer',
+                  fontWeight: '500',
+                  transition: 'background-color 0.2s'
+                },
+                onMouseEnter: (e) => e.target.style.backgroundColor = '#e55a2b',
+                onMouseLeave: (e) => e.target.style.backgroundColor = '#ff6b35'
+              }, 'Add to Cart')
+            ])
           ])
         ]);
       }

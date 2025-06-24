@@ -13,6 +13,7 @@ const db = createClient({
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'dist/public')));
+app.use('/attached_assets', express.static(path.join(__dirname, 'attached_assets')));
 
 // API Routes
 app.get('/api/menu', async (req, res) => {
