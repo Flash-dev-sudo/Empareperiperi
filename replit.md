@@ -96,7 +96,7 @@ A full-stack restaurant website for Emparo Peri Peri, featuring an authentic per
 
 ## Changelog
 - June 23, 2025: Initial setup
-- June 24, 2025: Created clean deployment solution bypassing build issues, generates working HTML during deployment
+- June 24, 2025: Successfully deployed restaurant website to Render at https://empareperiperi.onrender.com
 
 ## User Preferences
 
