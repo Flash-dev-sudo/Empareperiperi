@@ -96,7 +96,7 @@ A full-stack restaurant website for Emparo Peri Peri, featuring an authentic per
 
 ## Changelog
 - June 23, 2025: Initial setup
-- June 23, 2025: Created ultra-simple Express.js server with Bootstrap - updated package.json start script for easy deployment
+- June 24, 2025: Built React production version - created deploy-server.js to serve complete restaurant application on Render
 
 ## User Preferences
 
