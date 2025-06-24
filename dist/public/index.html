@@ -1,23 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emparo Peri Peri - Authentic Peri Peri Restaurant | Fresh Stone Baked Pizza</title>
-    <meta name="description" content="Experience authentic peri peri chicken, fresh stone baked pizza, and delicious grilled specialties at Emparo Peri Peri. Order online or visit us today!" />
-    <meta property="og:title" content="Emparo Peri Peri - Authentic Peri Peri Restaurant" />
-    <meta property="og:description" content="Experience authentic peri peri chicken, fresh stone baked pizza, and delicious grilled specialties at Emparo Peri Peri." />
-    <meta property="og:type" content="website" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    <script type="module" crossorigin src="/assets/index-wpggTv1F.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BJoQ0UDY.css">
-  </head>
-  <body>
-    <div id="root"></div>
-    <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
-    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
-  </body>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+        .header {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .status {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .menu-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+        .menu-section h2 {
+            color: #ff6b35;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            border-bottom: 3px solid #ff6b35;
+            padding-bottom: 0.5rem;
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .menu-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b35;
+            transition: transform 0.3s ease;
+        }
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .item-name {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1rem;
+        }
+        .item-price {
+            color: #ff6b35;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .item-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .contact-section {
+            background: #343a40;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .contact-item {
+            padding: 1rem;
+        }
+        .contact-item h3 {
+            color: #ff6b35;
+            margin-bottom: 0.5rem;
+        }
+        .order-btn {
+            background: #ff6b35;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin: 1rem;
+        }
+        .order-btn:hover {
+            background: #e55a2b;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.5rem; }
+            .container { padding: 1rem; }
+            .menu-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌶️ Emparo Peri Peri</h1>
+        <p>Authentic Peri Peri Restaurant | Fresh Stone Baked Pizza</p>
+        <button class="order-btn">Order Now: +44 1234 567890</button>
+    </div>
+
+    <div class="container">
+        <div class="status">
+            ✅ Website Successfully Deployed on Render Platform!
+        </div>
+
+        <div class="menu-section">
+            <h2>🍗 Peri Peri Chicken Specialties</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Half Peri Peri Chicken</span>
+                        <span class="item-price">£8.50</span>
+                    </div>
+                    <div class="item-desc">Tender chicken marinated in authentic peri peri sauce, grilled to perfection</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Whole Peri Peri Chicken</span>
+                        <span class="item-price">£15.00</span>
+                    </div>
+                    <div class="item-desc">Full chicken with your choice of spice level - mild, medium, hot, or extra hot</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Peri Peri Chicken Wings</span>
+                        <span class="item-price">£6.50</span>
+                    </div>
+                    <div class="item-desc">Crispy wings tossed in our signature peri peri marinade</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-section">
+            <h2>🍕 Fresh Stone Baked Pizza</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Margherita Pizza</span>
+                        <span class="item-price">£12.50</span>
+                    </div>
+                    <div class="item-desc">Classic tomato base, mozzarella, fresh basil on stone-baked dough</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Peri Peri Chicken Pizza</span>
+                        <span class="item-price">£15.50</span>
+                    </div>
+                    <div class="item-desc">Peri peri chicken, peppers, red onions, cheese on tomato base</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Mediterranean Pizza</span>
+                        <span class="item-price">£14.00</span>
+                    </div>
+                    <div class="item-desc">Olives, sun-dried tomatoes, feta cheese, herbs on olive oil base</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-section">
+            <h2>🍟 Sides & Salads</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Peri Peri Chips</span>
+                        <span class="item-price">£3.50</span>
+                    </div>
+                    <div class="item-desc">Hand-cut chips seasoned with peri peri spice</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Mediterranean Salad</span>
+                        <span class="item-price">£6.50</span>
+                    </div>
+                    <div class="item-desc">Mixed greens, olives, feta, tomatoes, cucumber with olive oil dressing</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Coleslaw</span>
+                        <span class="item-price">£2.50</span>
+                    </div>
+                    <div class="item-desc">Fresh cabbage and carrot slaw with creamy dressing</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-section">
+        <h2>Visit Us Today</h2>
+        <div class="contact-grid">
+            <div class="contact-item">
+                <h3>📍 Location</h3>
+                <p>123 High Street<br>Your City, YC1 2AB</p>
+            </div>
+            <div class="contact-item">
+                <h3>📞 Order Hotline</h3>
+                <p>+44 1234 567890</p>
+            </div>
+            <div class="contact-item">
+                <h3>⏰ Opening Hours</h3>
+                <p>Monday - Sunday<br>11:00 AM - 11:00 PM</p>
+            </div>
+            <div class="contact-item">
+                <h3>🚚 Delivery</h3>
+                <p>Free delivery on orders over £20<br>30-45 minute delivery time</p>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
