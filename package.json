@@ -6,7 +6,8 @@
     "start": "node simple-server.js",
     "dev": "node simple-server.js",
     "build": "vite build",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "render-build": "npm install && vite build"
   },
   "dependencies": {
     "@libsql/client": "^0.15.9",
