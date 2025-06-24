@@ -1,7 +1,8 @@
 const { createClient } = require('@libsql/client');
 
 const client = createClient({
-  url: process.env.DATABASE_URL,
+  url: "libsql://emparo-periperi-flash.aws-eu-west-1.turso.io",
+  authToken: "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NTA4MDIzMDUsImlkIjoiNGNiZGQ0MjctZmY2NS00YzZkLTlkY2QtNGMwYTEwODkzNTUwIiwicmlkIjoiNDYzOGQ5OTQtM2IzNS00NGQ3LWI3MTYtNTExYWMwZmRmMWYzIn0.HkNAJW0di502eT7RbKojmIX0W32R4sstdsxWFjClpBwjGDVmRNWsJxnNY-CPfcuvmzqBXeQlLscnGgjDPjxsAQ",
 });
 
 const menuData = [
@@ -59,35 +60,76 @@ const menuData = [
 async function seedTursoDatabase() {
   console.log('Creating Turso tables and seeding menu data...');
   
-  // Create table
-  await client.execute(`
-    CREATE TABLE IF NOT EXISTS menu_items (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      category TEXT NOT NULL,
-      price TEXT NOT NULL,
-      description TEXT,
-      image TEXT,
-      spice_level INTEGER DEFAULT 0,
-      is_available INTEGER DEFAULT 1,
-      is_customer_favorite INTEGER DEFAULT 0,
-      created_at TEXT DEFAULT (datetime('now'))
-    )
-  `);
+  try {
+    // Create menu_items table
+    await client.execute(`
+      CREATE TABLE IF NOT EXISTS menu_items (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        category TEXT NOT NULL,
+        price TEXT NOT NULL,
+        description TEXT,
+        image TEXT,
+        spice_level INTEGER DEFAULT 0,
+        is_available INTEGER DEFAULT 1,
+        is_customer_favorite INTEGER DEFAULT 0,
+        created_at TEXT DEFAULT (datetime('now'))
+      )
+    `);
 
-  // Clear existing data
-  await client.execute('DELETE FROM menu_items');
+    // Create orders table
+    await client.execute(`
+      CREATE TABLE IF NOT EXISTS orders (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        customer_name TEXT NOT NULL,
+        customer_phone TEXT NOT NULL,
+        customer_email TEXT,
+        order_items TEXT NOT NULL,
+        total_amount TEXT NOT NULL,
+        status TEXT DEFAULT 'pending',
+        order_type TEXT NOT NULL,
+        delivery_address TEXT,
+        notes TEXT,
+        created_at TEXT DEFAULT (datetime('now'))
+      )
+    `);
+
+    // Create gallery table
+    await client.execute(`
+      CREATE TABLE IF NOT EXISTS gallery (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        description TEXT,
+        image_url TEXT NOT NULL,
+        category TEXT DEFAULT 'food',
+        is_active INTEGER DEFAULT 1,
+        created_at TEXT DEFAULT (datetime('now'))
+      )
+    `);
+
+    // Check if menu items already exist
+    const existingItems = await client.execute('SELECT COUNT(*) as count FROM menu_items');
+    const count = existingItems.rows[0].count;
+    
+    if (count > 0) {
+      console.log(`Database already has ${count} menu items. Skipping seed.`);
+      return;
+    }
   
-  // Insert menu items
-  for (const item of menuData) {
-    await client.execute({
-      sql: `INSERT INTO menu_items (name, category, price, description, spice_level, is_customer_favorite, is_available) 
-            VALUES (?, ?, ?, ?, ?, ?, 1)`,
-      args: [item.name, item.category, item.price, item.description, item.spice_level, item.is_customer_favorite]
-    });
+    // Insert menu items
+    for (const item of menuData) {
+      await client.execute({
+        sql: `INSERT INTO menu_items (name, category, price, description, spice_level, is_customer_favorite, is_available) 
+              VALUES (?, ?, ?, ?, ?, ?, 1)`,
+        args: [item.name, item.category, item.price, item.description, item.spice_level, item.is_customer_favorite]
+      });
+    }
+    
+    console.log(`✅ Seeded ${menuData.length} menu items to Turso database`);
+  } catch (error) {
+    console.error('Database setup error:', error);
   }
   
-  console.log(`✅ Seeded ${menuData.length} menu items to Turso database`);
   process.exit(0);
 }
 

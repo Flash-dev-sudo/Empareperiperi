@@ -204,7 +204,7 @@ const html = `<!DOCTYPE html>
               React.createElement('span', {
                 style: { fontSize: '1.25rem', fontWeight: '700', color: '#ff6b35' }
               }, \`£\${item.price}\`),
-              item.iscustomerfavorite === 1 && React.createElement('span', {
+              item.is_customer_favorite === 1 && React.createElement('span', {
                 style: {
                   backgroundColor: '#fbbf24',
                   color: 'white',
@@ -224,7 +224,7 @@ const html = `<!DOCTYPE html>
             key: 'footer',
             style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' }
           }, [
-            getSpiceIndicator(item.spicelevel),
+            getSpiceIndicator(item.spice_level),
             React.createElement('button', {
               style: {
                 backgroundColor: '#ff6b35',
@@ -242,7 +242,7 @@ const html = `<!DOCTYPE html>
 
       function HomePage({ menuItems }) {
         const specialtyItems = menuItems.filter(item => 
-          item.category === 'Peri Peri Specialties' || item.iscustomerfavorite === 1
+          item.category === 'Peri Peri Specialties' || item.is_customer_favorite === 1
         ).slice(0, 3);
 
         return React.createElement('div', {}, [
