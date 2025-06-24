@@ -97,6 +97,7 @@ A full-stack restaurant website for Emparo Peri Peri, featuring an authentic per
 ## Changelog
 - June 23, 2025: Initial setup
 - June 24, 2025: Successfully deployed restaurant website to Render at https://empareperiperi.onrender.com
+- June 24, 2025: Connected Turso database with 36 menu items across 7 categories, dynamic React application working
 
 ## User Preferences
 

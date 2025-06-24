@@ -59,7 +59,67 @@ const html = `<!DOCTYPE html>
     <script type="text/babel">
       const { useState, useEffect } = React;
       
-      function Navigation() {
+      // Shopping Cart Context
+      function useCart() {
+        const [cart, setCart] = useState([]);
+        const [isCartOpen, setIsCartOpen] = useState(false);
+        
+        const addToCart = (item) => {
+          setCart(prevCart => {
+            const existingItem = prevCart.find(cartItem => cartItem.id === item.id);
+            if (existingItem) {
+              return prevCart.map(cartItem =>
+                cartItem.id === item.id
+                  ? { ...cartItem, quantity: cartItem.quantity + 1 }
+                  : cartItem
+              );
+            }
+            return [...prevCart, { ...item, quantity: 1 }];
+          });
+        };
+        
+        const removeFromCart = (itemId) => {
+          setCart(prevCart => prevCart.filter(item => item.id !== itemId));
+        };
+        
+        const updateQuantity = (itemId, quantity) => {
+          if (quantity <= 0) {
+            removeFromCart(itemId);
+            return;
+          }
+          setCart(prevCart =>
+            prevCart.map(item =>
+              item.id === itemId ? { ...item, quantity } : item
+            )
+          );
+        };
+        
+        const getCartTotal = () => {
+          return cart.reduce((total, item) => total + parseFloat(item.price) * item.quantity, 0).toFixed(2);
+        };
+        
+        const getCartCount = () => {
+          return cart.reduce((count, item) => count + item.quantity, 0);
+        };
+        
+        const clearCart = () => {
+          setCart([]);
+        };
+        
+        return {
+          cart,
+          isCartOpen,
+          setIsCartOpen,
+          addToCart,
+          removeFromCart,
+          updateQuantity,
+          getCartTotal,
+          getCartCount,
+          clearCart
+        };
+      }
+      
+      function Navigation({ cartCount, onCartClick }) {
         const [currentPath, setCurrentPath] = useState(window.location.pathname);
         const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -151,24 +211,63 @@ const html = `<!DOCTYPE html>
                   }
                 }, item.name)
               ),
-              React.createElement('a', {
-                key: 'phone',
-                href: 'tel:02034416940',
-                style: {
-                  backgroundColor: '#ff6b35',
-                  color: 'white',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '0.5rem',
-                  textDecoration: 'none',
-                  fontWeight: '500'
-                }
-              }, '020 3441 6940')
+              React.createElement('div', {
+                key: 'cart-phone',
+                style: { display: 'flex', alignItems: 'center', gap: '1rem' }
+              }, [
+                React.createElement('button', {
+                  key: 'cart-btn',
+                  onClick: onCartClick,
+                  style: {
+                    position: 'relative',
+                    backgroundColor: '#f97316',
+                    color: 'white',
+                    padding: '0.5rem',
+                    borderRadius: '0.5rem',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontWeight: '500'
+                  }
+                }, [
+                  '🛒',
+                  cartCount > 0 && React.createElement('span', {
+                    key: 'cart-count',
+                    style: {
+                      position: 'absolute',
+                      top: '-8px',
+                      right: '-8px',
+                      backgroundColor: '#dc2626',
+                      color: 'white',
+                      borderRadius: '50%',
+                      width: '20px',
+                      height: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.75rem',
+                      fontWeight: 'bold'
+                    }
+                  }, cartCount)
+                ]),
+                React.createElement('a', {
+                  key: 'phone',
+                  href: 'tel:02034416940',
+                  style: {
+                    backgroundColor: '#ff6b35',
+                    color: 'white',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '0.5rem',
+                    textDecoration: 'none',
+                    fontWeight: '500'
+                  }
+                }, '020 3441 6940')
+              ])
             ])
           ])
         ]);
       }
 
-      function MenuCard({ item }) {
+      function MenuCard({ item, onAddToCart }) {
         const getSpiceIndicator = (level) => {
           if (level === 0) return null;
           const flames = '🌶️'.repeat(level);
@@ -226,6 +325,7 @@ const html = `<!DOCTYPE html>
           }, [
             getSpiceIndicator(item.spice_level),
             React.createElement('button', {
+              onClick: () => onAddToCart(item),
               style: {
                 backgroundColor: '#ff6b35',
                 color: 'white',
@@ -233,17 +333,318 @@ const html = `<!DOCTYPE html>
                 padding: '0.5rem 1rem',
                 borderRadius: '0.5rem',
                 cursor: 'pointer',
-                fontWeight: '500'
-              }
-            }, 'Add to Order')
+                fontWeight: '500',
+                transition: 'background-color 0.2s'
+              },
+              onMouseEnter: (e) => e.target.style.backgroundColor = '#e55a2b',
+              onMouseLeave: (e) => e.target.style.backgroundColor = '#ff6b35'
+            }, 'Add to Cart')
           ])
         ]);
       }
 
-      function HomePage({ menuItems }) {
+      function ShoppingCart({ isOpen, onClose, cart, updateQuantity, removeFromCart, getCartTotal, clearCart }) {
+        const [showOrderForm, setShowOrderForm] = useState(false);
+        const [orderData, setOrderData] = useState({
+          customerName: '',
+          customerPhone: '',
+          customerEmail: '',
+          orderType: 'delivery',
+          deliveryAddress: '',
+          notes: ''
+        });
+
+        const handleSubmitOrder = async (e) => {
+          e.preventDefault();
+          try {
+            const response = await fetch('/api/orders', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                ...orderData,
+                orderItems: cart,
+                totalAmount: getCartTotal()
+              })
+            });
+            
+            if (response.ok) {
+              alert('Order submitted successfully! We will call you to confirm.');
+              clearCart();
+              setShowOrderForm(false);
+              onClose();
+            } else {
+              alert('Failed to submit order. Please try again.');
+            }
+          } catch (error) {
+            alert('Failed to submit order. Please call us directly.');
+          }
+        };
+
+        if (!isOpen) return null;
+
+        return React.createElement('div', {
+          style: {
+            position: 'fixed',
+            top: 0,
+            right: 0,
+            width: '400px',
+            height: '100vh',
+            backgroundColor: 'white',
+            boxShadow: '-4px 0 12px rgba(0,0,0,0.15)',
+            zIndex: 1000,
+            overflow: 'auto',
+            transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
+            transition: 'transform 0.3s ease'
+          }
+        }, [
+          React.createElement('div', {
+            key: 'cart-header',
+            style: {
+              padding: '1rem',
+              borderBottom: '1px solid #e5e7eb',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              backgroundColor: '#ff6b35',
+              color: 'white'
+            }
+          }, [
+            React.createElement('h2', { style: { margin: 0 } }, 'Your Order'),
+            React.createElement('button', {
+              onClick: onClose,
+              style: {
+                backgroundColor: 'transparent',
+                border: 'none',
+                color: 'white',
+                fontSize: '1.5rem',
+                cursor: 'pointer'
+              }
+            }, '×')
+          ]),
+          
+          cart.length === 0 ? React.createElement('div', {
+            key: 'empty-cart',
+            style: { padding: '2rem', textAlign: 'center', color: '#666' }
+          }, 'Your cart is empty') : [
+            React.createElement('div', {
+              key: 'cart-items',
+              style: { padding: '1rem' }
+            }, cart.map(item => 
+              React.createElement('div', {
+                key: item.id,
+                style: {
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '1rem 0',
+                  borderBottom: '1px solid #e5e7eb'
+                }
+              }, [
+                React.createElement('div', { key: 'item-info' }, [
+                  React.createElement('div', { style: { fontWeight: '600' } }, item.name),
+                  React.createElement('div', { style: { color: '#666', fontSize: '0.9rem' } }, `£${item.price} each`)
+                ]),
+                React.createElement('div', {
+                  key: 'quantity-controls',
+                  style: { display: 'flex', alignItems: 'center', gap: '0.5rem' }
+                }, [
+                  React.createElement('button', {
+                    onClick: () => updateQuantity(item.id, item.quantity - 1),
+                    style: {
+                      backgroundColor: '#f3f4f6',
+                      border: 'none',
+                      borderRadius: '50%',
+                      width: '24px',
+                      height: '24px',
+                      cursor: 'pointer'
+                    }
+                  }, '-'),
+                  React.createElement('span', { style: { minWidth: '20px', textAlign: 'center' } }, item.quantity),
+                  React.createElement('button', {
+                    onClick: () => updateQuantity(item.id, item.quantity + 1),
+                    style: {
+                      backgroundColor: '#ff6b35',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '50%',
+                      width: '24px',
+                      height: '24px',
+                      cursor: 'pointer'
+                    }
+                  }, '+'),
+                  React.createElement('button', {
+                    onClick: () => removeFromCart(item.id),
+                    style: {
+                      backgroundColor: '#dc2626',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '0.25rem',
+                      padding: '0.25rem 0.5rem',
+                      cursor: 'pointer',
+                      marginLeft: '0.5rem'
+                    }
+                  }, '🗑️')
+                ])
+              ])
+            )),
+            
+            React.createElement('div', {
+              key: 'cart-footer',
+              style: { padding: '1rem', borderTop: '2px solid #ff6b35' }
+            }, [
+              React.createElement('div', {
+                key: 'total',
+                style: { fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1rem' }
+              }, `Total: £${getCartTotal()}`),
+              
+              !showOrderForm ? React.createElement('button', {
+                key: 'checkout-btn',
+                onClick: () => setShowOrderForm(true),
+                style: {
+                  width: '100%',
+                  backgroundColor: '#ff6b35',
+                  color: 'white',
+                  border: 'none',
+                  padding: '1rem',
+                  borderRadius: '0.5rem',
+                  fontSize: '1.1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer'
+                }
+              }, 'Proceed to Order') : 
+              
+              React.createElement('form', {
+                key: 'order-form',
+                onSubmit: handleSubmitOrder
+              }, [
+                React.createElement('input', {
+                  key: 'name',
+                  type: 'text',
+                  placeholder: 'Your Name',
+                  required: true,
+                  value: orderData.customerName,
+                  onChange: (e) => setOrderData({...orderData, customerName: e.target.value}),
+                  style: {
+                    width: '100%',
+                    padding: '0.5rem',
+                    marginBottom: '0.5rem',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '0.25rem'
+                  }
+                }),
+                React.createElement('input', {
+                  key: 'phone',
+                  type: 'tel',
+                  placeholder: 'Phone Number',
+                  required: true,
+                  value: orderData.customerPhone,
+                  onChange: (e) => setOrderData({...orderData, customerPhone: e.target.value}),
+                  style: {
+                    width: '100%',
+                    padding: '0.5rem',
+                    marginBottom: '0.5rem',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '0.25rem'
+                  }
+                }),
+                React.createElement('input', {
+                  key: 'email',
+                  type: 'email',
+                  placeholder: 'Email (optional)',
+                  value: orderData.customerEmail,
+                  onChange: (e) => setOrderData({...orderData, customerEmail: e.target.value}),
+                  style: {
+                    width: '100%',
+                    padding: '0.5rem',
+                    marginBottom: '0.5rem',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '0.25rem'
+                  }
+                }),
+                React.createElement('select', {
+                  key: 'order-type',
+                  value: orderData.orderType,
+                  onChange: (e) => setOrderData({...orderData, orderType: e.target.value}),
+                  style: {
+                    width: '100%',
+                    padding: '0.5rem',
+                    marginBottom: '0.5rem',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '0.25rem'
+                  }
+                }, [
+                  React.createElement('option', { key: 'delivery', value: 'delivery' }, 'Delivery'),
+                  React.createElement('option', { key: 'collection', value: 'collection' }, 'Collection')
+                ]),
+                orderData.orderType === 'delivery' && React.createElement('textarea', {
+                  key: 'address',
+                  placeholder: 'Delivery Address',
+                  required: orderData.orderType === 'delivery',
+                  value: orderData.deliveryAddress,
+                  onChange: (e) => setOrderData({...orderData, deliveryAddress: e.target.value}),
+                  style: {
+                    width: '100%',
+                    padding: '0.5rem',
+                    marginBottom: '0.5rem',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '0.25rem',
+                    minHeight: '60px'
+                  }
+                }),
+                React.createElement('textarea', {
+                  key: 'notes',
+                  placeholder: 'Special instructions (optional)',
+                  value: orderData.notes,
+                  onChange: (e) => setOrderData({...orderData, notes: e.target.value}),
+                  style: {
+                    width: '100%',
+                    padding: '0.5rem',
+                    marginBottom: '1rem',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '0.25rem',
+                    minHeight: '60px'
+                  }
+                }),
+                React.createElement('button', {
+                  key: 'submit-order',
+                  type: 'submit',
+                  style: {
+                    width: '100%',
+                    backgroundColor: '#10b981',
+                    color: 'white',
+                    border: 'none',
+                    padding: '1rem',
+                    borderRadius: '0.5rem',
+                    fontSize: '1.1rem',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    marginBottom: '0.5rem'
+                  }
+                }, 'Submit Order'),
+                React.createElement('button', {
+                  key: 'back-btn',
+                  type: 'button',
+                  onClick: () => setShowOrderForm(false),
+                  style: {
+                    width: '100%',
+                    backgroundColor: '#6b7280',
+                    color: 'white',
+                    border: 'none',
+                    padding: '0.5rem',
+                    borderRadius: '0.5rem',
+                    cursor: 'pointer'
+                  }
+                }, 'Back to Cart')
+              ])
+            ])
+          ]
+        ]);
+      }
+
+      function HomePage({ menuItems, onAddToCart }) {
         const specialtyItems = menuItems.filter(item => 
           item.category === 'Peri Peri Specialties' || item.is_customer_favorite === 1
-        ).slice(0, 3);
+        ).slice(0, 6);
 
         return React.createElement('div', {}, [
           React.createElement('div', {
@@ -303,15 +704,35 @@ const html = `<!DOCTYPE html>
             React.createElement('div', {
               style: {
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: '2rem'
+                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                gap: '1.5rem'
               }
-            }, specialtyItems.map(item => React.createElement(MenuCard, { key: item.id, item })))
+            }, specialtyItems.map(item => React.createElement(MenuCard, { key: item.id, item, onAddToCart }))),
+            React.createElement('div', {
+              key: 'view-full-menu',
+              style: { textAlign: 'center', marginTop: '3rem' }
+            }, [
+              React.createElement('button', {
+                key: 'menu-btn',
+                onClick: () => window.history.pushState({}, '', '/menu'),
+                style: {
+                  backgroundColor: '#ff6b35',
+                  color: 'white',
+                  padding: '1rem 2rem',
+                  border: 'none',
+                  borderRadius: '0.5rem',
+                  fontSize: '1.1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(255, 107, 53, 0.3)'
+                }
+              }, 'View Full Menu →')
+            ])
           ])
         ]);
       }
 
-      function MenuPage({ menuItems }) {
+      function MenuPage({ menuItems, onAddToCart }) {
         const categories = ['Peri Peri Specialties', 'Starters', 'Platters', 'Mains', 'Pizzas', 'Chicken', 'Milkshakes'];
         
         const getCategoryIcon = (category) => {
@@ -373,7 +794,7 @@ const html = `<!DOCTYPE html>
                   gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
                   gap: '1.5rem'
                 }
-              }, categoryItems.map(item => React.createElement(MenuCard, { key: item.id, item })))
+              }, categoryItems.map(item => React.createElement(MenuCard, { key: item.id, item, onAddToCart })))
             ]);
           }))
         ]);
@@ -383,6 +804,7 @@ const html = `<!DOCTYPE html>
         const [menuItems, setMenuItems] = useState([]);
         const [currentPath, setCurrentPath] = useState(window.location.pathname);
         const [loading, setLoading] = useState(true);
+        const cartState = useCart();
 
         useEffect(() => {
           fetch('/api/menu')
@@ -413,11 +835,25 @@ const html = `<!DOCTYPE html>
         }
 
         return React.createElement('div', {}, [
-          React.createElement(Navigation, { key: 'nav' }),
+          React.createElement(Navigation, { 
+            key: 'nav', 
+            cartCount: cartState.getCartCount(),
+            onCartClick: () => cartState.setIsCartOpen(true)
+          }),
+          React.createElement(ShoppingCart, {
+            key: 'cart',
+            isOpen: cartState.isCartOpen,
+            onClose: () => cartState.setIsCartOpen(false),
+            cart: cartState.cart,
+            updateQuantity: cartState.updateQuantity,
+            removeFromCart: cartState.removeFromCart,
+            getCartTotal: cartState.getCartTotal,
+            clearCart: cartState.clearCart
+          }),
           currentPath === '/' 
-            ? React.createElement(HomePage, { key: 'home', menuItems })
+            ? React.createElement(HomePage, { key: 'home', menuItems, onAddToCart: cartState.addToCart })
             : currentPath === '/menu'
-            ? React.createElement(MenuPage, { key: 'menu', menuItems })
+            ? React.createElement(MenuPage, { key: 'menu', menuItems, onAddToCart: cartState.addToCart })
             : React.createElement('div', {
                 key: 'not-found',
                 style: { padding: '4rem 2rem', textAlign: 'center' }

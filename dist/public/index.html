@@ -237,7 +237,7 @@
       function HomePage({ menuItems }) {
         const specialtyItems = menuItems.filter(item => 
           item.category === 'Peri Peri Specialties' || item.is_customer_favorite === 1
-        ).slice(0, 3);
+        ).slice(0, 6);
 
         return React.createElement('div', {}, [
           React.createElement('div', {
@@ -297,10 +297,30 @@
             React.createElement('div', {
               style: {
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: '2rem'
+                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                gap: '1.5rem'
               }
-            }, specialtyItems.map(item => React.createElement(MenuCard, { key: item.id, item })))
+            }, specialtyItems.map(item => React.createElement(MenuCard, { key: item.id, item }))),
+            React.createElement('div', {
+              key: 'view-full-menu',
+              style: { textAlign: 'center', marginTop: '3rem' }
+            }, [
+              React.createElement('button', {
+                key: 'menu-btn',
+                onClick: () => window.history.pushState({}, '', '/menu'),
+                style: {
+                  backgroundColor: '#ff6b35',
+                  color: 'white',
+                  padding: '1rem 2rem',
+                  border: 'none',
+                  borderRadius: '0.5rem',
+                  fontSize: '1.1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(255, 107, 53, 0.3)'
+                }
+              }, 'View Full Menu →')
+            ])
           ])
         ]);
       }
