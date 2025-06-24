@@ -1,0 +1,50 @@
+==> Cloning from https://github.com/Flash-dev-sudo/Empareperiperi
+==> Checking out commit bfa2733c4dc5585e9ef28109f4d015cd70853c50 in branch main
+==> Downloading cache...
+==> Transferred 145MB in 7s. Extraction took 3s.
+==> Requesting Node.js version 20
+==> Using Node.js version 20.19.3 via /opt/render/project/src/.nvmrc
+==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+==> Using Bun version 1.1.0 (default)
+==> Docs on specifying a Bun version: https://render.com/docs/bun-version
+==> Running build command 'npm install'...
+up to date, audited 398 packages in 798ms
+55 packages are looking for funding
+  run `npm fund` for details
+found 0 vulnerabilities
+==> Uploading build...
+==> Uploaded in 11.2s. Compression took 2.7s
+==> Build successful 🎉
+==> Deploying...
+==> Running 'npm run start'
+> rest-express@1.0.0 start
+> node server.js
+node:internal/modules/cjs/loader:1215
+  throw err;
+  ^
+Error: Cannot find module '/opt/render/project/src/server.js'
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1212:15)
+    at Module._load (node:internal/modules/cjs/loader:1043:27)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
+    at node:internal/main/run_main_module:28:49 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+Node.js v20.19.3
+==> Exited with status 1
+==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
+==> Running 'npm run start'
+> rest-express@1.0.0 start
+> node server.js
+node:internal/modules/cjs/loader:1215
+  throw err;
+  ^
+Error: Cannot find module '/opt/render/project/src/server.js'
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1212:15)
+    at Module._load (node:internal/modules/cjs/loader:1043:27)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
+    at node:internal/main/run_main_module:28:49 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+Node.js v20.19.3
