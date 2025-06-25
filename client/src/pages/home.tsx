@@ -1,390 +1,358 @@
 import { useQuery } from "@tanstack/react-query";
-import { Star, Clock, MapPin, Phone, Flame, ArrowRight, ShoppingBag } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Star, Clock, MapPin, Phone, Flame, ArrowRight, ShoppingBag, ChevronRight, Award } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 
-export default function Home() {
+export default function HomePage() {
   const { data: menuItems = [] } = useQuery({
     queryKey: ['/api/menu'],
   });
 
-  const specialtyItems = menuItems.filter((item: any) => 
-    item.category === "Peri Peri Specialties" || item.isCustomerFavorite === 1
-  ).slice(0, 3);
+  const [currentHero, setCurrentHero] = useState(0);
+  const heroMessages = [
+    { title: "FLAME-GRILLED", subtitle: "PERI PERI", description: "Authentic Portuguese flavors in every bite" },
+    { title: "FRESH", subtitle: "INGREDIENTS", description: "Made to order with the finest quality" },
+    { title: "SPICE YOUR", subtitle: "LIFE", description: "Choose your heat level - mild to extra hot" }
+  ];
 
-  const featuredItems = menuItems.filter((item: any) => 
-    item.image && item.image.length > 0
-  ).slice(0, 6);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentHero((prev) => (prev + 1) % heroMessages.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const featuredItems = menuItems.filter((item: any) => item.isCustomerFavorite === 1).slice(0, 4);
+  const specialtyItems = menuItems.filter((item: any) => item.category === "Peri Peri Specialties").slice(0, 3);
 
   const getSpiceIndicator = (level: number) => {
     if (level === 0) return null;
     return (
       <div className="flex items-center space-x-1">
         {Array.from({ length: level }, (_, i) => (
-          <Flame key={i} size={12} className="text-red-500" />
+          <Flame key={i} size={12} className="text-red-500 fill-current" />
         ))}
-        <span className="text-xs text-gray-600">
-          {level === 1 ? "Mild" : level === 2 ? "Medium" : "Hot"}
-        </span>
       </div>
     );
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section - McDonald's Style */}
-      <div className="relative bg-gradient-to-br from-orange-600 via-red-500 to-orange-700 text-white overflow-hidden min-h-[70vh]">
-        <div className="absolute inset-0 bg-black opacity-10"></div>
-        <div className="relative max-w-7xl mx-auto px-6 py-16 lg:py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[50vh]">
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <Badge className="bg-yellow-400 text-black text-sm font-bold px-4 py-2 rounded-full">
-                  🔥 AUTHENTIC PERI PERI
-                </Badge>
-                <h1 className="text-6xl lg:text-7xl font-black leading-tight">
-                  THE NEW<br/>
-                  <span className="text-yellow-400">BIG FLAVOUR</span><br/>
-                  EXPERIENCE
+    <div className="min-h-screen">
+      {/* Premium Hero Section */}
+      <div className="relative h-screen bg-gradient-to-br from-red-600 via-orange-600 to-yellow-500 overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-yellow-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-red-400/15 rounded-full blur-3xl animate-pulse delay-500"></div>
+        </div>
+        
+        {/* Hero Content */}
+        <div className="relative z-10 h-full flex items-center">
+          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Content */}
+            <div className="text-white space-y-8">
+              <div className="inline-flex items-center bg-yellow-400 text-black px-6 py-3 rounded-full font-bold text-sm animate-bounce">
+                <Award className="mr-2" size={18} />
+                LONDON'S #1 PERI PERI RESTAURANT
+              </div>
+              
+              <div className="space-y-4">
+                <h1 className="text-6xl lg:text-8xl font-black leading-tight">
+                  {heroMessages.map((msg, index) => (
+                    <div
+                      key={index}
+                      className={`transition-all duration-1000 ${
+                        index === currentHero ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-4 absolute'
+                      }`}
+                    >
+                      {msg.title}<br />
+                      <span className="text-yellow-300">{msg.subtitle}</span>
+                    </div>
+                  ))}
                 </h1>
-                <p className="text-xl lg:text-2xl text-gray-100 max-w-md leading-relaxed">
-                  Flame-grilled chicken with signature peri peri sauce. Three layers of spicy goodness in every bite.
+                <p className="text-2xl text-yellow-100 font-medium max-w-lg">
+                  {heroMessages[currentHero].description}
                 </p>
               </div>
+
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-yellow-400 text-black hover:bg-yellow-300 font-bold text-lg px-8 py-4 rounded-full">
-                  <Link href="/menu" className="flex items-center gap-2">
-                    Order Now <ShoppingBag size={20} />
+                <Button size="lg" className="bg-yellow-400 hover:bg-yellow-300 text-black font-bold text-xl px-10 py-6 rounded-full shadow-2xl hover:shadow-yellow-400/50 transform hover:scale-105 transition-all">
+                  <Link href="/menu" className="flex items-center gap-3">
+                    ORDER NOW <ShoppingBag size={24} />
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-black font-bold text-lg px-8 py-4 rounded-full">
-                  View Menu <ArrowRight size={20} />
+                <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black font-bold text-xl px-10 py-6 rounded-full backdrop-blur-sm">
+                  <Phone className="mr-2" size={20} />
+                  CALL: 020 3441 6940
                 </Button>
               </div>
+
+              <div className="flex items-center gap-8 text-yellow-100">
+                <div className="flex items-center gap-2">
+                  <Clock size={20} />
+                  <span className="font-medium">Daily 1PM - 4AM</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MapPin size={20} />
+                  <span className="font-medium">Finsbury Park</span>
+                </div>
+              </div>
             </div>
-            <div className="relative">
+
+            {/* Right Content - Featured Item */}
+            <div className="hidden lg:block">
               {featuredItems.length > 0 && (
                 <div className="relative">
-                  <div className="absolute -inset-4 bg-yellow-400 rounded-3xl transform rotate-6 opacity-20"></div>
-                  <img 
-                    src={`/attached_assets/${featuredItems[0].image}`}
-                    alt={featuredItems[0].name}
-                    className="relative w-full max-w-lg mx-auto rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-500"
-                  />
+                  <div className="absolute -inset-8 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-3xl opacity-20 blur-2xl"></div>
+                  <Card className="relative bg-white/95 backdrop-blur-sm border-0 rounded-3xl shadow-2xl p-8 hover:shadow-yellow-400/20 transition-all">
+                    <div className="text-center space-y-6">
+                      <Badge className="bg-red-500 text-white px-4 py-2 text-lg font-bold">
+                        CUSTOMER FAVOURITE
+                      </Badge>
+                      <div className="aspect-square w-64 mx-auto bg-gradient-to-br from-orange-100 to-red-100 rounded-2xl overflow-hidden">
+                        {featuredItems[0].image && (
+                          <img 
+                            src={`/attached_assets/${featuredItems[0].image}`}
+                            alt={featuredItems[0].name}
+                            className="w-full h-full object-cover"
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-black text-gray-900 mb-2">{featuredItems[0].name}</h3>
+                        <p className="text-gray-600 mb-4">{featuredItems[0].description}</p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-3xl font-black text-red-600">£{featuredItems[0].price}</span>
+                          {getSpiceIndicator(featuredItems[0].spice_level)}
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
                 </div>
               )}
             </div>
           </div>
         </div>
+
+        {/* Hero Dots Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3">
+          {heroMessages.map((_, index) => (
+            <button
+              key={index}
+              className={`w-3 h-3 rounded-full transition-all ${
+                index === currentHero ? 'bg-yellow-400 w-8' : 'bg-white/50'
+              }`}
+              onClick={() => setCurrentHero(index)}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Featured Products Section - Subway Style */}
-      <div className="py-20 bg-white">
+      {/* Featured Products - McDonald's Style */}
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <Badge className="bg-orange-100 text-orange-600 mb-4">NEW ARRIVALS</Badge>
-            <h2 className="text-4xl lg:text-5xl font-black text-gray-900 mb-6">
-              GET WRAPPED UP IN<br/>
-              <span className="text-orange-600">FLAVOUR</span>
+            <Badge className="bg-red-100 text-red-600 px-6 py-3 text-lg font-bold mb-6">
+              CUSTOMER FAVOURITES
+            </Badge>
+            <h2 className="text-5xl lg:text-6xl font-black text-gray-900 mb-6">
+              MOST LOVED<br />
+              <span className="text-red-600">DISHES</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Get wrapped up in flavour with our delicious range. From Peri Peri Wings to Emparo Burgers, there's something for everyone.
+              Discover why thousands of customers keep coming back for these incredible flavors
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {featuredItems.slice(0, 4).map((item: any, index: number) => (
-              <Card key={item.id} className="group hover:shadow-2xl transition-all duration-500 border-0 rounded-3xl overflow-hidden bg-gradient-to-br from-white to-gray-50">
-                <div className={`h-3 ${index % 4 === 0 ? 'bg-red-500' : index % 4 === 1 ? 'bg-green-500' : index % 4 === 2 ? 'bg-yellow-500' : 'bg-purple-500'}`}></div>
-                <CardContent className="p-6">
-                  <div className="aspect-square mb-4 rounded-2xl overflow-hidden bg-gray-100">
-                    {item.image && (
-                      <img 
-                        src={`/attached_assets/${item.image}`}
-                        alt={item.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      />
-                    )}
-                  </div>
-                  <div className="space-y-3">
-                    <Badge className={`${index % 4 === 0 ? 'bg-red-100 text-red-600' : index % 4 === 1 ? 'bg-green-100 text-green-600' : index % 4 === 2 ? 'bg-yellow-100 text-yellow-600' : 'bg-purple-100 text-purple-600'}`}>
-                      {item.category}
-                    </Badge>
-                    <h3 className="font-bold text-xl text-gray-900">{item.name}</h3>
-                    <p className="text-gray-600 text-sm">{item.description}</p>
-                    {getSpiceIndicator(item.spice_level)}
-                    <div className="flex items-center justify-between pt-2">
-                      <span className="text-2xl font-black text-gray-900">£{item.price}</span>
-                      <Button size="sm" className="bg-orange-500 hover:bg-orange-600 rounded-full">
-                        Add to Cart
-                      </Button>
+            {featuredItems.map((item: any, index: number) => (
+              <Card key={item.id} className="group border-0 rounded-3xl overflow-hidden bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-3">
+                <div className="relative">
+                  <div className={`h-2 ${index % 4 === 0 ? 'bg-red-500' : index % 4 === 1 ? 'bg-yellow-500' : index % 4 === 2 ? 'bg-green-500' : 'bg-orange-500'}`}></div>
+                  <div className="p-6">
+                    <div className="aspect-square mb-6 rounded-2xl overflow-hidden bg-gradient-to-br from-orange-50 to-red-50">
+                      {item.image ? (
+                        <img 
+                          src={`/attached_assets/${item.image}`}
+                          alt={item.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <div className="text-6xl opacity-30">🍗</div>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Order Section - Domino's Style */}
-      <div className="py-20 bg-gradient-to-r from-gray-900 to-black text-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <div className="inline-block bg-red-600 text-white px-6 py-3 rounded-full font-bold text-lg mb-6 transform -rotate-2">
-              ORDER PERI PERI NEAR YOU
-            </div>
-            <h2 className="text-4xl lg:text-5xl font-black mb-8">
-              PERI PERI DELIVERY OR COLLECTION
-            </h2>
-            <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-              Welcome to Emparo Peri Peri, London's favourite peri peri takeaway! Get peri peri delivery near you, or collect from our Finsbury Park location.
-            </p>
-            
-            <div className="max-w-lg mx-auto space-y-6">
-              <div className="bg-white bg-opacity-10 rounded-3xl p-8 backdrop-blur-sm border border-white border-opacity-20 shadow-2xl">
-                <h3 className="text-2xl font-bold mb-6 text-center">How would you like to order?</h3>
-                
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <Button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 font-bold py-4 rounded-2xl text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
-                    🚚 DELIVERY
-                  </Button>
-                  <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black font-bold py-4 rounded-2xl text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
-                    🏪 COLLECT
-                  </Button>
-                </div>
-                
-                <div className="text-center">
-                  <Button className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 font-bold py-4 px-8 rounded-2xl text-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
-                    <Link href="/menu" className="flex items-center gap-3">
-                      🍗 VIEW FULL MENU
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Location & Contact Section */}
-      <div className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <div className="lg:col-span-2">
-              <div className="space-y-8">
-                <div>
-                  <h2 className="text-3xl font-black text-gray-900 mb-6">Visit Our Restaurant</h2>
-                  <div className="bg-orange-50 rounded-2xl p-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <div className="space-y-4">
-                        <div className="flex items-start space-x-4">
-                          <div className="bg-orange-500 p-3 rounded-xl">
-                            <MapPin className="text-white" size={24} />
-                          </div>
-                          <div>
-                            <h3 className="font-bold text-lg text-gray-900 mb-2">Address</h3>
-                            <p className="text-gray-600">24 Blackstock Rd<br/>Finsbury Park<br/>London N4 2DW</p>
-                          </div>
-                        </div>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <Badge className={`${index % 4 === 0 ? 'bg-red-100 text-red-600' : index % 4 === 1 ? 'bg-yellow-100 text-yellow-600' : index % 4 === 2 ? 'bg-green-100 text-green-600' : 'bg-orange-100 text-orange-600'} font-bold`}>
+                          {item.category}
+                        </Badge>
+                        {getSpiceIndicator(item.spice_level)}
                       </div>
-                      <div className="space-y-4">
-                        <div className="flex items-start space-x-4">
-                          <div className="bg-orange-500 p-3 rounded-xl">
-                            <Phone className="text-white" size={24} />
-                          </div>
-                          <div>
-                            <h3 className="font-bold text-lg text-gray-900 mb-2">Call Us</h3>
-                            <p className="text-gray-600">020 3441 6940</p>
-                          </div>
-                        </div>
-                        <div className="flex items-start space-x-4">
-                          <div className="bg-orange-500 p-3 rounded-xl">
-                            <Clock className="text-white" size={24} />
-                          </div>
-                          <div>
-                            <h3 className="font-bold text-lg text-gray-900 mb-2">Opening Hours</h3>
-                            <p className="text-gray-600">Daily: 1:00 PM - 4:00 AM</p>
-                          </div>
-                        </div>
+                      <h3 className="font-black text-xl text-gray-900 group-hover:text-red-600 transition-colors">{item.name}</h3>
+                      <p className="text-gray-600 text-sm line-clamp-2">{item.description}</p>
+                      <div className="flex items-center justify-between pt-2">
+                        <span className="text-2xl font-black text-gray-900">£{item.price}</span>
+                        <Button size="sm" className="bg-red-500 hover:bg-red-600 rounded-full font-bold">
+                          Add to Cart
+                        </Button>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="space-y-6">
-              <div className="bg-gradient-to-br from-orange-600 to-red-600 rounded-2xl p-8 text-white">
-                <div className="flex items-center space-x-3 mb-4">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <Star key={i} size={20} className="text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <h3 className="text-2xl font-bold mb-4">Customer Favourite</h3>
-                <p className="text-orange-100 mb-6">
-                  "Amazing peri peri chicken! The spice levels are perfect and the flavours are authentic. Best takeaway in Finsbury Park!"
-                </p>
-                <p className="font-semibold">- Sarah M.</p>
-              </div>
-              <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-2xl text-lg">
-                <Link href="/menu" className="flex items-center justify-center gap-2">
-                  Order Now <ShoppingBag size={20} />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-          </div>
-        </div>
-      </div>
-                </div>
-                <p className="text-lg mb-8 opacity-90">
-                  Experience the authentic taste of flame-grilled peri peri chicken, fresh stone-baked pizzas, and mouth-watering specialties that will ignite your taste buds.
-                </p>
-                <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                  <Link href="/menu">
-                    <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors w-full sm:w-auto">
-                      View Our Menu
-                    </button>
-                  </Link>
-                  <a href="tel:02034416940">
-                    <button className="bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-700 transition-colors w-full sm:w-auto">
-                      Order Now: 020 3441 6940
-                    </button>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div className="relative">
-              <img 
-                src={heroImage} 
-                alt="Delicious Peri Peri Chicken" 
-                className="rounded-2xl shadow-2xl w-full"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Peri Peri Specialties Section */}
-      <div className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              <span className="text-orange-500">Peri Peri</span> Specialties
-            </h2>
-            <p className="text-xl text-gray-600">
-              Discover our signature peri peri dishes, grilled to perfection with authentic spices and served fresh daily
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {specialtyItems.map((item: any) => (
-              <Card key={item.id} className="hover:shadow-xl transition-all duration-300 border-0 bg-white rounded-xl overflow-hidden">
-                <div className="relative h-48 bg-gradient-to-br from-orange-400 to-red-500">
-                  <div className="absolute inset-0 bg-black bg-opacity-20"></div>
-                  <div className="absolute top-4 left-4">
-                    {item.isCustomerFavorite === 1 && (
-                      <Badge className="bg-yellow-500 text-white">
-                        <Star size={12} className="mr-1" />
-                        Customer Favourite
-                      </Badge>
-                    )}
-                  </div>
-                  <div className="absolute bottom-4 right-4">
-                    <button className="bg-orange-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors">
-                      Add to Order
-                    </button>
-                  </div>
-                </div>
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="text-xl font-bold text-gray-900">{item.name}</h3>
-                    <span className="text-2xl font-bold text-orange-600">£{item.price}</span>
-                  </div>
-                  <p className="text-gray-600 mb-4">{item.description}</p>
-                  {getSpiceIndicator(item.spiceLevel)}
-                </CardContent>
               </Card>
             ))}
           </div>
 
           <div className="text-center mt-12">
-            <Link href="/menu">
-              <button className="bg-orange-500 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-colors">
-                View Full Menu
-              </button>
-            </Link>
+            <Button size="lg" className="bg-red-500 hover:bg-red-600 text-white font-bold px-12 py-6 rounded-full text-xl shadow-xl">
+              <Link href="/menu" className="flex items-center gap-3">
+                VIEW FULL MENU <ChevronRight size={24} />
+              </Link>
+            </Button>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Popular Menu Items */}
-      <div className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12">
-            Popular <span className="text-orange-500">Menu Items</span>
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {menuItems.slice(0, 8).map((item: any) => (
-              <Card key={item.id} className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <h4 className="font-semibold text-gray-900">{item.name}</h4>
-                    <span className="text-lg font-bold text-orange-600">£{item.price}</span>
-                  </div>
-                  <p className="text-sm text-gray-600 mb-3">{item.description}</p>
-                  <div className="flex justify-between items-center">
-                    {getSpiceIndicator(item.spiceLevel)}
-                    <button className="text-orange-500 text-sm font-medium hover:text-orange-600">
-                      Add
-                    </button>
+      {/* Specialty Section - Subway Style */}
+      <section className="py-20 bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+        
+        <div className="relative max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <Badge className="bg-yellow-400 text-black px-6 py-3 text-lg font-bold mb-6">
+              SIGNATURE COLLECTION
+            </Badge>
+            <h2 className="text-5xl lg:text-6xl font-black mb-6">
+              PERI PERI<br />
+              <span className="text-yellow-400">SPECIALTIES</span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Authentic Portuguese recipes passed down through generations, perfected for London
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {specialtyItems.map((item: any, index: number) => (
+              <Card key={item.id} className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl overflow-hidden hover:bg-white/15 transition-all duration-300 group">
+                <CardContent className="p-8">
+                  <div className="text-center space-y-6">
+                    <div className="w-20 h-20 bg-gradient-to-r from-red-500 to-yellow-500 rounded-2xl flex items-center justify-center mx-auto">
+                      <span className="text-3xl">🌶️</span>
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-black text-white mb-3 group-hover:text-yellow-400 transition-colors">{item.name}</h3>
+                      <p className="text-gray-300 mb-4">{item.description}</p>
+                      <div className="flex items-center justify-center space-x-4">
+                        <span className="text-3xl font-black text-yellow-400">£{item.price}</span>
+                        {getSpiceIndicator(item.spice_level)}
+                      </div>
+                    </div>
+                    <Button className="w-full bg-gradient-to-r from-red-500 to-yellow-500 hover:from-red-600 hover:to-yellow-600 text-white font-bold py-4 rounded-2xl text-lg">
+                      Order Now
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Contact Info Banner */}
-      <div className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="bg-orange-500 rounded-2xl p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      {/* Location & Contact - Domino's Style */}
+      <section className="py-20 bg-red-600 text-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
               <div>
-                <h3 className="text-2xl font-bold mb-4">Order Now</h3>
-                <p className="text-lg mb-4">Ready to experience authentic peri peri flavors?</p>
-                <a href="tel:02034416940">
-                  <button className="bg-white text-orange-500 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                    Call to Order
-                  </button>
-                </a>
+                <Badge className="bg-yellow-400 text-black px-6 py-3 text-lg font-bold mb-6">
+                  VISIT US TODAY
+                </Badge>
+                <h2 className="text-5xl font-black mb-6">
+                  FIND US IN<br />
+                  <span className="text-yellow-300">FINSBURY PARK</span>
+                </h2>
+                <p className="text-xl text-red-100 mb-8">
+                  Experience authentic peri peri flavors in the heart of North London. We're open late for your convenience.
+                </p>
               </div>
-              <div className="text-right">
-                <div className="text-3xl font-bold mb-2">020 3441 6940</div>
-                <div className="flex items-center justify-end space-x-4 text-sm">
-                  <div className="flex items-center space-x-1">
-                    <Clock size={16} />
-                    <span>Daily 1 PM - 4 AM</span>
+
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="bg-white/20 p-3 rounded-2xl">
+                    <MapPin size={24} />
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <MapPin size={16} />
-                    <span>24 Blackstock Road, London</span>
+                  <div>
+                    <h3 className="font-bold text-lg mb-1">Address</h3>
+                    <p className="text-red-100">24 Blackstock Rd, Finsbury Park<br />London N4 2DW</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="bg-white/20 p-3 rounded-2xl">
+                    <Phone size={24} />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg mb-1">Phone</h3>
+                    <p className="text-red-100">020 3441 6940</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="bg-white/20 p-3 rounded-2xl">
+                    <Clock size={24} />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg mb-1">Hours</h3>
+                    <p className="text-red-100">Daily: 1:00 PM - 4:00 AM</p>
                   </div>
                 </div>
               </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button size="lg" className="bg-yellow-400 hover:bg-yellow-300 text-black font-bold px-8 py-4 rounded-full">
+                  Get Directions
+                </Button>
+                <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-red-600 font-bold px-8 py-4 rounded-full">
+                  Call Now
+                </Button>
+              </div>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20">
+              <h3 className="text-2xl font-black mb-6 text-center">Order Information</h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center p-4 bg-white/10 rounded-2xl">
+                  <span className="font-bold">Minimum Order</span>
+                  <span className="text-yellow-300">£15.00</span>
+                </div>
+                <div className="flex justify-between items-center p-4 bg-white/10 rounded-2xl">
+                  <span className="font-bold">Delivery Fee</span>
+                  <span className="text-yellow-300">£2.50</span>
+                </div>
+                <div className="flex justify-between items-center p-4 bg-white/10 rounded-2xl">
+                  <span className="font-bold">Delivery Time</span>
+                  <span className="text-yellow-300">30-45 mins</span>
+                </div>
+                <div className="flex justify-between items-center p-4 bg-white/10 rounded-2xl">
+                  <span className="font-bold">Collection Time</span>
+                  <span className="text-yellow-300">15-20 mins</span>
+                </div>
+              </div>
+              <Button className="w-full mt-6 bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-300 hover:to-orange-300 text-black font-bold py-4 rounded-2xl text-lg">
+                <Link href="/menu">
+                  START YOUR ORDER
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

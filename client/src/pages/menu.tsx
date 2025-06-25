@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Minus, ShoppingCart, Flame, Star, Filter } from "lucide-react";
+import { Plus, Minus, ShoppingCart, Flame, Star, Filter, X } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface CartItem {
@@ -25,7 +25,6 @@ export default function MenuPage() {
   });
 
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [showCart, setShowCart] = useState(false);
   const [showOrderForm, setShowOrderForm] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const { toast } = useToast();
@@ -68,6 +67,10 @@ export default function MenuPage() {
     });
   };
 
+  const clearCart = () => {
+    setCart([]);
+  };
+
   const getCartTotal = () => {
     return cart.reduce((total, item) => total + (parseFloat(item.price) * item.quantity), 0).toFixed(2);
   };
@@ -77,9 +80,9 @@ export default function MenuPage() {
     return (
       <div className="flex items-center space-x-1">
         {Array.from({ length: level }, (_, i) => (
-          <Flame key={i} size={12} className="text-red-500" />
+          <Flame key={i} size={14} className="text-red-500 fill-current" />
         ))}
-        <span className="text-xs text-gray-600">
+        <span className="text-xs text-gray-600 font-medium">
           {level === 1 ? "Mild" : level === 2 ? "Medium" : "Hot"}
         </span>
       </div>
@@ -126,12 +129,11 @@ export default function MenuPage() {
 
       if (response.ok) {
         toast({
-          title: "Order submitted!",
+          title: "Order submitted successfully!",
           description: "Your order has been received and is being processed.",
         });
         setCart([]);
         setShowOrderForm(false);
-        setShowCart(false);
         setOrderForm({
           customerName: "",
           customerPhone: "",
@@ -154,12 +156,10 @@ export default function MenuPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading menu...</p>
-          </div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-red-500 border-t-transparent mx-auto mb-4"></div>
+          <p className="text-xl font-bold text-gray-600">Loading delicious menu...</p>
         </div>
       </div>
     );
@@ -167,59 +167,62 @@ export default function MenuPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-orange-600 via-red-500 to-orange-700 text-white py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-black opacity-10"></div>
+      {/* Premium Hero Section */}
+      <div className="relative bg-gradient-to-br from-red-600 via-orange-600 to-yellow-500 text-white py-24 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-yellow-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        </div>
+        
         <div className="relative max-w-7xl mx-auto px-6 text-center">
-          <Badge className="bg-yellow-400 text-black mb-6 text-lg font-bold px-6 py-2">
+          <Badge className="bg-yellow-400 text-black mb-8 text-xl font-black px-8 py-4 animate-bounce">
             FULL MENU
           </Badge>
-          <h1 className="text-5xl lg:text-7xl font-black mb-6 leading-tight">
-            {"OUR DELICIOUS".split('').map((char, index) => (
-              <span key={index} className="inline-block hover:scale-110 transition-transform cursor-default">
-                {char === ' ' ? '\u00A0' : char}
-              </span>
-            ))}<br/>
-            <span className="text-yellow-400">MENU</span>
+          <h1 className="text-6xl lg:text-8xl font-black mb-8 leading-tight">
+            CHOOSE YOUR<br />
+            <span className="text-yellow-300">ADVENTURE</span>
           </h1>
-          <p className="text-xl lg:text-2xl text-gray-100 max-w-3xl mx-auto leading-relaxed">
-            Authentic Peri Peri flavors, flame-grilled to perfection. Choose your spice level and enjoy the taste of Portugal in London.
+          <p className="text-2xl lg:text-3xl text-yellow-100 max-w-4xl mx-auto leading-relaxed font-medium">
+            From mild to fiery hot - discover authentic peri peri flavors crafted with passion
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="flex flex-col lg:flex-row gap-12">
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-12">
           {/* Menu Content */}
-          <div className="flex-1">
+          <div className="xl:col-span-3">
             {/* Category Filter */}
-            <div className="mb-12">
-              <div className="flex items-center gap-3 mb-6">
-                <Filter className="text-orange-600" size={24} />
-                <h2 className="text-2xl font-black text-gray-900">Filter by Category</h2>
+            <div className="mb-16">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="bg-red-500 p-3 rounded-2xl">
+                  <Filter className="text-white" size={28} />
+                </div>
+                <h2 className="text-3xl font-black text-gray-900">Filter by Category</h2>
               </div>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-4">
                 {categories.map(category => (
                   <Button
                     key={category}
                     variant={selectedCategory === category ? "default" : "outline"}
-                    className={`rounded-full font-semibold ${
+                    size="lg"
+                    className={`rounded-full font-bold text-lg px-8 py-4 transition-all transform hover:scale-105 ${
                       selectedCategory === category 
-                        ? "bg-orange-500 hover:bg-orange-600" 
-                        : "border-orange-300 text-orange-600 hover:bg-orange-50"
+                        ? "bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/30" 
+                        : "border-2 border-red-300 text-red-600 hover:bg-red-50 hover:border-red-500"
                     }`}
                     onClick={() => setSelectedCategory(category)}
                   >
-                    {category}
+                    {category === "All" ? "🍽️" : getCategoryIcon(category)} {category}
                   </Button>
                 ))}
               </div>
             </div>
 
             {/* Menu Items Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredItems.map((item: any) => (
-                <Card key={item.id} className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-0 rounded-3xl overflow-hidden bg-white shadow-lg">
+                <Card key={item.id} className="group border-0 rounded-3xl overflow-hidden bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
                   <div className="relative">
                     {/* Image */}
                     <div className="aspect-[4/3] bg-gradient-to-br from-orange-100 to-red-100 overflow-hidden relative">
@@ -227,7 +230,7 @@ export default function MenuPage() {
                         <img 
                           src={`/attached_assets/${item.image}`}
                           alt={item.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                           onError={(e) => {
                             const target = e.currentTarget as HTMLImageElement;
                             target.style.display = 'none';
@@ -238,52 +241,48 @@ export default function MenuPage() {
                       ) : null}
                       <div className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br from-orange-100 to-red-100 ${item.image ? 'hidden' : 'flex'}`}>
                         <div className="text-center">
-                          <div className="text-6xl mb-2 opacity-30">{getCategoryIcon(item.category)}</div>
-                          <p className="text-sm text-gray-500 font-medium">Photo Coming Soon</p>
+                          <div className="text-8xl mb-4 opacity-40">{getCategoryIcon(item.category)}</div>
+                          <p className="text-gray-500 font-bold text-lg">Photo Coming Soon</p>
                         </div>
                       </div>
                     </div>
-                    {/* Favorite Badge */}
+                    
+                    {/* Badges */}
                     {item.isCustomerFavorite === 1 && (
-                      <div className="absolute top-4 right-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-3 py-2 rounded-full text-sm font-bold flex items-center gap-1 shadow-lg animate-pulse">
-                        <Star size={14} className="fill-current" />
-                        Popular
+                      <div className="absolute top-4 right-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-black px-4 py-2 rounded-full text-sm font-black flex items-center gap-2 shadow-lg animate-pulse">
+                        <Star size={16} className="fill-current" />
+                        POPULAR
                       </div>
                     )}
                     
-                    {/* Price Badge */}
-                    <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-lg font-bold backdrop-blur-sm">
+                    <div className="absolute top-4 left-4 bg-black/80 text-white px-4 py-2 rounded-full text-xl font-black backdrop-blur-sm">
                       £{item.price}
                     </div>
                   </div>
                   
-                  <CardContent className="p-6">
-                    <div className="space-y-4">
+                  <CardContent className="p-8">
+                    <div className="space-y-6">
                       <div>
-                        <div className="flex items-center justify-between mb-3">
-                          <Badge className="bg-gradient-to-r from-orange-100 to-red-100 text-orange-700 font-bold">
+                        <div className="flex items-center justify-between mb-4">
+                          <Badge className="bg-gradient-to-r from-red-100 to-orange-100 text-red-700 font-black text-sm px-3 py-1">
                             {item.category}
                           </Badge>
-                          {item.spice_level > 0 && (
-                            <div className="flex items-center">
-                              {getSpiceIndicator(item.spice_level)}
-                            </div>
-                          )}
+                          {getSpiceIndicator(item.spice_level)}
                         </div>
-                        <h3 className="font-black text-xl text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-600 transition-colors">{item.name}</h3>
+                        <h3 className="font-black text-2xl text-gray-900 mb-3 line-clamp-2 group-hover:text-red-600 transition-colors leading-tight">
+                          {item.name}
+                        </h3>
                         {item.description && (
-                          <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">{item.description}</p>
+                          <p className="text-gray-600 leading-relaxed line-clamp-3 text-base">{item.description}</p>
                         )}
                       </div>
                       
-                      <div className="pt-4 border-t border-gray-100">
-                        <button 
-                          onClick={() => addToCart(item)}
-                          className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 rounded-2xl transition-all hover:scale-105 shadow-lg hover:shadow-xl text-lg"
-                        >
-                          Add to Cart
-                        </button>
-                      </div>
+                      <button 
+                        onClick={() => addToCart(item)}
+                        className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-black py-5 rounded-2xl transition-all hover:scale-105 shadow-lg hover:shadow-xl text-xl transform active:scale-95"
+                      >
+                        ADD TO CART
+                      </button>
                     </div>
                   </CardContent>
                 </Card>
@@ -292,69 +291,87 @@ export default function MenuPage() {
           </div>
 
           {/* Cart Sidebar */}
-          <div className="lg:w-80">
-            <Card className="sticky top-24 border-0 rounded-3xl shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-3 text-xl">
-                    <div className="bg-orange-500 p-2 rounded-xl">
-                      <ShoppingCart size={20} className="text-white" />
+          <div className="xl:col-span-1">
+            <Card className="sticky top-8 border-0 rounded-3xl shadow-2xl bg-white">
+              <CardHeader className="pb-6 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-t-3xl">
+                <CardTitle className="flex items-center gap-4 text-2xl font-black">
+                  <div className="bg-white/20 p-3 rounded-xl">
+                    <ShoppingCart size={28} className="text-white" />
+                  </div>
+                  <div>
+                    <div className="text-xl">Your Order</div>
+                    <div className="text-sm font-medium opacity-90">
+                      {cart.reduce((sum, item) => sum + item.quantity, 0)} items
                     </div>
-                    Your Order ({cart.reduce((sum, item) => sum + item.quantity, 0)})
-                  </CardTitle>
-                  {cart.length > 0 && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setShowCart(true)}
-                      className="rounded-full"
-                    >
-                      View All
-                    </Button>
-                  )}
-                </div>
+                  </div>
+                </CardTitle>
               </CardHeader>
-              <CardContent>
+              
+              <CardContent className="p-8">
                 {cart.length === 0 ? (
-                  <div className="text-center py-8">
-                    <div className="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                      <ShoppingCart size={24} className="text-gray-400" />
+                  <div className="text-center py-12">
+                    <div className="bg-gray-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                      <ShoppingCart size={32} className="text-gray-400" />
                     </div>
-                    <p className="text-gray-500 font-medium">Your cart is empty</p>
-                    <p className="text-sm text-gray-400">Add some delicious items to get started</p>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Your cart is empty</h3>
+                    <p className="text-gray-500">Add some delicious items to get started!</p>
                   </div>
                 ) : (
-                  <div className="space-y-4">
-                    {cart.slice(0, 3).map(item => (
-                      <div key={item.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-2xl">
-                        <div className="flex-1">
-                          <p className="font-semibold text-gray-900">{item.name}</p>
-                          <p className="text-sm text-gray-600">£{item.price} × {item.quantity}</p>
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-bold text-gray-900">Cart Items</h3>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={clearCart}
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                      >
+                        <X size={16} className="mr-1" />
+                        Clear
+                      </Button>
+                    </div>
+
+                    <div className="space-y-4 max-h-96 overflow-y-auto">
+                      {cart.map(item => (
+                        <div key={item.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
+                          <div className="flex-1">
+                            <h4 className="font-bold text-gray-900 text-sm">{item.name}</h4>
+                            <p className="text-gray-600 text-sm">£{item.price} each</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={() => removeFromCart(item.id)} 
+                              className="h-8 w-8 p-0 rounded-full border-2"
+                            >
+                              <Minus size={12} />
+                            </Button>
+                            <span className="font-bold text-lg min-w-[2rem] text-center">{item.quantity}</span>
+                            <Button 
+                              size="sm" 
+                              onClick={() => addToCart(item)} 
+                              className="h-8 w-8 p-0 rounded-full bg-red-500 hover:bg-red-600"
+                            >
+                              <Plus size={12} />
+                            </Button>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Button size="sm" variant="outline" onClick={() => removeFromCart(item.id)} className="h-8 w-8 p-0 rounded-full">
-                            <Minus size={12} />
-                          </Button>
-                          <Button size="sm" onClick={() => addToCart(item)} className="h-8 w-8 p-0 rounded-full bg-orange-500 hover:bg-orange-600">
-                            <Plus size={12} />
-                          </Button>
-                        </div>
+                      ))}
+                    </div>
+
+                    <div className="border-t-2 pt-6 space-y-6">
+                      <div className="flex justify-between items-center">
+                        <span className="text-xl font-bold text-gray-900">Total</span>
+                        <span className="text-3xl font-black text-red-600">£{getCartTotal()}</span>
                       </div>
-                    ))}
-                    {cart.length > 3 && (
-                      <p className="text-sm text-gray-500 text-center">...and {cart.length - 3} more items</p>
-                    )}
-                    <div className="border-t pt-4 mt-4">
-                      <div className="flex justify-between items-center mb-4">
-                        <span className="text-lg font-bold text-gray-900">Total</span>
-                        <span className="text-2xl font-black text-orange-600">£{getCartTotal()}</span>
-                      </div>
+                      
                       <Button 
-                        className="w-full py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-2xl text-lg" 
+                        className="w-full py-6 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-black rounded-2xl text-xl shadow-xl transform hover:scale-105 transition-all" 
                         onClick={() => setShowOrderForm(true)}
                         disabled={cart.length === 0}
                       >
-                        Proceed to Checkout
+                        CHECKOUT NOW
                       </Button>
                     </div>
                   </div>
@@ -367,102 +384,100 @@ export default function MenuPage() {
 
       {/* Order Form Dialog */}
       <Dialog open={showOrderForm} onOpenChange={setShowOrderForm}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Complete Your Order</DialogTitle>
+        <DialogContent className="sm:max-w-[500px] rounded-3xl">
+          <DialogHeader className="pb-6">
+            <DialogTitle className="text-2xl font-black text-center">Complete Your Order</DialogTitle>
+            <p className="text-gray-600 text-center">Just a few more details and you're done!</p>
           </DialogHeader>
-          <form onSubmit={handleOrderSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="customerName">Name *</Label>
-              <Input
-                id="customerName"
-                value={orderForm.customerName}
-                onChange={(e) => setOrderForm({...orderForm, customerName: e.target.value})}
-                required
-              />
+          
+          <form onSubmit={handleOrderSubmit} className="space-y-6">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="customerName" className="font-bold">Name *</Label>
+                <Input
+                  id="customerName"
+                  value={orderForm.customerName}
+                  onChange={(e) => setOrderForm({...orderForm, customerName: e.target.value})}
+                  required
+                  className="rounded-xl border-2 py-3"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="customerPhone" className="font-bold">Phone *</Label>
+                <Input
+                  id="customerPhone"
+                  value={orderForm.customerPhone}
+                  onChange={(e) => setOrderForm({...orderForm, customerPhone: e.target.value})}
+                  required
+                  className="rounded-xl border-2 py-3"
+                />
+              </div>
             </div>
+
             <div className="space-y-2">
-              <Label htmlFor="customerPhone">Phone *</Label>
-              <Input
-                id="customerPhone"
-                value={orderForm.customerPhone}
-                onChange={(e) => setOrderForm({...orderForm, customerPhone: e.target.value})}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="customerEmail">Email</Label>
+              <Label htmlFor="customerEmail" className="font-bold">Email (Optional)</Label>
               <Input
                 id="customerEmail"
                 type="email"
                 value={orderForm.customerEmail}
                 onChange={(e) => setOrderForm({...orderForm, customerEmail: e.target.value})}
+                className="rounded-xl border-2 py-3"
               />
             </div>
+
             <div className="space-y-2">
-              <Label htmlFor="orderType">Order Type</Label>
+              <Label htmlFor="orderType" className="font-bold">Order Type</Label>
               <Select value={orderForm.orderType} onValueChange={(value) => setOrderForm({...orderForm, orderType: value})}>
-                <SelectTrigger>
+                <SelectTrigger className="rounded-xl border-2 py-3">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="delivery">Delivery</SelectItem>
-                  <SelectItem value="collection">Collection</SelectItem>
+                  <SelectItem value="delivery">🚚 Delivery</SelectItem>
+                  <SelectItem value="collection">🏪 Collection</SelectItem>
                 </SelectContent>
               </Select>
             </div>
+
             {orderForm.orderType === "delivery" && (
               <div className="space-y-2">
-                <Label htmlFor="deliveryAddress">Delivery Address *</Label>
+                <Label htmlFor="deliveryAddress" className="font-bold">Delivery Address *</Label>
                 <Textarea
                   id="deliveryAddress"
                   value={orderForm.deliveryAddress}
                   onChange={(e) => setOrderForm({...orderForm, deliveryAddress: e.target.value})}
                   required
+                  className="rounded-xl border-2 min-h-[80px]"
+                  placeholder="Enter your full delivery address..."
                 />
               </div>
             )}
+
             <div className="space-y-2">
-              <Label htmlFor="notes">Special Instructions</Label>
+              <Label htmlFor="notes" className="font-bold">Special Instructions</Label>
               <Textarea
                 id="notes"
                 value={orderForm.notes}
                 onChange={(e) => setOrderForm({...orderForm, notes: e.target.value})}
+                className="rounded-xl border-2 min-h-[80px]"
+                placeholder="Any special requests or dietary requirements..."
               />
             </div>
-            <div className="flex justify-between items-center pt-4 border-t">
-              <span className="text-lg font-bold">Total: £{getCartTotal()}</span>
-              <Button type="submit" className="bg-orange-500 hover:bg-orange-600">
-                Place Order
+
+            <div className="bg-gray-50 p-6 rounded-2xl">
+              <div className="flex justify-between items-center text-xl font-bold mb-4">
+                <span>Order Total:</span>
+                <span className="text-red-600">£{getCartTotal()}</span>
+              </div>
+              <Button 
+                type="submit" 
+                className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-black py-4 rounded-2xl text-xl"
+              >
+                PLACE ORDER
               </Button>
             </div>
           </form>
         </DialogContent>
       </Dialog>
-
-      {/* Call to Action */}
-      <div className="bg-gradient-to-r from-gray-900 to-black text-white py-20">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <div className="inline-block bg-red-600 text-white px-6 py-3 rounded-full font-bold text-lg mb-6 transform -rotate-2">
-            ORDER NOW
-          </div>
-          <h2 className="text-4xl lg:text-5xl font-black mb-6">Ready to Order?</h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Call us now for takeaway or delivery. Fresh, authentic peri peri flavors delivered to your door in Finsbury Park and surrounding areas.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="tel:02034416940"
-              className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-full text-xl font-bold transition-all hover:scale-105 shadow-lg"
-            >
-              Call Now: 020 3441 6940
-            </a>
-            <div className="bg-white bg-opacity-10 px-8 py-4 rounded-full backdrop-blur-sm">
-              <p className="text-white font-bold">Daily: 1:00 PM - 4:00 AM</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
