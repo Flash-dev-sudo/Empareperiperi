@@ -63,391 +63,660 @@ app.get('*', (req, res) => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMPARO PERI PERI - LONDON'S HOTTEST RESTAURANT</title>
+    <title>Emparo Peri Peri - Authentic Portuguese Flavors | London</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Arial Black', Arial, sans-serif;
-            background: linear-gradient(45deg, #ff0000, #ff4500, #ffd700, #ff0000);
-            background-size: 400% 400%;
-            animation: gradientShift 3s ease infinite;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background-color: #ffffff;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: #dc2626;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
             color: white;
-            overflow-x: hidden;
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-decoration: none;
         }
         
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
         }
         
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-20px); }
-            60% { transform: translateY(-10px); }
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s;
         }
         
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
         }
         
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .phone-btn {
+            background: #fbbf24;
+            color: #000;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .phone-btn:hover {
+            background: #f59e0b;
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .hero-text h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+        
+        .hero-text p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary {
+            background: #fbbf24;
+            color: #000;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary:hover {
+            background: #f59e0b;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            padding: 1rem 2rem;
+            border: 2px solid white;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-secondary:hover {
+            background: white;
+            color: #dc2626;
+        }
+        
+        .hero-image {
+            text-align: center;
+        }
+        
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 1rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        /* Info Cards */
+        .info-section {
+            padding: 4rem 0;
+            background: #f9fafb;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .header {
-            text-align: center;
-            padding: 40px 0;
-            background: rgba(0, 0, 0, 0.7);
-            margin: 20px 0;
-            border-radius: 20px;
-            border: 5px solid gold;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
-        }
-        
-        .logo {
-            font-size: 5rem;
-            font-weight: 900;
-            text-shadow: 3px 3px 0 #000, 6px 6px 20px rgba(255, 0, 0, 0.8);
-            animation: bounce 2s infinite;
-            background: linear-gradient(45deg, #ffd700, #ff4500, #ff0000);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .subtitle {
-            font-size: 2rem;
-            margin: 20px 0;
-            animation: pulse 2s infinite;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
-        }
-        
-        .fire-icon {
-            font-size: 4rem;
-            animation: rotate 2s linear infinite;
-            display: inline-block;
-            margin: 0 20px;
-        }
-        
-        .nav {
-            background: rgba(0, 0, 0, 0.9);
-            padding: 20px;
-            border-radius: 15px;
-            margin: 20px 0;
-            text-align: center;
-            border: 3px solid #ff4500;
-        }
-        
-        .nav-button {
-            background: linear-gradient(45deg, #ff0000, #ff4500);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            margin: 10px;
-            border-radius: 25px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(255, 69, 0, 0.4);
-        }
-        
-        .nav-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(255, 69, 0, 0.6);
-            animation: pulse 0.5s infinite;
-        }
-        
-        .hero {
-            text-align: center;
-            padding: 60px 20px;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 20px;
-            margin: 30px 0;
-            border: 4px solid #ffd700;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
-            animation: rotate 3s linear infinite;
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .hero h1 {
-            font-size: 4rem;
-            margin: 20px 0;
-            text-shadow: 3px 3px 0 #000;
-            animation: bounce 3s infinite;
-        }
-        
-        .cta-button {
-            background: linear-gradient(45deg, #ffd700, #ff4500, #ff0000);
-            color: black;
-            border: none;
-            padding: 20px 40px;
-            font-size: 1.5rem;
-            font-weight: 900;
-            border-radius: 50px;
-            cursor: pointer;
-            margin: 20px;
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
-            animation: pulse 2s infinite;
-            text-transform: uppercase;
-        }
-        
-        .cta-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.8);
+            padding: 0 2rem;
         }
         
         .info-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
+            gap: 2rem;
         }
         
-        .card {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 30px;
-            border-radius: 20px;
-            border: 3px solid #ff4500;
+        .info-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             text-align: center;
             transition: all 0.3s;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .info-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .info-card h3 {
+            color: #dc2626;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        /* Menu Section */
+        .menu-section {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            font-size: 1.2rem;
+            color: #6b7280;
+        }
+        
+        .menu-categories {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .category-btn {
+            background: #f3f4f6;
+            color: #374151;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-btn.active {
+            background: #dc2626;
+            color: white;
+        }
+        
+        .category-btn:hover {
+            background: #dc2626;
+            color: white;
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .menu-item {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .menu-item-image {
+            height: 200px;
+            background: #f3f4f6;
             position: relative;
             overflow: hidden;
         }
         
-        .card:hover {
-            transform: translateY(-10px) scale(1.05);
-            border-color: #ffd700;
-            box-shadow: 0 20px 40px rgba(255, 69, 0, 0.4);
+        .menu-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            animation: bounce 2s infinite;
+        .menu-item-content {
+            padding: 1.5rem;
         }
         
-        .card h3 {
-            font-size: 1.8rem;
-            margin: 15px 0;
-            color: #ffd700;
+        .menu-item h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
         }
         
-        .contact {
-            background: rgba(0, 0, 0, 0.9);
-            padding: 40px;
-            border-radius: 20px;
+        .menu-item p {
+            color: #6b7280;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .menu-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #dc2626;
+        }
+        
+        .spice-level {
+            display: flex;
+            gap: 0.25rem;
+        }
+        
+        .badge {
+            background: #fbbf24;
+            color: #000;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            background: #1f2937;
+            color: white;
+            padding: 4rem 0;
+        }
+        
+        .contact-content {
             text-align: center;
-            margin: 40px 0;
-            border: 4px solid #ff0000;
         }
         
-        .contact h2 {
-            font-size: 3rem;
-            margin-bottom: 30px;
-            animation: pulse 2s infinite;
+        .contact-content h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
         }
         
         .contact-info {
-            font-size: 1.3rem;
-            margin: 15px 0;
-            color: #ffd700;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
         }
         
-        .phone {
+        .contact-item {
+            text-align: center;
+        }
+        
+        .contact-item .icon {
             font-size: 2rem;
-            color: #ff4500;
-            font-weight: bold;
-            animation: bounce 2s infinite;
+            margin-bottom: 1rem;
+            color: #fbbf24;
         }
         
-        .floating-emojis {
-            position: fixed;
-            font-size: 2rem;
-            z-index: 1000;
-            pointer-events: none;
-            animation: float 6s ease-in-out infinite;
+        .contact-item h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
         }
         
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
         }
         
-        .emoji-1 { top: 10%; left: 10%; animation-delay: 0s; }
-        .emoji-2 { top: 20%; right: 10%; animation-delay: 1s; }
-        .emoji-3 { top: 70%; left: 5%; animation-delay: 2s; }
-        .emoji-4 { top: 80%; right: 5%; animation-delay: 3s; }
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #dc2626;
+            padding: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .mobile-menu.active {
+            display: block;
+        }
+        
+        .mobile-nav-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .mobile-nav-links li {
+            margin-bottom: 0.5rem;
+        }
         
         @media (max-width: 768px) {
-            .logo { font-size: 3rem; }
-            .hero h1 { font-size: 2.5rem; }
-            .cta-button { font-size: 1.2rem; padding: 15px 30px; }
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="floating-emojis emoji-1">🔥</div>
-    <div class="floating-emojis emoji-2">🌶️</div>
-    <div class="floating-emojis emoji-3">🍗</div>
-    <div class="floating-emojis emoji-4">⚡</div>
-    
-    <div class="container">
-        <div class="header">
-            <div class="fire-icon">🔥</div>
-            <div class="logo">EMPARO PERI PERI</div>
-            <div class="fire-icon">🔥</div>
-            <div class="subtitle">LONDON'S HOTTEST FLAME-GRILLED EXPERIENCE!</div>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">🔥 Emparo Peri Peri</a>
+            
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link" onclick="showSection('home')">Home</a></li>
+                <li><a href="#" class="nav-link" onclick="showSection('menu')">Menu</a></li>
+                <li><a href="#" class="nav-link" onclick="showSection('contact')">Contact</a></li>
+                <li><a href="tel:02034416940" class="phone-btn">📞 020 3441 6940</a></li>
+            </ul>
+            
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            
+            <div class="mobile-menu" id="mobileMenu">
+                <ul class="mobile-nav-links">
+                    <li><a href="#" class="nav-link" onclick="showSection('home')">Home</a></li>
+                    <li><a href="#" class="nav-link" onclick="showSection('menu')">Menu</a></li>
+                    <li><a href="#" class="nav-link" onclick="showSection('contact')">Contact</a></li>
+                    <li><a href="tel:02034416940" class="phone-btn">📞 Call Now</a></li>
+                </ul>
+            </div>
         </div>
-        
-        <div class="nav">
-            <button class="nav-button" onclick="showMenu()">🔥 EXPLOSIVE MENU</button>
-            <button class="nav-button" onclick="callNow()">📞 ORDER NOW</button>
-            <button class="nav-button" onclick="location.reload()">🏠 HOME</button>
-        </div>
-        
-        <div class="hero">
+    </nav>
+
+    <!-- Home Section -->
+    <div id="homeSection">
+        <!-- Hero Section -->
+        <section class="hero">
             <div class="hero-content">
-                <h1>🌶️ TASTE THE FIRE! 🌶️</h1>
-                <p style="font-size: 1.5rem; margin: 20px 0;">Authentic Portuguese Peri Peri • Fresh Stone Baked Pizza • Late Night Dining</p>
-                <button class="cta-button" onclick="callNow()">⚡ CALL 020 3441 6940 ⚡</button>
-                <button class="cta-button" onclick="showMenu()">🔥 SEE OUR MENU 🔥</button>
-            </div>
-        </div>
-        
-        <div class="info-cards">
-            <div class="card">
-                <div class="card-icon">🕐</div>
-                <h3>OPENING HOURS</h3>
-                <p><strong>Daily: 1:00 PM - 4:00 AM</strong></p>
-                <p>Perfect for late night cravings!</p>
-            </div>
-            
-            <div class="card">
-                <div class="card-icon">📍</div>
-                <h3>LOCATION</h3>
-                <p><strong>24 Blackstock Rd</strong></p>
-                <p>Finsbury Park, London N4 2DW</p>
-            </div>
-            
-            <div class="card">
-                <div class="card-icon">🚚</div>
-                <h3>DELIVERY</h3>
-                <p><strong>FREE over £25!</strong></p>
-                <p>Fast delivery in 30-45 minutes</p>
-            </div>
-        </div>
-        
-        <div id="menu" style="display: none;">
-            <div class="hero">
-                <div class="hero-content">
-                    <h1>🔥 OUR EXPLOSIVE MENU 🔥</h1>
-                    <div id="menu-items" style="text-align: left; max-width: 800px; margin: 0 auto;"></div>
-                    <button class="cta-button" onclick="callNow()">📞 ORDER BY PHONE 📞</button>
+                <div class="hero-text">
+                    <h1>Authentic Portuguese Peri Peri in London</h1>
+                    <p>Experience the finest flame-grilled chicken and fresh stone-baked pizzas. Made with authentic Portuguese spices and fresh ingredients daily.</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="showSection('menu')">View Our Menu</button>
+                        <a href="tel:02034416940" class="btn-secondary">Order Now</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="/attached_assets/image_1750804688401.png" alt="Delicious Peri Peri Chicken" style="max-width: 400px;">
                 </div>
             </div>
-        </div>
-        
-        <div class="contact">
-            <h2>🔥 CONTACT THE FIRE 🔥</h2>
-            <div class="contact-info">📞 Call us at: <span class="phone">020 3441 6940</span></div>
-            <div class="contact-info">📍 Visit us: 24 Blackstock Rd, Finsbury Park, London N4 2DW</div>
-            <div class="contact-info">🕐 Open: Daily 1:00 PM - 4:00 AM</div>
-            <button class="cta-button" onclick="callNow()">🔥 ORDER NOW! 🔥</button>
-        </div>
+        </section>
+
+        <!-- Info Cards -->
+        <section class="info-section">
+            <div class="container">
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="icon">🕐</div>
+                        <h3>Opening Hours</h3>
+                        <p><strong>Daily: 1:00 PM - 4:00 AM</strong></p>
+                        <p>Perfect for late night dining</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="icon">📍</div>
+                        <h3>Location</h3>
+                        <p><strong>24 Blackstock Rd</strong></p>
+                        <p>Finsbury Park, London N4 2DW</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="icon">🚚</div>
+                        <h3>Free Delivery</h3>
+                        <p><strong>Orders over £25</strong></p>
+                        <p>Fast delivery in 30-45 minutes</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Menu Section -->
+    <div id="menuSection" style="display: none;">
+        <section class="menu-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Our Delicious Menu</h2>
+                    <p>Fresh ingredients, authentic flavors, and flame-grilled perfection</p>
+                </div>
+
+                <div class="menu-categories" id="menuCategories">
+                    <button class="category-btn active" onclick="filterMenu('All')">All Items</button>
+                </div>
+
+                <div class="menu-grid" id="menuGrid">
+                    <!-- Menu items will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Contact Section -->
+    <div id="contactSection" style="display: none;">
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-content">
+                    <h2>Get In Touch</h2>
+                    
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="icon">📞</div>
+                            <h3>Phone</h3>
+                            <p>020 3441 6940</p>
+                        </div>
+                        <div class="contact-item">
+                            <div class="icon">📍</div>
+                            <h3>Address</h3>
+                            <p>24 Blackstock Rd<br>Finsbury Park, London N4 2DW</p>
+                        </div>
+                        <div class="contact-item">
+                            <div class="icon">🕐</div>
+                            <h3>Hours</h3>
+                            <p>Daily: 1:00 PM - 4:00 AM</p>
+                        </div>
+                    </div>
+                    
+                    <a href="tel:02034416940" class="btn-primary" style="font-size: 1.25rem; padding: 1.25rem 2.5rem;">Call to Order Now</a>
+                </div>
+            </div>
+        </section>
     </div>
     
     <script>
-        function callNow() {
-            window.location.href = 'tel:02034416940';
-        }
+        let menuData = [];
+        let currentCategory = 'All';
         
-        function showMenu() {
-            const menuDiv = document.getElementById('menu');
-            const menuItems = document.getElementById('menu-items');
+        function showSection(section) {
+            // Hide all sections
+            document.getElementById('homeSection').style.display = 'none';
+            document.getElementById('menuSection').style.display = 'none';
+            document.getElementById('contactSection').style.display = 'none';
             
-            if (menuDiv.style.display === 'none') {
-                fetch('/api/menu')
-                    .then(response => response.json())
-                    .then(data => {
-                        let menuHTML = '';
-                        const categories = [...new Set(data.map(item => item.category))];
-                        
-                        categories.forEach(category => {
-                            menuHTML += '<div style="margin: 30px 0; padding: 20px; background: rgba(255,69,0,0.2); border-radius: 15px; border: 2px solid #ff4500;">';
-                            menuHTML += '<h2 style="color: #ffd700; text-align: center; font-size: 2rem; margin-bottom: 20px;">🔥 ' + category + ' 🔥</h2>';
-                            
-                            const categoryItems = data.filter(item => item.category === category);
-                            categoryItems.forEach(item => {
-                                menuHTML += '<div style="margin: 15px 0; padding: 15px; background: rgba(0,0,0,0.6); border-radius: 10px; display: flex; justify-content: space-between; align-items: center;">';
-                                menuHTML += '<div>';
-                                menuHTML += '<h3 style="color: white; font-size: 1.3rem;">' + item.name;
-                                if (item.isCustomerFavorite) menuHTML += ' 👑';
-                                if (item.spice_level > 0) {
-                                    for (let i = 0; i < item.spice_level; i++) menuHTML += ' 🔥';
-                                }
-                                menuHTML += '</h3>';
-                                if (item.description) {
-                                    menuHTML += '<p style="color: #ccc; margin: 5px 0;">' + item.description + '</p>';
-                                }
-                                menuHTML += '</div>';
-                                menuHTML += '<div style="color: #ffd700; font-size: 1.5rem; font-weight: bold;">£' + item.price + '</div>';
-                                menuHTML += '</div>';
-                            });
-                            
-                            menuHTML += '</div>';
-                        });
-                        
-                        menuItems.innerHTML = menuHTML;
-                        menuDiv.style.display = 'block';
-                        menuDiv.scrollIntoView({ behavior: 'smooth' });
-                    })
-                    .catch(error => {
-                        menuItems.innerHTML = '<p style="color: #ff4500; text-align: center; font-size: 1.5rem;">🔥 Call us to hear our amazing menu! 🔥</p>';
-                        menuDiv.style.display = 'block';
-                        menuDiv.scrollIntoView({ behavior: 'smooth' });
-                    });
-            } else {
-                menuDiv.style.display = 'none';
+            // Show selected section
+            if (section === 'home') {
+                document.getElementById('homeSection').style.display = 'block';
+            } else if (section === 'menu') {
+                document.getElementById('menuSection').style.display = 'block';
+                if (menuData.length === 0) {
+                    loadMenu();
+                }
+            } else if (section === 'contact') {
+                document.getElementById('contactSection').style.display = 'block';
             }
+            
+            // Close mobile menu if open
+            document.getElementById('mobileMenu').classList.remove('active');
         }
         
-        document.addEventListener('DOMContentLoaded', function() {
-            const buttons = document.querySelectorAll('button');
-            buttons.forEach(button => {
-                button.addEventListener('click', function() {
-                    this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 100);
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+        }
+        
+        function loadMenu() {
+            fetch('/api/menu')
+                .then(response => response.json())
+                .then(data => {
+                    menuData = data;
+                    setupCategories();
+                    renderMenu();
+                })
+                .catch(error => {
+                    console.error('Error loading menu:', error);
+                    document.getElementById('menuGrid').innerHTML = 
+                        '<div style="text-align: center; grid-column: 1/-1; padding: 2rem;"><h3>Call us at 020 3441 6940 for our menu!</h3></div>';
                 });
-            });
+        }
+        
+        function setupCategories() {
+            const categories = ['All', ...new Set(menuData.map(item => item.category))];
+            const categoriesContainer = document.getElementById('menuCategories');
+            
+            categoriesContainer.innerHTML = categories.map(category => 
+                \`<button class="category-btn \${category === currentCategory ? 'active' : ''}" 
+                    onclick="filterMenu('\${category}')">\${category}</button>\`
+            ).join('');
+        }
+        
+        function filterMenu(category) {
+            currentCategory = category;
+            setupCategories();
+            renderMenu();
+        }
+        
+        function renderMenu() {
+            const filteredItems = currentCategory === 'All' 
+                ? menuData 
+                : menuData.filter(item => item.category === currentCategory);
+            
+            const menuGrid = document.getElementById('menuGrid');
+            
+            menuGrid.innerHTML = filteredItems.map(item => {
+                const spiceIcons = item.spice_level > 0 ? '🔥'.repeat(item.spice_level) : '';
+                const favoriteIcon = item.isCustomerFavorite ? '<span class="badge">Popular</span>' : '';
+                
+                return \`
+                    <div class="menu-item">
+                        <div class="menu-item-image">
+                            \${item.image ? 
+                                \`<img src="/attached_assets/\${item.image}" alt="\${item.name}" onerror="this.parentElement.innerHTML='<div style=\\"display:flex;align-items:center;justify-content:center;height:100%;background:#f3f4f6;color:#6b7280;font-size:3rem;\\">🍽️</div>';">\` : 
+                                '<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#f3f4f6;color:#6b7280;font-size:3rem;">🍽️</div>'
+                            }
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>\${item.name} \${favoriteIcon}</h3>
+                            \${item.description ? \`<p>\${item.description}</p>\` : ''}
+                            <div class="menu-item-footer">
+                                <span class="price">£\${item.price}</span>
+                                \${spiceIcons ? \`<div class="spice-level">\${spiceIcons}</div>\` : ''}
+                            </div>
+                        </div>
+                    </div>
+                \`;
+            }).join('');
+        }
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection('home');
         });
     </script>
 </body>
