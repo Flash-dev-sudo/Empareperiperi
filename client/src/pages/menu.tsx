@@ -60,7 +60,11 @@ export default function MenuPage() {
             FULL MENU
           </Badge>
           <h1 className="text-5xl lg:text-7xl font-black mb-6 leading-tight">
-            OUR DELICIOUS<br/>
+            {"OUR DELICIOUS".split('').map((char, index) => (
+              <span key={index} className="inline-block hover:scale-110 transition-transform cursor-default">
+                {char === ' ' ? '\u00A0' : char}
+              </span>
+            ))}<br/>
             <span className="text-yellow-400">MENU</span>
           </h1>
           <p className="text-xl lg:text-2xl text-gray-100 max-w-3xl mx-auto leading-relaxed">
