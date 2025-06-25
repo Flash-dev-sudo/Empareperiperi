@@ -1,15 +1,77 @@
 import { useQuery } from "@tanstack/react-query";
-import { Star, Flame } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import { Plus, Minus, ShoppingCart, Flame, Star, Filter } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+
+interface CartItem {
+  id: number;
+  name: string;
+  price: string;
+  quantity: number;
+  category: string;
+}
 
 export default function MenuPage() {
   const { data: menuItems = [], isLoading } = useQuery({
     queryKey: ['/api/menu'],
   });
 
-  const categories = ["Peri Peri Specialties", "Starters", "Platters", "Mains", "Pizzas", "Chicken", "Milkshakes"];
-  
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [showCart, setShowCart] = useState(false);
+  const [showOrderForm, setShowOrderForm] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const { toast } = useToast();
+
+  const categories = ["All", ...Array.from(new Set(menuItems.map((item: any) => item.category)))];
+
+  const filteredItems = selectedCategory === "All" 
+    ? menuItems 
+    : menuItems.filter((item: any) => item.category === selectedCategory);
+
+  const addToCart = (item: any) => {
+    setCart(prev => {
+      const existing = prev.find(cartItem => cartItem.id === item.id);
+      if (existing) {
+        return prev.map(cartItem =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem
+        );
+      }
+      return [...prev, { ...item, quantity: 1 }];
+    });
+    toast({
+      title: "Added to cart",
+      description: `${item.name} added to your cart`,
+    });
+  };
+
+  const removeFromCart = (id: number) => {
+    setCart(prev => {
+      const existing = prev.find(item => item.id === id);
+      if (existing && existing.quantity > 1) {
+        return prev.map(item =>
+          item.id === id
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        );
+      }
+      return prev.filter(item => item.id !== id);
+    });
+  };
+
+  const getCartTotal = () => {
+    return cart.reduce((total, item) => total + (parseFloat(item.price) * item.quantity), 0).toFixed(2);
+  };
+
   const getSpiceIndicator = (level: number) => {
     if (level === 0) return null;
     return (
@@ -18,7 +80,7 @@ export default function MenuPage() {
           <Flame key={i} size={12} className="text-red-500" />
         ))}
         <span className="text-xs text-gray-600">
-          {level === 1 ? "Mild" : level === 2 ? "Medium" : level === 3 ? "Hot" : "Extra Hot"}
+          {level === 1 ? "Mild" : level === 2 ? "Medium" : "Hot"}
         </span>
       </div>
     );
@@ -35,6 +97,59 @@ export default function MenuPage() {
       "Peri Peri Specialties": "🌶️"
     };
     return icons[category] || "🍽️";
+  };
+
+  const [orderForm, setOrderForm] = useState({
+    customerName: "",
+    customerPhone: "",
+    customerEmail: "",
+    orderType: "delivery",
+    deliveryAddress: "",
+    notes: "",
+  });
+
+  const handleOrderSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...orderForm,
+          orderItems: cart,
+          totalAmount: getCartTotal(),
+        }),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Order submitted!",
+          description: "Your order has been received and is being processed.",
+        });
+        setCart([]);
+        setShowOrderForm(false);
+        setShowCart(false);
+        setOrderForm({
+          customerName: "",
+          customerPhone: "",
+          customerEmail: "",
+          orderType: "delivery",
+          deliveryAddress: "",
+          notes: "",
+        });
+      } else {
+        throw new Error('Failed to submit order');
+      }
+    } catch (error) {
+      toast({
+        title: "Order failed",
+        description: "There was an error submitting your order. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   if (isLoading) {
@@ -73,11 +188,185 @@ export default function MenuPage() {
         </div>
       </div>
 
-      {/* Menu Content */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        {categories.map((category) => {
-          const categoryItems = menuItems.filter((item: any) => item.category === category);
-          if (categoryItems.length === 0) return null;
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="flex flex-col lg:flex-row gap-12">
+          {/* Menu Content */}
+          <div className="flex-1">
+            {/* Category Filter */}
+            <div className="mb-12">
+              <div className="flex items-center gap-3 mb-6">
+                <Filter className="text-orange-600" size={24} />
+                <h2 className="text-2xl font-black text-gray-900">Filter by Category</h2>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                {categories.map(category => (
+                  <Button
+                    key={category}
+                    variant={selectedCategory === category ? "default" : "outline"}
+                    className={`rounded-full font-semibold ${
+                      selectedCategory === category 
+                        ? "bg-orange-500 hover:bg-orange-600" 
+                        : "border-orange-300 text-orange-600 hover:bg-orange-50"
+                    }`}
+                    onClick={() => setSelectedCategory(category)}
+                  >
+                    {category}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Menu Items Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+              {filteredItems.map((item: any) => (
+                <Card key={item.id} className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-0 rounded-3xl overflow-hidden bg-white shadow-lg">
+                  <div className="relative">
+                    {/* Image */}
+                    <div className="aspect-[4/3] bg-gradient-to-br from-orange-100 to-red-100 overflow-hidden relative">
+                      {item.image ? (
+                        <img 
+                          src={`/attached_assets/${item.image}`}
+                          alt={item.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          onError={(e) => {
+                            const target = e.currentTarget as HTMLImageElement;
+                            target.style.display = 'none';
+                            const fallback = target.nextElementSibling as HTMLElement;
+                            if (fallback) fallback.style.display = 'flex';
+                          }}
+                        />
+                      ) : null}
+                      <div className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br from-orange-100 to-red-100 ${item.image ? 'hidden' : 'flex'}`}>
+                        <div className="text-center">
+                          <div className="text-6xl mb-2 opacity-30">{getCategoryIcon(item.category)}</div>
+                          <p className="text-sm text-gray-500 font-medium">Photo Coming Soon</p>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Favorite Badge */}
+                    {item.isCustomerFavorite === 1 && (
+                      <div className="absolute top-4 right-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-3 py-2 rounded-full text-sm font-bold flex items-center gap-1 shadow-lg animate-pulse">
+                        <Star size={14} className="fill-current" />
+                        Popular
+                      </div>
+                    )}
+                    
+                    {/* Price Badge */}
+                    <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-lg font-bold backdrop-blur-sm">
+                      £{item.price}
+                    </div>
+                  </div>
+                  
+                  <CardContent className="p-6">
+                    <div className="space-y-4">
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <Badge className="bg-gradient-to-r from-orange-100 to-red-100 text-orange-700 font-bold">
+                            {item.category}
+                          </Badge>
+                          {item.spice_level > 0 && (
+                            <div className="flex items-center">
+                              {getSpiceIndicator(item.spice_level)}
+                            </div>
+                          )}
+                        </div>
+                        <h3 className="font-black text-xl text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-600 transition-colors">{item.name}</h3>
+                        {item.description && (
+                          <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">{item.description}</p>
+                        )}
+                      </div>
+                      
+                      <div className="pt-4 border-t border-gray-100">
+                        <button 
+                          onClick={() => addToCart(item)}
+                          className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 rounded-2xl transition-all hover:scale-105 shadow-lg hover:shadow-xl text-lg"
+                        >
+                          Add to Cart
+                        </button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Cart Sidebar */}
+          <div className="lg:w-80">
+            <Card className="sticky top-24 border-0 rounded-3xl shadow-lg">
+              <CardHeader className="pb-4">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="flex items-center gap-3 text-xl">
+                    <div className="bg-orange-500 p-2 rounded-xl">
+                      <ShoppingCart size={20} className="text-white" />
+                    </div>
+                    Your Order ({cart.reduce((sum, item) => sum + item.quantity, 0)})
+                  </CardTitle>
+                  {cart.length > 0 && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowCart(true)}
+                      className="rounded-full"
+                    >
+                      View All
+                    </Button>
+                  )}
+                </div>
+              </CardHeader>
+              <CardContent>
+                {cart.length === 0 ? (
+                  <div className="text-center py-8">
+                    <div className="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                      <ShoppingCart size={24} className="text-gray-400" />
+                    </div>
+                    <p className="text-gray-500 font-medium">Your cart is empty</p>
+                    <p className="text-sm text-gray-400">Add some delicious items to get started</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {cart.slice(0, 3).map(item => (
+                      <div key={item.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-2xl">
+                        <div className="flex-1">
+                          <p className="font-semibold text-gray-900">{item.name}</p>
+                          <p className="text-sm text-gray-600">£{item.price} × {item.quantity}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button size="sm" variant="outline" onClick={() => removeFromCart(item.id)} className="h-8 w-8 p-0 rounded-full">
+                            <Minus size={12} />
+                          </Button>
+                          <Button size="sm" onClick={() => addToCart(item)} className="h-8 w-8 p-0 rounded-full bg-orange-500 hover:bg-orange-600">
+                            <Plus size={12} />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                    {cart.length > 3 && (
+                      <p className="text-sm text-gray-500 text-center">...and {cart.length - 3} more items</p>
+                    )}
+                    <div className="border-t pt-4 mt-4">
+                      <div className="flex justify-between items-center mb-4">
+                        <span className="text-lg font-bold text-gray-900">Total</span>
+                        <span className="text-2xl font-black text-orange-600">£{getCartTotal()}</span>
+                      </div>
+                      <Button 
+                        className="w-full py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-2xl text-lg" 
+                        onClick={() => setShowOrderForm(true)}
+                        disabled={cart.length === 0}
+                      >
+                        Proceed to Checkout
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+
+      {/* Order Form Dialog and Cart Dialog */}
+      {/* Add order form implementation here */}
 
           return (
             <div key={category} className="mb-12">
@@ -100,7 +389,7 @@ export default function MenuPage() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                {categoryItems.map((item: any) => (
+                {filteredItems.map((item: any) => (
                   <Card key={item.id} className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-0 rounded-3xl overflow-hidden bg-white shadow-lg">
                     <div className="relative">
                       {/* Image */}
@@ -111,8 +400,10 @@ export default function MenuPage() {
                             alt={item.name}
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             onError={(e) => {
-                              e.currentTarget.style.display = 'none';
-                              e.currentTarget.nextSibling.style.display = 'flex';
+                              const target = e.currentTarget as HTMLImageElement;
+                              target.style.display = 'none';
+                              const fallback = target.nextElementSibling as HTMLElement;
+                              if (fallback) fallback.style.display = 'flex';
                             }}
                           />
                         ) : null}
@@ -157,7 +448,10 @@ export default function MenuPage() {
                         </div>
                         
                         <div className="pt-4 border-t border-gray-100">
-                          <button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 rounded-2xl transition-all hover:scale-105 shadow-lg hover:shadow-xl text-lg">
+                          <button 
+                            onClick={() => addToCart(item)}
+                            className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 rounded-2xl transition-all hover:scale-105 shadow-lg hover:shadow-xl text-lg"
+                          >
                             Add to Cart
                           </button>
                         </div>
@@ -165,11 +459,7 @@ export default function MenuPage() {
                     </CardContent>
                   </Card>
                 ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+
 
       {/* Call to Action */}
       <div className="bg-gradient-to-r from-gray-900 to-black text-white py-20">
