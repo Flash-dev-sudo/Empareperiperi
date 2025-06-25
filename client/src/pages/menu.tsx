@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Minus, ShoppingCart, Flame, Star, Filter, X } from "lucide-react";
+import { Plus, Minus, ShoppingCart, Flame, Star, Filter, X, Zap, Target, Crown, Lightning } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface CartItem {
@@ -48,8 +48,8 @@ export default function MenuPage() {
       return [...prev, { ...item, quantity: 1 }];
     });
     toast({
-      title: "Added to cart",
-      description: `${item.name} added to your cart`,
+      title: "ADDED TO CART!",
+      description: `${item.name} is ready for takeoff!`,
     });
   };
 
@@ -80,10 +80,10 @@ export default function MenuPage() {
     return (
       <div className="flex items-center space-x-1">
         {Array.from({ length: level }, (_, i) => (
-          <Flame key={i} size={14} className="text-red-500 fill-current" />
+          <Flame key={i} size={16} className="text-red-500 fill-current animate-pulse" />
         ))}
-        <span className="text-xs text-gray-600 font-medium">
-          {level === 1 ? "Mild" : level === 2 ? "Medium" : "Hot"}
+        <span className="text-xs font-black text-red-600 uppercase tracking-wide">
+          {level === 1 ? "MILD" : level === 2 ? "MEDIUM" : "VOLCANIC"}
         </span>
       </div>
     );
@@ -91,15 +91,15 @@ export default function MenuPage() {
 
   const getCategoryIcon = (category: string) => {
     const icons: Record<string, string> = {
-      "Starters": "🍟",
-      "Platters": "🍽️", 
-      "Mains": "🍔",
-      "Pizzas": "🍕",
-      "Chicken": "🍗",
-      "Milkshakes": "🥤",
-      "Peri Peri Specialties": "🌶️"
+      "Starters": "🚀",
+      "Platters": "👑", 
+      "Mains": "⚡",
+      "Pizzas": "🔥",
+      "Chicken": "💥",
+      "Milkshakes": "🌟",
+      "Peri Peri Specialties": "💎"
     };
-    return icons[category] || "🍽️";
+    return icons[category] || "🎯";
   };
 
   const [orderForm, setOrderForm] = useState({
@@ -129,8 +129,8 @@ export default function MenuPage() {
 
       if (response.ok) {
         toast({
-          title: "Order submitted successfully!",
-          description: "Your order has been received and is being processed.",
+          title: "ORDER LAUNCHED!",
+          description: "Your flavor journey begins now!",
         });
         setCart([]);
         setShowOrderForm(false);
@@ -147,8 +147,8 @@ export default function MenuPage() {
       }
     } catch (error) {
       toast({
-        title: "Order failed",
-        description: "There was an error submitting your order. Please try again.",
+        title: "Launch Failed",
+        description: "Mission control needs you to try again.",
         variant: "destructive",
       });
     }
@@ -156,152 +156,210 @@ export default function MenuPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-red-500 border-t-transparent mx-auto mb-4"></div>
-          <p className="text-xl font-bold text-gray-600">Loading delicious menu...</p>
+          <div className="relative">
+            <div className="animate-spin rounded-full h-20 w-20 border-4 border-transparent border-t-red-500 border-r-orange-500 border-b-yellow-500 mx-auto mb-6"></div>
+            <div className="absolute inset-0 animate-ping rounded-full h-20 w-20 border-4 border-red-500 opacity-20"></div>
+          </div>
+          <h2 className="text-2xl font-black bg-gradient-to-r from-red-500 to-yellow-500 bg-clip-text text-transparent mb-2">
+            LOADING FLAVORS
+          </h2>
+          <p className="text-gray-400 font-bold">Preparing your taste adventure...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Premium Hero Section */}
-      <div className="relative bg-gradient-to-br from-red-600 via-orange-600 to-yellow-500 text-white py-24 overflow-hidden">
+    <div className="min-h-screen bg-black text-white">
+      {/* Explosive Hero Section */}
+      <div className="relative min-h-[60vh] bg-gradient-to-br from-red-600 via-orange-500 to-yellow-400 overflow-hidden">
+        {/* Animated Background */}
         <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-yellow-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-black/20"></div>
+          {[...Array(30)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-3 h-3 bg-white/30 rounded-full animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${1 + Math.random() * 2}s`
+              }}
+            />
+          ))}
         </div>
         
-        <div className="relative max-w-7xl mx-auto px-6 text-center">
-          <Badge className="bg-yellow-400 text-black mb-8 text-xl font-black px-8 py-4 animate-bounce">
-            FULL MENU
-          </Badge>
-          <h1 className="text-6xl lg:text-8xl font-black mb-8 leading-tight">
-            CHOOSE YOUR<br />
-            <span className="text-yellow-300">ADVENTURE</span>
-          </h1>
-          <p className="text-2xl lg:text-3xl text-yellow-100 max-w-4xl mx-auto leading-relaxed font-medium">
-            From mild to fiery hot - discover authentic peri peri flavors crafted with passion
-          </p>
+        <div className="relative z-10 flex items-center justify-center h-full py-20">
+          <div className="max-w-6xl mx-auto px-6 text-center">
+            <div className="inline-flex items-center bg-black/50 backdrop-blur-lg text-yellow-400 px-8 py-4 rounded-full font-black text-xl mb-8 animate-bounce">
+              <Target className="mr-3" size={28} />
+              FLAVOR COMMAND CENTER
+            </div>
+            
+            <h1 className="text-7xl lg:text-9xl font-black mb-8 leading-tight">
+              <span className="block text-white animate-textGlow">CHOOSE YOUR</span>
+              <span className="block gradient-text animate-pulse-custom">WEAPON</span>
+            </h1>
+            
+            <p className="text-3xl lg:text-4xl text-yellow-100 max-w-5xl mx-auto leading-relaxed font-bold">
+              Every dish is a flavor explosion waiting to happen
+            </p>
+          </div>
         </div>
+
+        {/* Floating Elements */}
+        <div className="absolute top-20 left-20 text-6xl animate-float">🔥</div>
+        <div className="absolute top-40 right-32 text-6xl animate-float" style={{animationDelay: '1s'}}>⚡</div>
+        <div className="absolute bottom-32 left-1/4 text-6xl animate-float" style={{animationDelay: '2s'}}>💥</div>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-12">
           {/* Menu Content */}
           <div className="xl:col-span-3">
-            {/* Category Filter */}
+            {/* Revolutionary Category Filter */}
             <div className="mb-16">
-              <div className="flex items-center gap-4 mb-8">
-                <div className="bg-red-500 p-3 rounded-2xl">
-                  <Filter className="text-white" size={28} />
+              <div className="flex items-center gap-6 mb-10">
+                <div className="relative">
+                  <div className="bg-gradient-to-br from-red-500 to-orange-500 p-4 rounded-3xl animate-glow">
+                    <Filter className="text-white" size={36} />
+                  </div>
+                  <div className="absolute -inset-2 bg-gradient-to-br from-red-500 to-orange-500 rounded-3xl opacity-30 blur-lg animate-pulse"></div>
                 </div>
-                <h2 className="text-3xl font-black text-gray-900">Filter by Category</h2>
+                <h2 className="text-4xl lg:text-5xl font-black gradient-text">MISSION CATEGORIES</h2>
               </div>
-              <div className="flex flex-wrap gap-4">
-                {categories.map(category => (
+              
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+                {categories.map((category, index) => (
                   <Button
                     key={category}
-                    variant={selectedCategory === category ? "default" : "outline"}
-                    size="lg"
-                    className={`rounded-full font-bold text-lg px-8 py-4 transition-all transform hover:scale-105 ${
+                    variant="ghost"
+                    className={`relative overflow-hidden rounded-2xl font-black text-base px-6 py-6 transition-all transform hover:scale-110 ${
                       selectedCategory === category 
-                        ? "bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/30" 
-                        : "border-2 border-red-300 text-red-600 hover:bg-red-50 hover:border-red-500"
+                        ? "bg-gradient-to-r from-red-500 to-orange-500 text-white shadow-2xl shadow-red-500/50 scale-110" 
+                        : "bg-gray-800 text-gray-300 hover:bg-gradient-to-r hover:from-red-500/20 hover:to-orange-500/20 hover:text-white border-2 border-gray-700 hover:border-orange-500"
                     }`}
                     onClick={() => setSelectedCategory(category)}
                   >
-                    {category === "All" ? "🍽️" : getCategoryIcon(category)} {category}
+                    <div className="flex flex-col items-center gap-2">
+                      <span className="text-2xl">{category === "All" ? "🎯" : getCategoryIcon(category)}</span>
+                      <span className="text-xs">{category}</span>
+                    </div>
+                    {selectedCategory === category && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-red-400/20 animate-pulse"></div>
+                    )}
                   </Button>
                 ))}
               </div>
             </div>
 
-            {/* Menu Items Grid */}
+            {/* Dynamic Menu Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredItems.map((item: any) => (
-                <Card key={item.id} className="group border-0 rounded-3xl overflow-hidden bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                  <div className="relative">
-                    {/* Image */}
-                    <div className="aspect-[4/3] bg-gradient-to-br from-orange-100 to-red-100 overflow-hidden relative">
-                      {item.image ? (
-                        <img 
-                          src={`/attached_assets/${item.image}`}
-                          alt={item.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                          onError={(e) => {
-                            const target = e.currentTarget as HTMLImageElement;
-                            target.style.display = 'none';
-                            const fallback = target.nextElementSibling as HTMLElement;
-                            if (fallback) fallback.style.display = 'flex';
-                          }}
-                        />
-                      ) : null}
-                      <div className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br from-orange-100 to-red-100 ${item.image ? 'hidden' : 'flex'}`}>
-                        <div className="text-center">
-                          <div className="text-8xl mb-4 opacity-40">{getCategoryIcon(item.category)}</div>
-                          <p className="text-gray-500 font-bold text-lg">Photo Coming Soon</p>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Badges */}
-                    {item.isCustomerFavorite === 1 && (
-                      <div className="absolute top-4 right-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-black px-4 py-2 rounded-full text-sm font-black flex items-center gap-2 shadow-lg animate-pulse">
-                        <Star size={16} className="fill-current" />
-                        POPULAR
-                      </div>
-                    )}
-                    
-                    <div className="absolute top-4 left-4 bg-black/80 text-white px-4 py-2 rounded-full text-xl font-black backdrop-blur-sm">
-                      £{item.price}
-                    </div>
-                  </div>
+              {filteredItems.map((item: any, index: number) => (
+                <Card key={item.id} className="group relative bg-gradient-to-br from-gray-900 to-black border-2 border-gray-700 rounded-3xl overflow-hidden hover:border-orange-500 transition-all duration-500 hover:-translate-y-6 hover:shadow-2xl hover:shadow-orange-500/30 transform">
+                  {/* Animated Border */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+                  <div className="absolute inset-[2px] bg-gradient-to-br from-gray-900 to-black rounded-3xl"></div>
                   
-                  <CardContent className="p-8">
-                    <div className="space-y-6">
-                      <div>
-                        <div className="flex items-center justify-between mb-4">
-                          <Badge className="bg-gradient-to-r from-red-100 to-orange-100 text-red-700 font-black text-sm px-3 py-1">
-                            {item.category}
-                          </Badge>
-                          {getSpiceIndicator(item.spice_level)}
-                        </div>
-                        <h3 className="font-black text-2xl text-gray-900 mb-3 line-clamp-2 group-hover:text-red-600 transition-colors leading-tight">
-                          {item.name}
-                        </h3>
-                        {item.description && (
-                          <p className="text-gray-600 leading-relaxed line-clamp-3 text-base">{item.description}</p>
+                  <div className="relative z-10">
+                    {/* Image Section */}
+                    <div className="relative overflow-hidden">
+                      <div className="aspect-[4/3] bg-gradient-to-br from-orange-100 to-red-100 relative">
+                        {item.image ? (
+                          <img 
+                            src={`/attached_assets/${item.image}`}
+                            alt={item.name}
+                            className="w-full h-full object-cover group-hover:scale-125 transition-transform duration-700"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-orange-200 to-red-200">
+                            <div className="text-center">
+                              <div className="text-8xl mb-4 opacity-60 animate-bounce">{getCategoryIcon(item.category)}</div>
+                              <p className="text-gray-600 font-black text-lg">FLAVOR INCOMING</p>
+                            </div>
+                          </div>
                         )}
                       </div>
                       
-                      <button 
-                        onClick={() => addToCart(item)}
-                        className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-black py-5 rounded-2xl transition-all hover:scale-105 shadow-lg hover:shadow-xl text-xl transform active:scale-95"
-                      >
-                        ADD TO CART
-                      </button>
+                      {/* Epic Overlays */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                      
+                      {/* Status Badges */}
+                      {item.isCustomerFavorite === 1 && (
+                        <div className="absolute top-4 right-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-4 py-2 rounded-full text-sm font-black flex items-center gap-2 shadow-2xl animate-glow">
+                          <Crown size={18} className="fill-current" />
+                          LEGENDARY
+                        </div>
+                      )}
+                      
+                      <div className="absolute top-4 left-4 glass-dark text-white px-4 py-2 rounded-full text-xl font-black backdrop-blur-lg">
+                        £{item.price}
+                      </div>
+                      
+                      <div className="absolute bottom-4 left-4 bg-gradient-to-r from-black/80 to-gray-800/80 backdrop-blur-lg text-white px-3 py-1 rounded-full text-sm font-black">
+                        {item.category}
+                      </div>
                     </div>
-                  </CardContent>
+                    
+                    {/* Content Section */}
+                    <CardContent className="p-8 relative">
+                      <div className="space-y-6">
+                        <div>
+                          <div className="flex items-center justify-between mb-4">
+                            <Badge className={`font-black text-sm px-3 py-1 ${
+                              index % 4 === 0 ? 'bg-red-500/20 text-red-400 border border-red-500' :
+                              index % 4 === 1 ? 'bg-orange-500/20 text-orange-400 border border-orange-500' :
+                              index % 4 === 2 ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500' :
+                              'bg-purple-500/20 text-purple-400 border border-purple-500'
+                            }`}>
+                              <Lightning className="mr-1" size={12} />
+                              {item.category}
+                            </Badge>
+                            {getSpiceIndicator(item.spice_level)}
+                          </div>
+                          
+                          <h3 className="font-black text-2xl text-white mb-4 line-clamp-2 group-hover:gradient-text transition-all duration-300 leading-tight">
+                            {item.name}
+                          </h3>
+                          
+                          {item.description && (
+                            <p className="text-gray-400 leading-relaxed line-clamp-3 text-base">{item.description}</p>
+                          )}
+                        </div>
+                        
+                        <button 
+                          onClick={() => addToCart(item)}
+                          className="w-full btn-dynamic bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 hover:from-red-400 hover:via-orange-400 hover:to-yellow-400 text-white font-black py-5 rounded-2xl transition-all hover:scale-105 shadow-2xl hover:shadow-orange-500/50 text-xl transform active:scale-95 relative overflow-hidden"
+                        >
+                          <span className="relative z-10 flex items-center justify-center gap-3">
+                            <Zap size={24} />
+                            LAUNCH ORDER
+                          </span>
+                        </button>
+                      </div>
+                    </CardContent>
+                  </div>
                 </Card>
               ))}
             </div>
           </div>
 
-          {/* Cart Sidebar */}
+          {/* Mission Control Cart */}
           <div className="xl:col-span-1">
-            <Card className="sticky top-8 border-0 rounded-3xl shadow-2xl bg-white">
-              <CardHeader className="pb-6 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-t-3xl">
-                <CardTitle className="flex items-center gap-4 text-2xl font-black">
-                  <div className="bg-white/20 p-3 rounded-xl">
-                    <ShoppingCart size={28} className="text-white" />
+            <Card className="sticky top-8 bg-gradient-to-br from-gray-900 to-black border-2 border-gray-700 rounded-3xl shadow-2xl">
+              <CardHeader className="pb-6 bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 text-white rounded-t-3xl relative overflow-hidden">
+                <div className="absolute inset-0 bg-black/20"></div>
+                <CardTitle className="relative z-10 flex items-center gap-4 text-2xl font-black">
+                  <div className="bg-white/20 p-3 rounded-2xl animate-pulse-custom">
+                    <ShoppingCart size={32} className="text-white" />
                   </div>
                   <div>
-                    <div className="text-xl">Your Order</div>
-                    <div className="text-sm font-medium opacity-90">
-                      {cart.reduce((sum, item) => sum + item.quantity, 0)} items
+                    <div className="text-xl">MISSION CART</div>
+                    <div className="text-sm font-bold opacity-90">
+                      {cart.reduce((sum, item) => sum + item.quantity, 0)} ITEMS LOCKED
                     </div>
                   </div>
                 </CardTitle>
@@ -310,68 +368,69 @@ export default function MenuPage() {
               <CardContent className="p-8">
                 {cart.length === 0 ? (
                   <div className="text-center py-12">
-                    <div className="bg-gray-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                      <ShoppingCart size={32} className="text-gray-400" />
+                    <div className="bg-gray-800 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-8 animate-pulse-custom">
+                      <Target size={40} className="text-gray-500" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Your cart is empty</h3>
-                    <p className="text-gray-500">Add some delicious items to get started!</p>
+                    <h3 className="text-xl font-black text-white mb-3">MISSION AWAITING</h3>
+                    <p className="text-gray-400 font-medium">Select your flavor weapons to begin!</p>
                   </div>
                 ) : (
                   <div className="space-y-6">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-bold text-gray-900">Cart Items</h3>
+                      <h3 className="text-lg font-black text-white">SELECTED WEAPONS</h3>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={clearCart}
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                        className="text-red-400 hover:text-red-300 hover:bg-red-500/10 font-bold"
                       >
                         <X size={16} className="mr-1" />
-                        Clear
+                        ABORT
                       </Button>
                     </div>
 
                     <div className="space-y-4 max-h-96 overflow-y-auto">
                       {cart.map(item => (
-                        <div key={item.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
+                        <div key={item.id} className="flex items-center gap-4 p-4 bg-gray-800/50 rounded-2xl border border-gray-700">
                           <div className="flex-1">
-                            <h4 className="font-bold text-gray-900 text-sm">{item.name}</h4>
-                            <p className="text-gray-600 text-sm">£{item.price} each</p>
+                            <h4 className="font-black text-white text-sm">{item.name}</h4>
+                            <p className="text-gray-400 text-sm">£{item.price} each</p>
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-3">
                             <Button 
                               size="sm" 
                               variant="outline" 
                               onClick={() => removeFromCart(item.id)} 
-                              className="h-8 w-8 p-0 rounded-full border-2"
+                              className="h-8 w-8 p-0 rounded-full border-2 border-red-500 text-red-400 hover:bg-red-500 hover:text-white"
                             >
-                              <Minus size={12} />
+                              <Minus size={14} />
                             </Button>
-                            <span className="font-bold text-lg min-w-[2rem] text-center">{item.quantity}</span>
+                            <span className="font-black text-xl min-w-[2rem] text-center text-orange-400">{item.quantity}</span>
                             <Button 
                               size="sm" 
                               onClick={() => addToCart(item)} 
-                              className="h-8 w-8 p-0 rounded-full bg-red-500 hover:bg-red-600"
+                              className="h-8 w-8 p-0 rounded-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-400 hover:to-red-400"
                             >
-                              <Plus size={12} />
+                              <Plus size={14} />
                             </Button>
                           </div>
                         </div>
                       ))}
                     </div>
 
-                    <div className="border-t-2 pt-6 space-y-6">
+                    <div className="border-t-2 border-gray-700 pt-6 space-y-6">
                       <div className="flex justify-between items-center">
-                        <span className="text-xl font-bold text-gray-900">Total</span>
-                        <span className="text-3xl font-black text-red-600">£{getCartTotal()}</span>
+                        <span className="text-2xl font-black text-white">TOTAL DAMAGE</span>
+                        <span className="text-4xl font-black gradient-text">£{getCartTotal()}</span>
                       </div>
                       
                       <Button 
-                        className="w-full py-6 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-black rounded-2xl text-xl shadow-xl transform hover:scale-105 transition-all" 
+                        className="w-full py-6 btn-dynamic bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 hover:from-red-400 hover:via-orange-400 hover:to-yellow-400 text-white font-black rounded-2xl text-xl shadow-2xl transform hover:scale-105 transition-all" 
                         onClick={() => setShowOrderForm(true)}
                         disabled={cart.length === 0}
                       >
-                        CHECKOUT NOW
+                        <Lightning className="mr-3" size={24} />
+                        EXECUTE ORDER
                       </Button>
                     </div>
                   </div>
@@ -384,95 +443,96 @@ export default function MenuPage() {
 
       {/* Order Form Dialog */}
       <Dialog open={showOrderForm} onOpenChange={setShowOrderForm}>
-        <DialogContent className="sm:max-w-[500px] rounded-3xl">
+        <DialogContent className="sm:max-w-[600px] bg-black border-2 border-orange-500 rounded-3xl">
           <DialogHeader className="pb-6">
-            <DialogTitle className="text-2xl font-black text-center">Complete Your Order</DialogTitle>
-            <p className="text-gray-600 text-center">Just a few more details and you're done!</p>
+            <DialogTitle className="text-3xl font-black text-center gradient-text">MISSION BRIEFING</DialogTitle>
+            <p className="text-gray-400 text-center text-lg">Provide coordinates for flavor delivery</p>
           </DialogHeader>
           
-          <form onSubmit={handleOrderSubmit} className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="customerName" className="font-bold">Name *</Label>
+          <form onSubmit={handleOrderSubmit} className="space-y-8">
+            <div className="grid grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <Label htmlFor="customerName" className="font-black text-white">AGENT NAME *</Label>
                 <Input
                   id="customerName"
                   value={orderForm.customerName}
                   onChange={(e) => setOrderForm({...orderForm, customerName: e.target.value})}
                   required
-                  className="rounded-xl border-2 py-3"
+                  className="bg-gray-800 border-2 border-gray-600 rounded-xl py-4 text-white font-bold focus:border-orange-500"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="customerPhone" className="font-bold">Phone *</Label>
+              <div className="space-y-3">
+                <Label htmlFor="customerPhone" className="font-black text-white">COMM FREQUENCY *</Label>
                 <Input
                   id="customerPhone"
                   value={orderForm.customerPhone}
                   onChange={(e) => setOrderForm({...orderForm, customerPhone: e.target.value})}
                   required
-                  className="rounded-xl border-2 py-3"
+                  className="bg-gray-800 border-2 border-gray-600 rounded-xl py-4 text-white font-bold focus:border-orange-500"
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="customerEmail" className="font-bold">Email (Optional)</Label>
+            <div className="space-y-3">
+              <Label htmlFor="customerEmail" className="font-black text-white">BACKUP CHANNEL</Label>
               <Input
                 id="customerEmail"
                 type="email"
                 value={orderForm.customerEmail}
                 onChange={(e) => setOrderForm({...orderForm, customerEmail: e.target.value})}
-                className="rounded-xl border-2 py-3"
+                className="bg-gray-800 border-2 border-gray-600 rounded-xl py-4 text-white font-bold focus:border-orange-500"
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="orderType" className="font-bold">Order Type</Label>
+            <div className="space-y-3">
+              <Label htmlFor="orderType" className="font-black text-white">MISSION TYPE</Label>
               <Select value={orderForm.orderType} onValueChange={(value) => setOrderForm({...orderForm, orderType: value})}>
-                <SelectTrigger className="rounded-xl border-2 py-3">
+                <SelectTrigger className="bg-gray-800 border-2 border-gray-600 rounded-xl py-4 text-white font-bold">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="delivery">🚚 Delivery</SelectItem>
-                  <SelectItem value="collection">🏪 Collection</SelectItem>
+                <SelectContent className="bg-gray-800 border-2 border-gray-600">
+                  <SelectItem value="delivery">🚀 DELIVERY STRIKE</SelectItem>
+                  <SelectItem value="collection">🏃 TACTICAL PICKUP</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {orderForm.orderType === "delivery" && (
-              <div className="space-y-2">
-                <Label htmlFor="deliveryAddress" className="font-bold">Delivery Address *</Label>
+              <div className="space-y-3">
+                <Label htmlFor="deliveryAddress" className="font-black text-white">TARGET COORDINATES *</Label>
                 <Textarea
                   id="deliveryAddress"
                   value={orderForm.deliveryAddress}
                   onChange={(e) => setOrderForm({...orderForm, deliveryAddress: e.target.value})}
                   required
-                  className="rounded-xl border-2 min-h-[80px]"
-                  placeholder="Enter your full delivery address..."
+                  className="bg-gray-800 border-2 border-gray-600 rounded-xl min-h-[100px] text-white font-bold focus:border-orange-500"
+                  placeholder="Enter precise delivery coordinates..."
                 />
               </div>
             )}
 
-            <div className="space-y-2">
-              <Label htmlFor="notes" className="font-bold">Special Instructions</Label>
+            <div className="space-y-3">
+              <Label htmlFor="notes" className="font-black text-white">SPECIAL INTEL</Label>
               <Textarea
                 id="notes"
                 value={orderForm.notes}
                 onChange={(e) => setOrderForm({...orderForm, notes: e.target.value})}
-                className="rounded-xl border-2 min-h-[80px]"
-                placeholder="Any special requests or dietary requirements..."
+                className="bg-gray-800 border-2 border-gray-600 rounded-xl min-h-[100px] text-white font-bold focus:border-orange-500"
+                placeholder="Any special mission requirements..."
               />
             </div>
 
-            <div className="bg-gray-50 p-6 rounded-2xl">
-              <div className="flex justify-between items-center text-xl font-bold mb-4">
-                <span>Order Total:</span>
-                <span className="text-red-600">£{getCartTotal()}</span>
+            <div className="bg-gradient-to-r from-gray-800 to-gray-900 p-8 rounded-2xl border-2 border-gray-700">
+              <div className="flex justify-between items-center text-2xl font-black mb-6">
+                <span className="text-white">TOTAL INVESTMENT:</span>
+                <span className="gradient-text text-3xl">£{getCartTotal()}</span>
               </div>
               <Button 
                 type="submit" 
-                className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-black py-4 rounded-2xl text-xl"
+                className="w-full btn-dynamic bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 hover:from-red-400 hover:via-orange-400 hover:to-yellow-400 text-white font-black py-6 rounded-2xl text-2xl transform hover:scale-105 transition-all"
               >
-                PLACE ORDER
+                <Zap className="mr-3" size={28} />
+                LAUNCH MISSION
               </Button>
             </div>
           </form>
