@@ -1153,22 +1153,23 @@ app.get('*', (req, res) => {
             const popularItems = menuData.filter(item => item.isCustomerFavorite === 1).slice(0, 6);
             const container = document.getElementById('popularItems');
             
-            container.innerHTML = popularItems.map(item => \`
-                <div class="menu-card">
-                    <div class="menu-card-image">
-                        \${item.image ? 
-                            \`<img src="/attached_assets/\${item.image}" alt="\${item.name}" onerror="this.parentElement.innerHTML='<div style=\\"display:flex;align-items:center;justify-content:center;height:100%;background:#f3f4f6;color:#6b7280;font-size:3rem;\\">🍽️</div>';">\` : 
-                            '<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#f3f4f6;color:#6b7280;font-size:3rem;">🍽️</div>'
-                        }
-                        <div class="price-tag">£\${item.price}</div>
-                    </div>
-                    <div class="menu-card-content">
-                        <h3 class="menu-card-title">\${item.name}</h3>
-                        <p class="menu-card-description">\${item.description || 'Delicious and fresh, made to order'}</p>
-                        <button class="add-to-cart-btn" onclick="addToCart(\${item.id})">Add to Cart</button>
-                    </div>
-                </div>
-            \`).join('');
+            container.innerHTML = popularItems.map(item => {
+                const imageHtml = item.image 
+                    ? '<img src="/attached_assets/' + item.image + '" alt="' + item.name + '" onerror="this.parentElement.innerHTML=\'<div style=\\\"display:flex;align-items:center;justify-content:center;height:100%;background:#f3f4f6;color:#6b7280;font-size:3rem;\\\">🍽️</div>\';">'
+                    : '<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#f3f4f6;color:#6b7280;font-size:3rem;">🍽️</div>';
+                
+                return '<div class="menu-card">' +
+                    '<div class="menu-card-image">' +
+                        imageHtml +
+                        '<div class="price-tag">£' + item.price + '</div>' +
+                    '</div>' +
+                    '<div class="menu-card-content">' +
+                        '<h3 class="menu-card-title">' + item.name + '</h3>' +
+                        '<p class="menu-card-description">' + (item.description || 'Delicious and fresh, made to order') + '</p>' +
+                        '<button class="add-to-cart-btn" onclick="addToCart(' + item.id + ')">Add to Cart</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
         }
         
         function setupCategories() {
@@ -1176,8 +1177,8 @@ app.get('*', (req, res) => {
             const categoriesContainer = document.getElementById('menuCategories');
             
             categoriesContainer.innerHTML = categories.map(category => 
-                \`<button class="category-btn \${category === currentCategory ? 'active' : ''}" 
-                    onclick="filterMenu('\${category}')">\${category}</button>\`
+                '<button class="category-btn ' + (category === currentCategory ? 'active' : '') + '" ' +
+                    'onclick="filterMenu(\'' + category + '\')">' + category + '</button>'
             ).join('');
         }
         
@@ -1203,28 +1204,28 @@ app.get('*', (req, res) => {
                 grouped[item.category].push(item);
             });
             
-            menuContainer.innerHTML = Object.entries(grouped).map(([category, items]) => \`
-                <div class="menu-category-section">
-                    <h3 class="category-title">\${category}</h3>
-                    <div class="menu-items-list">
-                        \${items.map(item => {
-                            const spiceIcons = item.spice_level > 0 ? '🔥'.repeat(item.spice_level) : '';
-                            const favoriteIcon = item.isCustomerFavorite ? '<span class="badge">Popular</span>' : '';
-                            
-                            return \`
-                                <div class="menu-list-item">
-                                    <div class="menu-item-info">
-                                        <div class="menu-item-name">\${item.name} \${favoriteIcon}</div>
-                                        \${item.description ? \`<div class="menu-item-desc">\${item.description}</div>\` : ''}
-                                        \${spiceIcons ? \`<div class="spice-level">\${spiceIcons}</div>\` : ''}
-                                    </div>
-                                    <div class="menu-item-price">£\${item.price}</div>
-                                </div>
-                            \`;
-                        }).join('')}
-                    </div>
-                </div>
-            \`).join('');
+            menuContainer.innerHTML = Object.entries(grouped).map(([category, items]) => {
+                const itemsHtml = items.map(item => {
+                    const spiceIcons = item.spice_level > 0 ? '🔥'.repeat(item.spice_level) : '';
+                    const favoriteIcon = item.isCustomerFavorite ? '<span class="badge">Popular</span>' : '';
+                    const descHtml = item.description ? '<div class="menu-item-desc">' + item.description + '</div>' : '';
+                    const spiceHtml = spiceIcons ? '<div class="spice-level">' + spiceIcons + '</div>' : '';
+                    
+                    return '<div class="menu-list-item">' +
+                        '<div class="menu-item-info">' +
+                            '<div class="menu-item-name">' + item.name + ' ' + favoriteIcon + '</div>' +
+                            descHtml +
+                            spiceHtml +
+                        '</div>' +
+                        '<div class="menu-item-price">£' + item.price + '</div>' +
+                    '</div>';
+                }).join('');
+                
+                return '<div class="menu-category-section">' +
+                    '<h3 class="category-title">' + category + '</h3>' +
+                    '<div class="menu-items-list">' + itemsHtml + '</div>' +
+                '</div>';
+            }).join('');
         }
         
         function addToCart(itemId) {
@@ -1268,19 +1269,19 @@ app.get('*', (req, res) => {
                 return;
             }
             
-            cartItems.innerHTML = cart.map(item => \`
-                <div class="cart-item">
-                    <div class="cart-item-info">
-                        <div class="cart-item-name">\${item.name}</div>
-                        <div class="cart-item-price">£\${item.price}</div>
-                        <div class="quantity-controls">
-                            <button class="quantity-btn" onclick="removeFromCart(\${item.id})">-</button>
-                            <span>\${item.quantity}</span>
-                            <button class="quantity-btn" onclick="addToCart(\${item.id})">+</button>
-                        </div>
-                    </div>
-                </div>
-            \`).join('');
+            cartItems.innerHTML = cart.map(item => 
+                '<div class="cart-item">' +
+                    '<div class="cart-item-info">' +
+                        '<div class="cart-item-name">' + item.name + '</div>' +
+                        '<div class="cart-item-price">£' + item.price + '</div>' +
+                        '<div class="quantity-controls">' +
+                            '<button class="quantity-btn" onclick="removeFromCart(' + item.id + ')">-</button>' +
+                            '<span>' + item.quantity + '</span>' +
+                            '<button class="quantity-btn" onclick="addToCart(' + item.id + ')">+</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>'
+            ).join('');
             
             const subtotal = cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
             const delivery = subtotal >= 25 ? 0 : 2.50;
@@ -1312,9 +1313,9 @@ app.get('*', (req, res) => {
             const delivery = total >= 25 ? 0 : 2.50;
             const finalTotal = total + delivery;
             
-            const message = \`Hello! I'd like to place an order:\\n\\n\${orderSummary}\\n\\nSubtotal: £\${total.toFixed(2)}\\nDelivery: \${delivery === 0 ? 'FREE' : '£' + delivery.toFixed(2)}\\nTotal: £\${finalTotal.toFixed(2)}\\n\\nThank you!\`;
+            const message = 'Hello! I\'d like to place an order:\n\n' + orderSummary + '\n\nSubtotal: £' + total.toFixed(2) + '\nDelivery: ' + (delivery === 0 ? 'FREE' : '£' + delivery.toFixed(2)) + '\nTotal: £' + finalTotal.toFixed(2) + '\n\nThank you!';
             
-            window.open(\`https://wa.me/442034416940?text=\${encodeURIComponent(message)}\`, '_blank');
+            window.open('https://wa.me/442034416940?text=' + encodeURIComponent(message), '_blank');
         }
         
         // Initialize the page
