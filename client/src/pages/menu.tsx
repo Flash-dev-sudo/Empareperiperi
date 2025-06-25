@@ -365,101 +365,80 @@ export default function MenuPage() {
         </div>
       </div>
 
-      {/* Order Form Dialog and Cart Dialog */}
-      {/* Add order form implementation here */}
-
-          return (
-            <div key={category} className="mb-12">
-              <div className="flex items-center space-x-4 mb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
-                  <span className="text-3xl">{getCategoryIcon(category)}</span>
-                </div>
-                <div>
-                  <h2 className="text-3xl lg:text-4xl font-black text-gray-900">{category}</h2>
-                  {category === "Peri Peri Specialties" && (
-                    <p className="text-lg text-gray-600 font-medium">Our signature dishes with authentic peri peri flavors</p>
-                  )}
-                  {category === "Starters" && (
-                    <p className="text-lg text-gray-600 font-medium">Perfect appetizers to start your meal</p>
-                  )}
-                  {category === "Mains" && (
-                    <p className="text-lg text-gray-600 font-medium">Hearty burgers and main dishes</p>
-                  )}
-                </div>
+      {/* Order Form Dialog */}
+      <Dialog open={showOrderForm} onOpenChange={setShowOrderForm}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Complete Your Order</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleOrderSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="customerName">Name *</Label>
+              <Input
+                id="customerName"
+                value={orderForm.customerName}
+                onChange={(e) => setOrderForm({...orderForm, customerName: e.target.value})}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="customerPhone">Phone *</Label>
+              <Input
+                id="customerPhone"
+                value={orderForm.customerPhone}
+                onChange={(e) => setOrderForm({...orderForm, customerPhone: e.target.value})}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="customerEmail">Email</Label>
+              <Input
+                id="customerEmail"
+                type="email"
+                value={orderForm.customerEmail}
+                onChange={(e) => setOrderForm({...orderForm, customerEmail: e.target.value})}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="orderType">Order Type</Label>
+              <Select value={orderForm.orderType} onValueChange={(value) => setOrderForm({...orderForm, orderType: value})}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="delivery">Delivery</SelectItem>
+                  <SelectItem value="collection">Collection</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            {orderForm.orderType === "delivery" && (
+              <div className="space-y-2">
+                <Label htmlFor="deliveryAddress">Delivery Address *</Label>
+                <Textarea
+                  id="deliveryAddress"
+                  value={orderForm.deliveryAddress}
+                  onChange={(e) => setOrderForm({...orderForm, deliveryAddress: e.target.value})}
+                  required
+                />
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                {filteredItems.map((item: any) => (
-                  <Card key={item.id} className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-0 rounded-3xl overflow-hidden bg-white shadow-lg">
-                    <div className="relative">
-                      {/* Image */}
-                      <div className="aspect-[4/3] bg-gradient-to-br from-orange-100 to-red-100 overflow-hidden relative">
-                        {item.image ? (
-                          <img 
-                            src={`/attached_assets/${item.image}`}
-                            alt={item.name}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                            onError={(e) => {
-                              const target = e.currentTarget as HTMLImageElement;
-                              target.style.display = 'none';
-                              const fallback = target.nextElementSibling as HTMLElement;
-                              if (fallback) fallback.style.display = 'flex';
-                            }}
-                          />
-                        ) : null}
-                        <div className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br from-orange-100 to-red-100 ${item.image ? 'hidden' : 'flex'}`}>
-                          <div className="text-center">
-                            <div className="text-6xl mb-2 opacity-30">{getCategoryIcon(category)}</div>
-                            <p className="text-sm text-gray-500 font-medium">Photo Coming Soon</p>
-                          </div>
-                        </div>
-                      </div>
-                      {/* Favorite Badge */}
-                      {item.isCustomerFavorite === 1 && (
-                        <div className="absolute top-4 right-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-3 py-2 rounded-full text-sm font-bold flex items-center gap-1 shadow-lg animate-pulse">
-                          <Star size={14} className="fill-current" />
-                          Popular
-                        </div>
-                      )}
-                      
-                      {/* Price Badge */}
-                      <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-lg font-bold backdrop-blur-sm">
-                        £{item.price}
-                      </div>
-                    </div>
-                    
-                    <CardContent className="p-6">
-                      <div className="space-y-4">
-                        <div>
-                          <div className="flex items-center justify-between mb-3">
-                            <Badge className="bg-gradient-to-r from-orange-100 to-red-100 text-orange-700 font-bold">
-                              {item.category}
-                            </Badge>
-                            {item.spice_level > 0 && (
-                              <div className="flex items-center">
-                                {getSpiceIndicator(item.spice_level)}
-                              </div>
-                            )}
-                          </div>
-                          <h3 className="font-black text-xl text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-600 transition-colors">{item.name}</h3>
-                          {item.description && (
-                            <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">{item.description}</p>
-                          )}
-                        </div>
-                        
-                        <div className="pt-4 border-t border-gray-100">
-                          <button 
-                            onClick={() => addToCart(item)}
-                            className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 rounded-2xl transition-all hover:scale-105 shadow-lg hover:shadow-xl text-lg"
-                          >
-                            Add to Cart
-                          </button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-
+            )}
+            <div className="space-y-2">
+              <Label htmlFor="notes">Special Instructions</Label>
+              <Textarea
+                id="notes"
+                value={orderForm.notes}
+                onChange={(e) => setOrderForm({...orderForm, notes: e.target.value})}
+              />
+            </div>
+            <div className="flex justify-between items-center pt-4 border-t">
+              <span className="text-lg font-bold">Total: £{getCartTotal()}</span>
+              <Button type="submit" className="bg-orange-500 hover:bg-orange-600">
+                Place Order
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       {/* Call to Action */}
       <div className="bg-gradient-to-r from-gray-900 to-black text-white py-20">
