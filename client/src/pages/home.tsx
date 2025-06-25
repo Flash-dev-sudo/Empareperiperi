@@ -143,22 +143,24 @@ export default function Home() {
               Welcome to Emparo Peri Peri, London's favourite peri peri takeaway! Get peri peri delivery near you, or collect from our Finsbury Park location.
             </p>
             
-            <div className="max-w-md mx-auto space-y-4">
-              <div className="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm">
-                <h3 className="text-xl font-bold mb-4">Enter your postcode</h3>
-                <div className="flex gap-2">
-                  <input 
-                    type="text" 
-                    placeholder="Your postcode helps us show local menu and deals" 
-                    className="flex-1 px-4 py-3 rounded-full text-black"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4 mt-4">
-                  <Button className="bg-red-600 hover:bg-red-700 font-bold py-3 rounded-full">
-                    DELIVERY
+            <div className="max-w-lg mx-auto space-y-6">
+              <div className="bg-white bg-opacity-10 rounded-3xl p-8 backdrop-blur-sm border border-white border-opacity-20 shadow-2xl">
+                <h3 className="text-2xl font-bold mb-6 text-center">How would you like to order?</h3>
+                
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <Button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 font-bold py-4 rounded-2xl text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                    🚚 DELIVERY
                   </Button>
-                  <Button variant="outline" className="border-white text-white hover:bg-white hover:text-black font-bold py-3 rounded-full">
-                    COLLECT
+                  <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black font-bold py-4 rounded-2xl text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                    🏪 COLLECT
+                  </Button>
+                </div>
+                
+                <div className="text-center">
+                  <Button className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 font-bold py-4 px-8 rounded-2xl text-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                    <Link href="/menu" className="flex items-center gap-3">
+                      🍗 VIEW FULL MENU
+                    </Link>
                   </Button>
                 </div>
               </div>

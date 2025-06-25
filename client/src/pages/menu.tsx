@@ -97,49 +97,63 @@ export default function MenuPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                 {categoryItems.map((item: any) => (
-                  <Card key={item.id} className="group hover:shadow-2xl transition-all duration-300 border-0 rounded-3xl overflow-hidden bg-white">
+                  <Card key={item.id} className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-0 rounded-3xl overflow-hidden bg-white shadow-lg">
                     <div className="relative">
                       {/* Image */}
-                      <div className="aspect-[4/3] bg-gradient-to-br from-orange-50 to-red-50 overflow-hidden">
-                        {item.image && (
+                      <div className="aspect-[4/3] bg-gradient-to-br from-orange-100 to-red-100 overflow-hidden relative">
+                        {item.image ? (
                           <img 
                             src={`/attached_assets/${item.image}`}
                             alt={item.name}
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                              e.currentTarget.nextSibling.style.display = 'flex';
+                            }}
                           />
-                        )}
-                        {!item.image && (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <div className="text-6xl opacity-20">{getCategoryIcon(category)}</div>
+                        ) : null}
+                        <div className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br from-orange-100 to-red-100 ${item.image ? 'hidden' : 'flex'}`}>
+                          <div className="text-center">
+                            <div className="text-6xl mb-2 opacity-30">{getCategoryIcon(category)}</div>
+                            <p className="text-sm text-gray-500 font-medium">Photo Coming Soon</p>
                           </div>
-                        )}
+                        </div>
                       </div>
                       {/* Favorite Badge */}
                       {item.isCustomerFavorite === 1 && (
-                        <div className="absolute top-4 right-4 bg-yellow-400 text-black px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1">
+                        <div className="absolute top-4 right-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-3 py-2 rounded-full text-sm font-bold flex items-center gap-1 shadow-lg animate-pulse">
                           <Star size={14} className="fill-current" />
                           Popular
                         </div>
                       )}
+                      
+                      {/* Price Badge */}
+                      <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-lg font-bold backdrop-blur-sm">
+                        £{item.price}
+                      </div>
                     </div>
                     
                     <CardContent className="p-6">
                       <div className="space-y-4">
                         <div>
-                          <Badge className="bg-orange-100 text-orange-600 mb-3 font-semibold">
-                            {item.category}
-                          </Badge>
-                          <h3 className="font-bold text-xl text-gray-900 mb-2 line-clamp-2">{item.name}</h3>
+                          <div className="flex items-center justify-between mb-3">
+                            <Badge className="bg-gradient-to-r from-orange-100 to-red-100 text-orange-700 font-bold">
+                              {item.category}
+                            </Badge>
+                            {item.spice_level > 0 && (
+                              <div className="flex items-center">
+                                {getSpiceIndicator(item.spice_level)}
+                              </div>
+                            )}
+                          </div>
+                          <h3 className="font-black text-xl text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-600 transition-colors">{item.name}</h3>
                           {item.description && (
                             <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">{item.description}</p>
                           )}
                         </div>
                         
-                        {getSpiceIndicator(item.spice_level)}
-                        
-                        <div className="flex justify-between items-center pt-2">
-                          <span className="text-3xl font-black text-gray-900">£{item.price}</span>
-                          <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-3 rounded-full transition-all hover:scale-105 shadow-lg">
+                        <div className="pt-4 border-t border-gray-100">
+                          <button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 rounded-2xl transition-all hover:scale-105 shadow-lg hover:shadow-xl text-lg">
                             Add to Cart
                           </button>
                         </div>
