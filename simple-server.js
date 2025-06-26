@@ -1155,7 +1155,7 @@ app.get('*', (req, res) => {
             
             container.innerHTML = popularItems.map(item => {
                 const imageHtml = item.image 
-                    ? '<img src="/attached_assets/' + item.image + '" alt="' + item.name + '" onerror="this.parentElement.innerHTML=\'<div style=\\\"display:flex;align-items:center;justify-content:center;height:100%;background:#f3f4f6;color:#6b7280;font-size:3rem;\\\">🍽️</div>\';">'
+                    ? '<img src="/attached_assets/' + item.image + '" alt="' + item.name + '" onerror="this.parentElement.innerHTML=\'<div style=&quot;display:flex;align-items:center;justify-content:center;height:100%;background:#f3f4f6;color:#6b7280;font-size:3rem;&quot;>🍽️</div>\';">'
                     : '<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#f3f4f6;color:#6b7280;font-size:3rem;">🍽️</div>';
                 
                 return '<div class="menu-card">' +
