@@ -1308,7 +1308,7 @@ app.get('*', (req, res) => {
                 return;
             }
             
-            const orderSummary = cart.map(item => \`\${item.quantity}x \${item.name} - £\${(parseFloat(item.price) * item.quantity).toFixed(2)}\`).join('\\n');
+            const orderSummary = cart.map(item => item.quantity + 'x ' + item.name + ' - £' + (parseFloat(item.price) * item.quantity).toFixed(2)).join('\\n');
             const total = cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
             const delivery = total >= 25 ? 0 : 2.50;
             const finalTotal = total + delivery;
