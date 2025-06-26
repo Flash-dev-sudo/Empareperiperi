@@ -1109,22 +1109,18 @@ app.get('*', (req, res) => {
             // Show selected section
             if (section === 'home') {
                 document.getElementById('homeSection').style.display = 'block';
-                document.querySelector('[onclick="showSection(' + "'home'" + ')"]').classList.add('active');
                 if (menuData.length === 0) {
                     loadMenu();
                 }
             } else if (section === 'menu') {
                 document.getElementById('menuSection').style.display = 'block';
-                document.querySelector('[onclick="showSection(' + "'menu'" + ')"]').classList.add('active');
                 if (menuData.length === 0) {
                     loadMenu();
                 }
             } else if (section === 'about') {
                 document.getElementById('aboutSection').style.display = 'block';
-                document.querySelector('[onclick="showSection(' + "'about'" + ')"]').classList.add('active');
             } else if (section === 'contact') {
                 document.getElementById('contactSection').style.display = 'block';
-                document.querySelector('[onclick="showSection(' + "'contact'" + ')"]').classList.add('active');
             }
             
             // Close mobile menu if open
@@ -1176,10 +1172,10 @@ app.get('*', (req, res) => {
             const categories = ['All', ...new Set(menuData.map(item => item.category))];
             const categoriesContainer = document.getElementById('menuCategories');
             
-            categoriesContainer.innerHTML = categories.map(category => 
-                '<button class="category-btn ' + (category === currentCategory ? 'active' : '') + '" ' +
-                    'onclick="filterMenu(' + "'" + category + "'" + ')">' + category + '</button>'
-            ).join('');
+            categoriesContainer.innerHTML = categories.map(category => {
+                const activeClass = category === currentCategory ? 'active' : '';
+                return '<button class="category-btn ' + activeClass + '" onclick="filterMenu(\'' + category + '\')">' + category + '</button>';
+            }).join('');
         }
         
         function filterMenu(category) {
