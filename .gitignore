@@ -1,8 +1,6 @@
 node_modules
 dist
-.env
-.env.local
 .DS_Store
-*.log
-coverage
-.nyc_output
+server/public
+vite.config.ts.*
+*.tar.gz

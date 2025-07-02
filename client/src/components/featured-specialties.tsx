@@ -44,38 +44,32 @@ export default function FeaturedSpecialties() {
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {specialties.map((item, index) => (
-            <Card key={index} className="bg-emparo-cream rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer hover:-translate-y-2">
+            <Card key={index} className="bg-emparo-cream rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow group">
               <div className="relative overflow-hidden">
                 <img 
                   src={item.image} 
                   alt={item.name} 
-                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" 
+                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  <button className="w-full bg-emparo-orange text-white py-2 px-4 rounded-xl font-bold hover:bg-emparo-dark transition-colors">
-                    Add to Order
-                  </button>
-                </div>
               </div>
               <CardContent className="p-6">
                 <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-xl font-bold text-emparo-dark group-hover:text-emparo-orange transition-colors">{item.name}</h3>
-                  <span className="bg-emparo-orange text-white px-3 py-1 rounded-full text-sm font-semibold group-hover:scale-110 transition-transform">{item.price}</span>
+                  <h3 className="text-xl font-bold text-emparo-dark">{item.name}</h3>
+                  <span className="bg-emparo-orange text-white px-3 py-1 rounded-full text-sm font-semibold">{item.price}</span>
                 </div>
                 <p className="text-gray-600 mb-4">{item.description}</p>
                 <div className="flex items-center">
                   {item.isStarRating ? (
                     <div className="flex items-center text-emparo-yellow">
                       {[...Array(3)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 mr-1 fill-current group-hover:animate-pulse" />
+                        <Star key={i} className="w-4 h-4 mr-1 fill-current" />
                       ))}
                       <span className="ml-2 text-sm text-gray-600">{item.badge}</span>
                     </div>
                   ) : (
                     <div className="flex items-center text-emparo-red">
                       {[...Array(item.spiceLevel)].map((_, i) => (
-                        <Flame key={i} className="w-4 h-4 mr-1 group-hover:animate-pulse" />
+                        <Flame key={i} className="w-4 h-4 mr-1" />
                       ))}
                       <span className="ml-2 text-sm text-gray-600">{item.badge}</span>
                     </div>

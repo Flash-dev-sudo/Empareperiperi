@@ -17,7 +17,6 @@ export const menuItems = sqliteTable("menu_items", {
   image: text("image"),
   spiceLevel: integer("spice_level").default(0),
   isAvailable: integer("is_available").default(1),
-  isCustomerFavorite: integer("is_customer_favorite").default(0),
   createdAt: text("created_at").default("datetime('now')"),
 });
 
