@@ -89,12 +89,30 @@ This is a full-stack web application for Emparo Peri Peri, an authentic peri per
 - **API Development**: Express server with automatic restart
 - **Database**: Drizzle migrations for schema management
 
+## Render Deployment Configuration
+
+### Server Configuration
+- **Port**: Uses `process.env.PORT` (Render's dynamic port) with fallback to 5000
+- **Environment**: Automatically switches to TursoStorage when DATABASE_URL is available
+- **Build Command**: `npm install && npm run build`
+- **Start Command**: `npm run start`
+
+### Required Environment Variables
+- `NODE_ENV=production`
+- `DATABASE_URL` - Turso database URL (libsql://...)
+- `DATABASE_AUTH_TOKEN` - Turso authentication token
+
+### Deployment Files
+- `render.yaml` - Render service configuration
+- Build process creates production bundle with Vite + ESBuild
+
 ## Changelog
 
 ```
 Changelog:
 - July 03, 2025. Initial setup
 - July 03, 2025. Switched database from PostgreSQL to Turso SQLite
+- July 03, 2025. Configured for Render deployment with dynamic port and Turso integration
 ```
 
 ## User Preferences
