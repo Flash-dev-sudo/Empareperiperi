@@ -7,13 +7,9 @@ Your deployment failed because the build command was incorrect. Here's the simpl
 1. **Go to your Render dashboard** 
 2. **Click on your "emparoperiperi" service**
 3. **Go to Settings tab**
-4. **Find "Build Command"** and change it from:
+4. **Find "Build Command"** and change it to:
    ```
-   npm install && npm run build
-   ```
-   to:
-   ```
-   npm run build
+   npm ci && npm run build
    ```
 5. **Click "Save Changes"**
 6. **Trigger a new deployment** (it should start automatically)
@@ -27,15 +23,20 @@ Make sure these are set in your Environment Variables:
 
 ## Why This Fix Works
 
-The error `Cannot find module '/opt/render/project/src/dist/index.js'` happened because:
-- Render was only running `npm install` 
-- This installed dependencies but didn't build the project
-- The `dist/index.js` file was never created
-- Our start command tried to run the non-existent file
+The error `sh: 1: vite: not found` happened because:
+- Render wasn't installing devDependencies (where `vite` and `esbuild` are located)
+- Build tools like Vite are needed to create the production bundle
+- The `dist/index.js` file couldn't be created without these tools
 
-With `npm run build`, Render will:
-1. Install dependencies automatically
-2. Run the build command to create `dist/index.js`
-3. Start the server successfully
+With `npm ci && npm run build`, Render will:
+1. Clean install all dependencies (including devDependencies)
+2. Run the build command using Vite and ESBuild
+3. Create the `dist/index.js` file successfully
+4. Start the server properly
+
+**Note:** `npm ci` is better than `npm install` for production builds because it:
+- Installs dependencies from package-lock.json exactly
+- Includes devDependencies by default
+- Is faster and more reliable for CI/CD environments
 
 Your website should deploy successfully after this change!
