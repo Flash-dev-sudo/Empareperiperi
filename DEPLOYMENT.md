@@ -7,7 +7,17 @@ Your Emparo Peri Peri restaurant website is now ready for deployment on Render!
 ### 1. GitHub Repository
 ✅ **Already Done** - Your repository is connected to Render
 
-### 2. Create Web Service on Render
+### 2. Fix the Build Command in Render
+
+Since your deployment failed, you need to update the build command in your existing Render service:
+
+1. Go to your Render dashboard
+2. Select your "emparoperiperi" service
+3. Go to **Settings** tab
+4. Update the **Build Command** from `npm install && npm run build` to `npm run build`
+5. Click **Save Changes**
+
+### 3. Create Web Service on Render (if starting fresh)
 
 1. Go to your Render dashboard
 2. Click "New +" → "Web Service"
@@ -17,7 +27,7 @@ Your Emparo Peri Peri restaurant website is now ready for deployment on Render!
 **Service Configuration:**
 - **Name**: `emparo-peri-peri` (or your preferred name)
 - **Runtime**: `Node`
-- **Build Command**: `npm install && npm run build`
+- **Build Command**: `npm run build`
 - **Start Command**: `npm run start`
 - **Plan**: Free (or your preferred plan)
 

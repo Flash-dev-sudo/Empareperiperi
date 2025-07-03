@@ -1,0 +1,147 @@
+Production
+Menu
+Emparoperiperi
+Menu
+
+Search
+Ctrl+
+K
+
+New
+
+Upgrade
+
+
+t
+Environment
+Emparoperiperi
+Events
+Settings
+Monitor
+Logs
+Metrics
+Manage
+Environment
+Shell
+Scaling
+Previews
+Disks
+Jobs
+
+Changelog
+Invite a friend
+
+Contact support
+Render Status
+Web Service
+Emparoperiperi
+Node
+Free
+Upgrade your instance
+
+Connect
+
+Manual Deploy
+Flash-dev-sudo / Empareperiperi
+main
+https://empareperiperi.onrender.com
+
+Your free instance will spin down with inactivity, which can delay requests by 50 seconds or more.
+Upgrade now
+July 3, 2025 at 11:02 PM
+failed
+7e6804e
+Configure the website for deployment on the Render hosting platform Adds Render deployment configuration files and updates server to use dynamic port. Replit-Commit-Author: Agent Replit-Commit-Session-Id: c3ea5c27-85f8-4188-b309-4ebf5a5db0e9 Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/0a6ea2da-376e-44eb-a675-00990d2a73b1/714166b1-5040-4554-910a-cd64c29f1321.jpg
+
+Rollback
+Exited with status 1 while running your code.
+Read our docs for common ways to troubleshoot your deploy.
+
+All logs
+Search
+Search
+
+Jul 3, 11:01 PM - 11:04 PM
+GMT+1
+
+Menu
+
+==> Cloning from https://github.com/Flash-dev-sudo/Empareperiperi
+==> Checking out commit 7e6804e28989048da486732ffa025b6180380439 in branch main
+==> Downloading cache...
+==> Transferred 300MB in 8s. Extraction took 6s.
+==> Using Node.js version 22.16.0 (default)
+==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+==> Using Bun version 1.1.0 (default)
+==> Docs on specifying a Bun version: https://render.com/docs/bun-version
+==> Running build command 'npm install'...
+up to date, audited 392 packages in 952ms
+55 packages are looking for funding
+  run `npm fund` for details
+1 low severity vulnerability
+To address all issues, run:
+  npm audit fix
+Run `npm audit` for details.
+==> Uploading build...
+==> Uploaded in 11.9s. Compression took 2.9s
+==> Build successful 🎉
+==> Deploying...
+==> Running 'npm run start'
+> rest-express@1.0.0 start
+> NODE_ENV=production node dist/index.js
+node:internal/modules/cjs/loader:1404
+  throw err;
+  ^
+Error: Cannot find module '/opt/render/project/src/dist/index.js'
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    at Function._load (node:internal/modules/cjs/loader:1211:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+    at node:internal/main/run_main_module:36:49 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+Node.js v22.16.0
+==> Exited with status 1
+==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
+==> Running 'npm run start'
+> rest-express@1.0.0 start
+> NODE_ENV=production node dist/index.js
+node:internal/modules/cjs/loader:1404
+  throw err;
+  ^
+Error: Cannot find module '/opt/render/project/src/dist/index.js'
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    at Function._load (node:internal/modules/cjs/loader:1211:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+    at node:internal/main/run_main_module:36:49 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+Node.js v22.16.0
+==> Running 'npm run start'
+> rest-express@1.0.0 start
+> NODE_ENV=production node dist/index.js
+node:internal/modules/cjs/loader:1404
+  throw err;
+  ^
+Error: Cannot find module '/opt/render/project/src/dist/index.js'
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    at Function._load (node:internal/modules/cjs/loader:1211:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+    at node:internal/main/run_main_module:36:49 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+Node.js v22.16.0
