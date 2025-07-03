@@ -47,8 +47,14 @@ export class TursoStorage implements IStorage {
       throw new Error("DATABASE_URL environment variable is required for Turso");
     }
 
+    // Clean the URL to remove any PostgreSQL parameters
+    let cleanUrl = process.env.DATABASE_URL;
+    if (cleanUrl.includes('?')) {
+      cleanUrl = cleanUrl.split('?')[0];
+    }
+
     const client = createClient({
-      url: process.env.DATABASE_URL,
+      url: cleanUrl,
       authToken: process.env.DATABASE_AUTH_TOKEN,
     });
 
