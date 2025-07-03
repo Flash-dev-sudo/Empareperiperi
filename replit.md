@@ -17,18 +17,19 @@ This is a full-stack web application for Emparo Peri Peri, an authentic peri per
 ### Backend Architecture
 - **Runtime**: Node.js with Express.js
 - **Language**: TypeScript with ES modules
-- **Database**: PostgreSQL with Drizzle ORM
-- **Schema**: Defined in shared/schema.ts using Drizzle with SQLite syntax (configured for PostgreSQL)
-- **Session Management**: Configured for connect-pg-simple (PostgreSQL session store)
+- **Database**: Turso SQLite with Drizzle ORM
+- **Schema**: Defined in shared/schema.ts using Drizzle SQLite syntax
+- **Session Management**: Configured for connect-pg-simple (can be adapted for SQLite)
 
 ### Data Storage
-- **Primary Database**: PostgreSQL (configured via DATABASE_URL)
-- **ORM**: Drizzle ORM with migrations support
+- **Primary Database**: Turso SQLite (configured via DATABASE_URL and DATABASE_AUTH_TOKEN)
+- **ORM**: Drizzle ORM with LibSQL adapter
 - **Schema Design**: 
   - Users table for authentication
   - Menu items table for restaurant offerings
   - Orders table for customer orders
   - Gallery table for restaurant images
+- **Storage Strategy**: Memory storage for development, Turso for production
 - **Migration Management**: Drizzle Kit for database migrations
 
 ## Key Components
@@ -73,7 +74,7 @@ This is a full-stack web application for Emparo Peri Peri, an authentic peri per
 ### Backend Dependencies
 - Express.js for server framework
 - Drizzle ORM for database operations
-- PostgreSQL client libraries (@neondatabase/serverless, @libsql/client)
+- Turso SQLite client library (@libsql/client)
 - Session management (connect-pg-simple)
 - Development tools (tsx, esbuild)
 
@@ -93,6 +94,7 @@ This is a full-stack web application for Emparo Peri Peri, an authentic peri per
 ```
 Changelog:
 - July 03, 2025. Initial setup
+- July 03, 2025. Switched database from PostgreSQL to Turso SQLite
 ```
 
 ## User Preferences
