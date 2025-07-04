@@ -1,0 +1,90 @@
+
+Production
+Menu
+Emparoperiperi
+Menu
+
+Search
+Ctrl+
+K
+
+New
+
+Upgrade
+
+
+t
+Environment
+Emparoperiperi
+Events
+Settings
+Monitor
+Logs
+Metrics
+Manage
+Environment
+Shell
+Scaling
+Previews
+Disks
+Jobs
+
+Changelog
+Invite a friend
+
+Contact support
+Render Status
+Web Service
+Emparoperiperi
+Node
+Free
+Upgrade your instance
+
+Connect
+
+Manual Deploy
+Flash-dev-sudo / Empareperiperi
+main
+https://empareperiperi.onrender.com
+
+Your free instance will spin down with inactivity, which can delay requests by 50 seconds or more.
+Upgrade now
+July 4, 2025 at 11:06 PM
+failed
+7ab4469
+Update website build process to include needed development dependencies Update Render build command to `npm install --include=dev && npm run build` in DEPLOYMENT.md, RENDER_FIX.md, and render.yaml to include devDependencies. Replit-Commit-Author: Agent Replit-Commit-Session-Id: c3ea5c27-85f8-4188-b309-4ebf5a5db0e9 Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/0a6ea2da-376e-44eb-a675-00990d2a73b1/714166b1-5040-4554-910a-cd64c29f1321.jpg
+
+Rollback
+Exited with status 127 while building your code.
+Read our docs for common ways to troubleshoot your deploy.
+
+All logs
+Search
+Search
+
+Jul 4, 11:05 PM - 11:08 PM
+GMT+1
+
+Menu
+
+==> Cloning from https://github.com/Flash-dev-sudo/Empareperiperi
+==> Checking out commit 7ab446943665ade86a1bddce4c5a3be12969fba2 in branch main
+==> Downloading cache...
+==> Transferred 300MB in 8s. Extraction took 5s.
+==> Using Node.js version 22.16.0 (default)
+==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+==> Using Bun version 1.1.0 (default)
+==> Docs on specifying a Bun version: https://render.com/docs/bun-version
+==> Running build command 'npm install && npm run build'...
+up to date, audited 392 packages in 1s
+55 packages are looking for funding
+  run `npm fund` for details
+1 low severity vulnerability
+To address all issues, run:
+  npm audit fix
+Run `npm audit` for details.
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+sh: 1: vite: not found
+==> Build failed 😞
+==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
