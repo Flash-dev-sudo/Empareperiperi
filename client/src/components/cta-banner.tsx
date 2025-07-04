@@ -21,11 +21,11 @@ export default function CTABanner() {
             <span className="text-sm font-semibold">Limited Time Offer</span>
           </div>
           
-          <h2 className="text-4xl md:text-6xl font-black mb-6 drop-shadow-lg">
-            HUNGRY FOR <span className="text-emparo-yellow">PERI PERI?</span>
+          <h2 className="text-5xl md:text-7xl font-black mb-6 drop-shadow-2xl text-white">
+            HUNGRY FOR <span className="text-emparo-yellow drop-shadow-2xl">PERI PERI?</span>
           </h2>
           
-          <p className="text-xl md:text-2xl mb-8 font-medium drop-shadow-lg max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl mb-8 font-bold drop-shadow-2xl max-w-3xl mx-auto text-white">
             Order now and taste the authentic flame-grilled flavors that made us famous. 
             Fresh ingredients, bold spices, unbeatable taste!
           </p>
