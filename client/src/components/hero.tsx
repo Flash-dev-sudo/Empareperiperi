@@ -23,6 +23,7 @@ export default function Hero() {
             <div className="bg-emparo-dark rounded-3xl p-8 mb-8">
               <p className="text-2xl md:text-3xl font-bold text-emparo-yellow mb-4">Fresh Stone Baked Pizza</p>
               <p className="text-lg text-white font-medium">Authentic Grilled Chicken & Peri Peri Specialties</p>
+              <p className="text-sm text-emparo-yellow mt-2 font-semibold">🚧 LOCAL DEVELOPMENT MODE - Testing Changes 🚧</p>
             </div>
             
             <div className="bg-emparo-dark rounded-3xl p-8 mb-10">

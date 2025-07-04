@@ -32,6 +32,7 @@ export default function Navigation() {
             <div>
               <h1 className="text-2xl font-black text-emparo-dark">EMPARO</h1>
               <p className="text-sm text-emparo-orange font-bold -mt-1">PERI PERI</p>
+              <p className="text-xs text-blue-600 font-semibold -mt-1">DEV MODE</p>
             </div>
           </div>
 
