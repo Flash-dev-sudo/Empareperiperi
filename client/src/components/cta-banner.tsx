@@ -25,7 +25,7 @@ export default function CTABanner() {
             <span className="text-emparo-dark">HUNGRY FOR</span> <span className="text-emparo-yellow drop-shadow-2xl">PERI PERI?</span>
           </h2>
           
-          <p className="text-xl md:text-2xl mb-8 font-bold drop-shadow-2xl max-w-3xl mx-auto text-white">
+          <p className="text-xl md:text-2xl mb-8 font-black drop-shadow-2xl max-w-3xl mx-auto text-emparo-dark">
             Order now and taste the authentic flame-grilled flavors that made us famous. 
             Fresh ingredients, bold spices, unbeatable taste!
           </p>
