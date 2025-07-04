@@ -21,8 +21,8 @@ export default function CTABanner() {
             <span className="text-sm font-semibold">Limited Time Offer</span>
           </div>
           
-          <h2 className="text-5xl md:text-7xl font-black mb-6 drop-shadow-2xl text-white">
-            HUNGRY FOR <span className="text-emparo-yellow drop-shadow-2xl">PERI PERI?</span>
+          <h2 className="text-5xl md:text-7xl font-black mb-6 drop-shadow-2xl">
+            <span className="text-emparo-dark">HUNGRY FOR</span> <span className="text-emparo-yellow drop-shadow-2xl">PERI PERI?</span>
           </h2>
           
           <p className="text-xl md:text-2xl mb-8 font-bold drop-shadow-2xl max-w-3xl mx-auto text-white">
