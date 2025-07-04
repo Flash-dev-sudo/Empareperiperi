@@ -9,7 +9,7 @@ Your deployment failed because the build command was incorrect. Here's the simpl
 3. **Go to Settings tab**
 4. **Find "Build Command"** and change it to:
    ```
-   npm ci && npm run build
+   npm install --include=dev && npm run build
    ```
 5. **Click "Save Changes"**
 6. **Trigger a new deployment** (it should start automatically)
@@ -28,7 +28,7 @@ The error `sh: 1: vite: not found` happened because:
 - Build tools like Vite are needed to create the production bundle
 - The `dist/index.js` file couldn't be created without these tools
 
-With `npm ci && npm run build`, Render will:
+With `npm install --include=dev && npm run build`, Render will:
 1. Clean install all dependencies (including devDependencies)
 2. Run the build command using Vite and ESBuild
 3. Create the `dist/index.js` file successfully

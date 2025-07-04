@@ -14,7 +14,7 @@ Since your deployment failed, you need to update the build command in your exist
 1. Go to your Render dashboard
 2. Select your "emparoperiperi" service
 3. Go to **Settings** tab
-4. Update the **Build Command** to `npm ci && npm run build`
+4. Update the **Build Command** to `npm install --include=dev && npm run build`
 5. Click **Save Changes**
 
 ### 3. Create Web Service on Render (if starting fresh)
@@ -27,7 +27,7 @@ Since your deployment failed, you need to update the build command in your exist
 **Service Configuration:**
 - **Name**: `emparo-peri-peri` (or your preferred name)
 - **Runtime**: `Node`
-- **Build Command**: `npm ci && npm run build`
+- **Build Command**: `npm install --include=dev && npm run build`
 - **Start Command**: `npm run start`
 - **Plan**: Free (or your preferred plan)
 
