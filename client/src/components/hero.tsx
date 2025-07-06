@@ -46,16 +46,6 @@ export default function Hero() {
                 <Utensils className="mr-3 w-6 h-6" />
                 View Our Menu
               </Button>
-              <Button 
-                variant="outline"
-                className="bg-emparo-yellow text-emparo-dark hover:bg-emparo-yellow/90 px-10 py-6 rounded-2xl text-xl font-bold border-2 border-emparo-yellow transition-all"
-                asChild
-              >
-                <a href="tel:02034416940">
-                  <Phone className="mr-3 w-6 h-6" />
-                  Call: 020 3441 6940
-                </a>
-              </Button>
             </div>
           </div>
           

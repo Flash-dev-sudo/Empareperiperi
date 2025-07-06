@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Flame, Menu, X, Phone } from "lucide-react";
+import { Flame, Menu, X, Phone, ShoppingCart } from "lucide-react";
 import { useLocation } from "wouter";
 
 export default function Navigation() {
@@ -54,13 +54,11 @@ export default function Navigation() {
               </button>
             ))}
             <Button 
+              onClick={() => setLocation("/order")}
               className="bg-emparo-orange hover:bg-emparo-orange/90 text-white px-6 py-2 rounded-2xl font-bold"
-              asChild
             >
-              <a href="tel:02034416940">
-                <Phone className="mr-2 w-4 h-4" />
-                020 3441 6940
-              </a>
+              <ShoppingCart className="mr-2 w-4 h-4" />
+              Order Online
             </Button>
           </div>
 
