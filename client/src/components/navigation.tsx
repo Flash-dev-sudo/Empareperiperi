@@ -1,23 +1,30 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Flame, Menu, X, Phone } from "lucide-react";
+import { useLocation } from "wouter";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [, setLocation] = useLocation();
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsMenuOpen(false);
+  const handleNavigation = (item: any) => {
+    if (item.path && item.path !== "/") {
+      setLocation(item.path);
+    } else {
+      const element = document.getElementById(item.id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
     }
+    setIsMenuOpen(false);
   };
 
   const menuItems = [
-    { label: "Home", id: "home" },
-    { label: "Menu", id: "menu" },
-    { label: "About", id: "about" },
-    { label: "Contact", id: "contact" }
+    { label: "Home", id: "home", path: "/" },
+    { label: "Menu", id: "menu", path: "/" },
+    { label: "Order Online", id: "order", path: "/order" },
+    { label: "About", id: "about", path: "/" },
+    { label: "Contact", id: "contact", path: "/" }
   ];
 
   return (
@@ -40,7 +47,7 @@ export default function Navigation() {
             {menuItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => scrollToSection(item.id)}
+                onClick={() => handleNavigation(item)}
                 className="text-emparo-dark hover:text-emparo-orange font-semibold transition-colors"
               >
                 {item.label}
@@ -77,7 +84,7 @@ export default function Navigation() {
               {menuItems.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => scrollToSection(item.id)}
+                  onClick={() => handleNavigation(item)}
                   className="text-emparo-dark hover:text-emparo-orange font-semibold text-left transition-colors"
                 >
                   {item.label}

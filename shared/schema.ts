@@ -44,6 +44,15 @@ export const gallery = sqliteTable("gallery", {
   createdAt: text("created_at").default("datetime('now')"),
 });
 
+export const cartItems = sqliteTable("cart_items", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  sessionId: text("session_id").notNull(),
+  menuItemId: integer("menu_item_id").notNull(),
+  quantity: integer("quantity").notNull(),
+  notes: text("notes"),
+  createdAt: text("created_at").default("datetime('now')"),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -64,6 +73,11 @@ export const insertGallerySchema = createInsertSchema(gallery).omit({
   createdAt: true,
 });
 
+export const insertCartItemSchema = createInsertSchema(cartItems).omit({
+  id: true,
+  createdAt: true,
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertMenuItem = z.infer<typeof insertMenuItemSchema>;
@@ -72,3 +86,5 @@ export type InsertOrder = z.infer<typeof insertOrderSchema>;
 export type Order = typeof orders.$inferSelect;
 export type InsertGallery = z.infer<typeof insertGallerySchema>;
 export type Gallery = typeof gallery.$inferSelect;
+export type InsertCartItem = z.infer<typeof insertCartItemSchema>;
+export type CartItem = typeof cartItems.$inferSelect;
