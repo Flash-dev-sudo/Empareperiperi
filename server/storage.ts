@@ -311,7 +311,7 @@ export class TursoStorage implements IStorage {
   }
 }
 
-// Use Turso when DATABASE_URL is available (production), otherwise use MemStorage (development)
-export const storage = process.env.DATABASE_URL && process.env.DATABASE_AUTH_TOKEN
+// Use MemStorage for development, TursoStorage for production
+export const storage = process.env.NODE_ENV === 'production' && process.env.DATABASE_URL && process.env.DATABASE_AUTH_TOKEN
   ? new TursoStorage() 
   : new MemStorage();
