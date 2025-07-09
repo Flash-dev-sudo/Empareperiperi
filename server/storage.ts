@@ -86,7 +86,7 @@ export class MemStorage implements IStorage {
 
   async createMenuItem(item: InsertMenuItem): Promise<MenuItem> {
     const id = this.currentId++;
-    const menuItem: MenuItem = { ...item, id, createdAt: new Date().toISOString() };
+    const menuItem: MenuItem = { ...item, id, createdAt: new Date().toISOString(), image: item.image || null };
     this.menuItems.set(id, menuItem);
     return menuItem;
   }
@@ -103,7 +103,7 @@ export class MemStorage implements IStorage {
 
   async addToCart(item: InsertCartItem): Promise<CartItem> {
     const id = this.currentId++;
-    const cartItem: CartItem = { ...item, id, createdAt: new Date().toISOString() };
+    const cartItem: CartItem = { ...item, id, createdAt: new Date().toISOString(), notes: item.notes || null };
     this.cartItems.set(id, cartItem);
     return cartItem;
   }
@@ -131,7 +131,15 @@ export class MemStorage implements IStorage {
 
   async createOrder(order: InsertOrder): Promise<Order> {
     const id = this.currentId++;
-    const newOrder: Order = { ...order, id, createdAt: new Date().toISOString() };
+    const newOrder: Order = { 
+      ...order, 
+      id, 
+      createdAt: new Date().toISOString(),
+      customerEmail: order.customerEmail || null,
+      status: order.status || null,
+      deliveryAddress: order.deliveryAddress || null,
+      notes: order.notes || null
+    };
     this.orders.set(id, newOrder);
     return newOrder;
   }
@@ -195,6 +203,111 @@ export class TursoStorage implements IStorage {
       .returning();
     
     return result[0];
+  }
+
+  // Menu operations
+  async getMenuItems(): Promise<MenuItem[]> {
+    return await this.db.select().from(menuItems);
+  }
+
+  async getMenuItemById(id: number): Promise<MenuItem | undefined> {
+    const result = await this.db
+      .select()
+      .from(menuItems)
+      .where(eq(menuItems.id, id))
+      .limit(1);
+    
+    return result[0];
+  }
+
+  async createMenuItem(item: InsertMenuItem): Promise<MenuItem> {
+    const result = await this.db
+      .insert(menuItems)
+      .values(item)
+      .returning();
+    
+    return result[0];
+  }
+
+  // Cart operations
+  async getCartItems(sessionId: string): Promise<(CartItem & { menuItem: MenuItem })[]> {
+    const result = await this.db
+      .select({
+        cartItem: cartItems,
+        menuItem: menuItems
+      })
+      .from(cartItems)
+      .innerJoin(menuItems, eq(cartItems.menuItemId, menuItems.id))
+      .where(eq(cartItems.sessionId, sessionId));
+    
+    return result.map(({ cartItem, menuItem }) => ({
+      ...cartItem,
+      menuItem
+    }));
+  }
+
+  async addToCart(item: InsertCartItem): Promise<CartItem> {
+    const result = await this.db
+      .insert(cartItems)
+      .values(item)
+      .returning();
+    
+    return result[0];
+  }
+
+  async updateCartItem(id: number, quantity: number): Promise<CartItem | undefined> {
+    const result = await this.db
+      .update(cartItems)
+      .set({ quantity })
+      .where(eq(cartItems.id, id))
+      .returning();
+    
+    return result[0];
+  }
+
+  async removeFromCart(id: number): Promise<boolean> {
+    const result = await this.db
+      .delete(cartItems)
+      .where(eq(cartItems.id, id))
+      .returning();
+    
+    return result.length > 0;
+  }
+
+  async clearCart(sessionId: string): Promise<boolean> {
+    const result = await this.db
+      .delete(cartItems)
+      .where(eq(cartItems.sessionId, sessionId))
+      .returning();
+    
+    return result.length > 0;
+  }
+
+  // Order operations
+  async createOrder(order: InsertOrder): Promise<Order> {
+    const result = await this.db
+      .insert(orders)
+      .values(order)
+      .returning();
+    
+    return result[0];
+  }
+
+  async getOrderById(id: number): Promise<Order | undefined> {
+    const result = await this.db
+      .select()
+      .from(orders)
+      .where(eq(orders.id, id))
+      .limit(1);
+    
+    return result[0];
+  }
+
+  async getOrdersByPhone(phone: string): Promise<Order[]> {
+    return await this.db
+      .select()
+      .from(orders)
+      .where(eq(orders.customerPhone, phone));
   }
 }
 

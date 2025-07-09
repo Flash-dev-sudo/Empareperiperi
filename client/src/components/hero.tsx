@@ -33,13 +33,6 @@ export default function Hero() {
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
               <Button 
-                onClick={() => setLocation("/order")}
-                className="bg-emparo-orange hover:bg-emparo-orange/90 text-white px-10 py-6 rounded-2xl text-xl font-bold transition-all"
-              >
-                <ShoppingCart className="mr-3 w-6 h-6" />
-                Order Online
-              </Button>
-              <Button 
                 onClick={() => scrollToSection("menu")}
                 className="bg-blue-500 hover:bg-blue-600 text-white px-10 py-6 rounded-2xl text-xl font-bold transition-all"
               >
