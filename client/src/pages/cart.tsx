@@ -184,6 +184,12 @@ export default function Cart() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Cart Items */}
         <div className="lg:col-span-2 space-y-8">
+          {/* Delivery/Collection Options */}
+          <DeliveryChecker 
+            onDeliveryChange={handleDeliveryChange}
+            cartTotal={calculateSubtotal()}
+          />
+          
           <Card>
             <CardHeader>
               <CardTitle>Order Items</CardTitle>
@@ -246,12 +252,6 @@ export default function Cart() {
               </div>
             </CardContent>
           </Card>
-
-          {/* Delivery/Collection Options */}
-          <DeliveryChecker 
-            onDeliveryChange={handleDeliveryChange}
-            cartTotal={calculateSubtotal()}
-          />
         </div>
 
         {/* Customer Details */}

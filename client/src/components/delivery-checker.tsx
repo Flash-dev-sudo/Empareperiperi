@@ -40,22 +40,34 @@ export default function DeliveryChecker({ onDeliveryChange, cartTotal }: Deliver
     const isEligible = eligiblePostcodes.includes(postcodePrefix);
     
     if (isEligible) {
-      // Calculate delivery fee based on cart total
-      let fee = 0;
-      if (cartTotal < 10) {
-        fee = 2.75;
-      } else if (cartTotal >= 20) {
-        fee = 1.50;
-      } else {
-        fee = 2.75; // Between £10-£20
-      }
+      // Check if within 1 mile radius (free delivery)
+      const distance = Math.random() * 1.5; // Mock distance
       
-      return {
-        isEligible: true,
-        distance: Math.random() * 1, // Mock distance within 1 mile
-        fee,
-        message: `Delivery available to ${postcode.toUpperCase()}`
-      };
+      if (distance <= 1) {
+        return {
+          isEligible: true,
+          distance,
+          fee: 0,
+          message: `Free delivery to ${postcode.toUpperCase()} (within 1 mile)`
+        };
+      } else {
+        // Calculate delivery fee based on cart total for outside 1 mile
+        let fee = 0;
+        if (cartTotal < 10) {
+          fee = 2.75;
+        } else if (cartTotal >= 20) {
+          fee = 0; // Free delivery for orders over £20
+        } else {
+          fee = 1.50; // Between £10-£20
+        }
+        
+        return {
+          isEligible: true,
+          distance,
+          fee,
+          message: `Delivery available to ${postcode.toUpperCase()} - £${fee.toFixed(2)}`
+        };
+      }
     } else {
       return {
         isEligible: false,
