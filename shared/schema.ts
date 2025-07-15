@@ -30,6 +30,7 @@ export const orders = sqliteTable("orders", {
   status: text("status").default("pending"),
   orderType: text("order_type").notNull(),
   deliveryAddress: text("delivery_address"),
+  deliveryFee: text("delivery_fee").default("0"),
   notes: text("notes"),
   createdAt: text("created_at").default("datetime('now')"),
 });

@@ -9,6 +9,7 @@ import { Trash2, Plus, Minus, ShoppingCart } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
+import DeliveryChecker from "@/components/delivery-checker";
 
 interface CartItem {
   id: number;
@@ -35,6 +36,11 @@ export default function Cart() {
     address: "",
     notes: ""
   });
+  const [deliveryInfo, setDeliveryInfo] = useState<{
+    type: 'delivery' | 'collection';
+    fee: number;
+    message: string;
+  } | null>(null);
   
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -85,15 +91,39 @@ export default function Cart() {
     }
   };
 
-  const calculateTotal = () => {
+  const calculateSubtotal = () => {
     return cartItems.reduce((total, item) => {
       return total + (parseFloat(item.menuItem.price) * item.quantity);
-    }, 0).toFixed(2);
+    }, 0);
+  };
+
+  const calculateTotal = () => {
+    const subtotal = calculateSubtotal();
+    const deliveryFee = deliveryInfo?.type === 'delivery' ? deliveryInfo.fee : 0;
+    return (subtotal + deliveryFee).toFixed(2);
+  };
+
+  const handleDeliveryChange = (type: 'delivery' | 'collection', info?: any) => {
+    setDeliveryInfo({
+      type,
+      fee: info?.fee || 0,
+      message: info?.message || 'Collection selected'
+    });
+    
+    setCustomerDetails(prev => ({
+      ...prev,
+      orderType: type === 'delivery' ? 'delivery' : 'pickup'
+    }));
   };
 
   const handlePlaceOrder = () => {
     if (!customerDetails.name || !customerDetails.phone) {
       toast({ title: "Please fill in required details", variant: "destructive" });
+      return;
+    }
+
+    if (!deliveryInfo) {
+      toast({ title: "Please select delivery or collection option", variant: "destructive" });
       return;
     }
 
@@ -117,6 +147,7 @@ export default function Cart() {
       status: "pending",
       orderType: customerDetails.orderType,
       deliveryAddress: customerDetails.orderType === "delivery" ? customerDetails.address : null,
+      deliveryFee: deliveryInfo.type === 'delivery' ? deliveryInfo.fee : 0,
       notes: customerDetails.notes || null
     };
 
@@ -152,7 +183,7 @@ export default function Cart() {
       
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Cart Items */}
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 space-y-8">
           <Card>
             <CardHeader>
               <CardTitle>Order Items</CardTitle>
@@ -196,11 +227,31 @@ export default function Cart() {
               
               <Separator />
               
-              <div className="flex justify-between items-center text-xl font-bold">
-                <span>Total: £{calculateTotal()}</span>
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span>Subtotal:</span>
+                  <span>£{calculateSubtotal().toFixed(2)}</span>
+                </div>
+                {deliveryInfo?.type === 'delivery' && deliveryInfo.fee > 0 && (
+                  <div className="flex justify-between items-center">
+                    <span>Delivery Fee:</span>
+                    <span>£{deliveryInfo.fee.toFixed(2)}</span>
+                  </div>
+                )}
+                <Separator />
+                <div className="flex justify-between items-center text-xl font-bold">
+                  <span>Total:</span>
+                  <span>£{calculateTotal()}</span>
+                </div>
               </div>
             </CardContent>
           </Card>
+
+          {/* Delivery/Collection Options */}
+          <DeliveryChecker 
+            onDeliveryChange={handleDeliveryChange}
+            cartTotal={calculateSubtotal()}
+          />
         </div>
 
         {/* Customer Details */}
@@ -241,23 +292,15 @@ export default function Cart() {
                 />
               </div>
               
-              <div>
-                <Label>Order Type</Label>
-                <div className="flex space-x-4 mt-2">
-                  <Button
-                    variant={customerDetails.orderType === "pickup" ? "default" : "outline"}
-                    onClick={() => setCustomerDetails(prev => ({ ...prev, orderType: "pickup" }))}
-                  >
-                    Pickup
-                  </Button>
-                  <Button
-                    variant={customerDetails.orderType === "delivery" ? "default" : "outline"}
-                    onClick={() => setCustomerDetails(prev => ({ ...prev, orderType: "delivery" }))}
-                  >
-                    Delivery
-                  </Button>
+              {deliveryInfo && (
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <p className="text-sm font-medium">Order Type:</p>
+                  <p className="text-sm text-gray-600">
+                    {deliveryInfo.type === 'delivery' ? 'Delivery' : 'Collection'} 
+                    {deliveryInfo.type === 'delivery' && ` - £${deliveryInfo.fee.toFixed(2)}`}
+                  </p>
                 </div>
-              </div>
+              )}
               
               {customerDetails.orderType === "delivery" && (
                 <div>
