@@ -112,13 +112,26 @@ export default function Admin() {
     setIsAuthenticated(true);
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("adminAuthenticated");
-    setIsAuthenticated(false);
-    toast({
-      title: "Logged Out",
-      description: "You have been logged out of the admin dashboard",
-    });
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/logout", {
+        method: "POST",
+      });
+      sessionStorage.removeItem("adminAuthenticated");
+      setIsAuthenticated(false);
+      toast({
+        title: "Logged Out",
+        description: "You have been logged out of the admin dashboard",
+      });
+    } catch (error) {
+      // Even if the request fails, still log out locally
+      sessionStorage.removeItem("adminAuthenticated");
+      setIsAuthenticated(false);
+      toast({
+        title: "Logged Out",
+        description: "You have been logged out of the admin dashboard",
+      });
+    }
   };
 
   // Show login form if not authenticated

@@ -5,6 +5,78 @@ import { insertCartItemSchema, insertOrderSchema, insertMenuItemSchema } from "@
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Admin authentication routes with enhanced security
+  app.post('/api/admin/login', async (req, res) => {
+    const { password } = req.body;
+    const clientIP = req.ip || req.connection.remoteAddress;
+    
+    // Rate limiting: Track failed attempts
+    const failedAttempts = (req.session as any).failedAttempts || 0;
+    const lastAttempt = (req.session as any).lastAttempt || 0;
+    const now = Date.now();
+    
+    // Block if too many failed attempts (5 attempts in 15 minutes)
+    if (failedAttempts >= 5 && now - lastAttempt < 15 * 60 * 1000) {
+      return res.status(429).json({ 
+        error: 'Too many failed attempts. Please try again later.' 
+      });
+    }
+
+    // Check password (stored in environment or fallback)
+    const adminPassword = process.env.ADMIN_PASSWORD || 'emparo2025';
+    
+    if (password === adminPassword) {
+      // Reset failed attempts on successful login
+      (req.session as any).failedAttempts = 0;
+      (req.session as any).adminAuthenticated = true;
+      (req.session as any).adminIP = clientIP;
+      (req.session as any).loginTime = now;
+      
+      console.log(`Admin login successful from IP: ${clientIP} at ${new Date().toISOString()}`);
+      
+      res.json({ success: true });
+    } else {
+      // Increment failed attempts
+      (req.session as any).failedAttempts = failedAttempts + 1;
+      (req.session as any).lastAttempt = now;
+      
+      console.log(`Admin login failed from IP: ${clientIP} at ${new Date().toISOString()}`);
+      
+      res.status(401).json({ error: 'Invalid password' });
+    }
+  });
+
+  // Admin logout route
+  app.post('/api/admin/logout', (req, res) => {
+    (req.session as any).adminAuthenticated = false;
+    (req.session as any).adminIP = null;
+    (req.session as any).loginTime = null;
+    res.json({ success: true });
+  });
+
+  // Admin middleware for protecting admin routes
+  const adminAuth = (req: any, res: any, next: any) => {
+    const clientIP = req.ip || req.connection.remoteAddress;
+    
+    if (!(req.session as any).adminAuthenticated) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+    
+    // Check if IP matches login IP (optional extra security)
+    if ((req.session as any).adminIP && (req.session as any).adminIP !== clientIP) {
+      console.log(`Admin access denied: IP mismatch. Login IP: ${(req.session as any).adminIP}, Current IP: ${clientIP}`);
+      return res.status(401).json({ error: 'Access denied: IP mismatch' });
+    }
+    
+    // Check session timeout (2 hours)
+    if (Date.now() - (req.session as any).loginTime > 2 * 60 * 60 * 1000) {
+      (req.session as any).adminAuthenticated = false;
+      return res.status(401).json({ error: 'Session expired' });
+    }
+    
+    next();
+  };
+
   // Menu routes
   app.get("/api/menu", async (req, res) => {
     try {
@@ -15,8 +87,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Admin menu management routes
-  app.post("/api/menu", async (req, res) => {
+  // Admin menu management routes (protected)
+  app.post("/api/menu", adminAuth, async (req, res) => {
     try {
       const validatedData = insertMenuItemSchema.parse(req.body);
       const menuItem = await storage.createMenuItem(validatedData);
@@ -26,7 +98,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/menu/:id", async (req, res) => {
+  app.put("/api/menu/:id", adminAuth, async (req, res) => {
     try {
       const { id } = req.params;
       const updatedItem = await storage.updateMenuItem(parseInt(id), req.body);
@@ -39,7 +111,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/menu/:id", async (req, res) => {
+  app.delete("/api/menu/:id", adminAuth, async (req, res) => {
     try {
       const { id } = req.params;
       const success = await storage.deleteMenuItem(parseInt(id));

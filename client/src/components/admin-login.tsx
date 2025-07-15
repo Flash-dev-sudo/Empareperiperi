@@ -20,19 +20,35 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simple password check - in production, this should be more secure
-    if (password === "emparo2025") {
-      // Store authentication in sessionStorage (expires when browser closes)
-      sessionStorage.setItem("adminAuthenticated", "true");
-      onLogin();
-      toast({
-        title: "Access Granted",
-        description: "Welcome to the admin dashboard",
+    try {
+      // Send password to backend for verification
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password }),
       });
-    } else {
+
+      if (response.ok) {
+        // Store authentication in sessionStorage (expires when browser closes)
+        sessionStorage.setItem("adminAuthenticated", "true");
+        onLogin();
+        toast({
+          title: "Access Granted",
+          description: "Welcome to the admin dashboard",
+        });
+      } else {
+        toast({
+          title: "Access Denied",
+          description: "Invalid password",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
       toast({
-        title: "Access Denied",
-        description: "Invalid password",
+        title: "Error",
+        description: "Connection failed. Please try again.",
         variant: "destructive",
       });
     }

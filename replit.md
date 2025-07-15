@@ -106,6 +106,21 @@ This is a full-stack web application for Emparo Peri Peri, an authentic peri per
 - `render.yaml` - Render service configuration
 - Build process creates production bundle with Vite + ESBuild
 
+## Security Features
+
+### Admin Dashboard Security
+- **Password Protection**: Server-side password verification (configurable via ADMIN_PASSWORD env var)
+- **Session Management**: Secure session-based authentication with 2-hour timeout
+- **Rate Limiting**: 5 failed attempts per session, 15-minute lockout
+- **IP Tracking**: Login IP addresses logged for security monitoring
+- **Protected Routes**: All admin API endpoints require authentication
+- **Access Control**: Hidden from public navigation, direct URL access only
+- **Security Logging**: All login attempts and admin actions logged
+
+### Environment Variables for Security
+- `ADMIN_PASSWORD`: Admin login password (default: "emparo2025")
+- `SESSION_SECRET`: Session encryption key for secure cookies
+
 ## Changelog
 
 ```
@@ -117,6 +132,7 @@ Changelog:
 - July 04, 2025. Resolved build issues by updating Render build command to include devDependencies
 - July 15, 2025. Added password-protected admin dashboard for menu management
 - July 15, 2025. Secured admin page with password "emparo2025" and removed from public navigation
+- July 15, 2025. Enhanced admin security with server-side authentication, rate limiting, IP tracking, and session management
 ```
 
 ## User Preferences
