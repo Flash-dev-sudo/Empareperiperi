@@ -24,7 +24,8 @@ export default function Navigation() {
     { label: "Menu", id: "menu", path: "/" },
     { label: "Order Online", id: "order", path: "/order" },
     { label: "About", id: "about", path: "/" },
-    { label: "Contact", id: "contact", path: "/" }
+    { label: "Contact", id: "contact", path: "/" },
+    { label: "Admin", id: "admin", path: "/admin" }
   ];
 
   return (

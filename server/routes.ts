@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertCartItemSchema, insertOrderSchema } from "@shared/schema";
+import { insertCartItemSchema, insertOrderSchema, insertMenuItemSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -12,6 +12,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(items);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Admin menu management routes
+  app.post("/api/menu", async (req, res) => {
+    try {
+      const validatedData = insertMenuItemSchema.parse(req.body);
+      const menuItem = await storage.createMenuItem(validatedData);
+      res.json(menuItem);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
+  app.put("/api/menu/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updatedItem = await storage.updateMenuItem(parseInt(id), req.body);
+      if (!updatedItem) {
+        return res.status(404).json({ error: "Menu item not found" });
+      }
+      res.json(updatedItem);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
+  app.delete("/api/menu/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const success = await storage.deleteMenuItem(parseInt(id));
+      if (!success) {
+        return res.status(404).json({ error: "Menu item not found" });
+      }
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
     }
   });
 

@@ -15,6 +15,8 @@ export interface IStorage {
   getMenuItems(): Promise<MenuItem[]>;
   getMenuItemById(id: number): Promise<MenuItem | undefined>;
   createMenuItem(item: InsertMenuItem): Promise<MenuItem>;
+  updateMenuItem(id: number, item: Partial<MenuItem>): Promise<MenuItem | undefined>;
+  deleteMenuItem(id: number): Promise<boolean>;
   
   // Cart operations
   getCartItems(sessionId: string): Promise<(CartItem & { menuItem: MenuItem })[]>;
@@ -161,6 +163,20 @@ export class MemStorage implements IStorage {
     return menuItem;
   }
 
+  async updateMenuItem(id: number, updates: Partial<MenuItem>): Promise<MenuItem | undefined> {
+    const item = this.menuItems.get(id);
+    if (item) {
+      const updatedItem = { ...item, ...updates };
+      this.menuItems.set(id, updatedItem);
+      return updatedItem;
+    }
+    return undefined;
+  }
+
+  async deleteMenuItem(id: number): Promise<boolean> {
+    return this.menuItems.delete(id);
+  }
+
   async getCartItems(sessionId: string): Promise<(CartItem & { menuItem: MenuItem })[]> {
     const items = Array.from(this.cartItems.values())
       .filter(item => item.sessionId === sessionId);
@@ -297,6 +313,25 @@ export class TursoStorage implements IStorage {
       .returning();
     
     return result[0];
+  }
+
+  async updateMenuItem(id: number, updates: Partial<MenuItem>): Promise<MenuItem | undefined> {
+    const result = await this.db
+      .update(menuItems)
+      .set(updates)
+      .where(eq(menuItems.id, id))
+      .returning();
+    
+    return result[0];
+  }
+
+  async deleteMenuItem(id: number): Promise<boolean> {
+    const result = await this.db
+      .delete(menuItems)
+      .where(eq(menuItems.id, id))
+      .returning();
+    
+    return result.length > 0;
   }
 
   // Cart operations
