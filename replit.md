@@ -115,6 +115,8 @@ Changelog:
 - July 03, 2025. Configured for Render deployment with dynamic port and Turso integration
 - July 04, 2025. Successfully deployed to Render at https://empareperiperi.onrender.com
 - July 04, 2025. Resolved build issues by updating Render build command to include devDependencies
+- July 15, 2025. Added password-protected admin dashboard for menu management
+- July 15, 2025. Secured admin page with password "emparo2025" and removed from public navigation
 ```
 
 ## User Preferences

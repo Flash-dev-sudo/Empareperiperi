@@ -21,7 +21,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
     setIsLoading(true);
 
     // Simple password check - in production, this should be more secure
-    if (password === "emparo2024") {
+    if (password === "emparo2025") {
       // Store authentication in sessionStorage (expires when browser closes)
       sessionStorage.setItem("adminAuthenticated", "true");
       onLogin();
