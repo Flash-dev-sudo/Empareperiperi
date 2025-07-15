@@ -102,124 +102,114 @@ export default function DeliveryChecker({ onDeliveryChange, cartTotal }: Deliver
 
   const handleDeliveryTypeChange = (type: 'delivery' | 'collection') => {
     setSelectedType(type);
-    onDeliveryChange(type, type === 'delivery' ? deliveryInfo : undefined);
+    if (type === 'collection') {
+      onDeliveryChange('collection', { isEligible: true, distance: 0, fee: 0, message: 'Collection selected' });
+    } else {
+      onDeliveryChange('delivery', deliveryInfo);
+    }
   };
 
   return (
     <div className="space-y-6">
-      {/* Postcode Checker */}
+      {/* Order Type Selection */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <MapPin className="h-5 w-5" />
-            Check Delivery Area
-          </CardTitle>
+          <CardTitle>Order Type</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="postcode">Enter your postcode</Label>
-            <div className="flex gap-2">
-              <Input
-                id="postcode"
-                placeholder="e.g. N4 3JP"
-                value={postcode}
-                onChange={(e) => setPostcode(e.target.value)}
-                className="flex-1"
-              />
-              <Button 
-                onClick={handlePostcodeCheck}
-                disabled={isChecking || !postcode.trim()}
-              >
-                {isChecking ? "Checking..." : "Check"}
-              </Button>
-            </div>
-          </div>
-
-          {deliveryInfo && (
-            <div className="space-y-3">
-              <div className={`p-3 rounded-lg ${
-                deliveryInfo.isEligible 
-                  ? 'bg-green-50 border border-green-200' 
-                  : 'bg-yellow-50 border border-yellow-200'
-              }`}>
-                <p className="text-sm font-medium">{deliveryInfo.message}</p>
-                {deliveryInfo.isEligible && (
-                  <div className="mt-2 space-y-1">
-                    <p className="text-sm text-gray-600">
-                      • 1 mile radius - Free delivery within area
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      • Less than £10: £2.75 delivery fee
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      • £20 or more: £1.50 delivery fee
-                    </p>
-                    <p className="text-sm font-medium text-emparo-orange">
-                      Your delivery fee: £{deliveryInfo.fee.toFixed(2)}
-                    </p>
-                  </div>
-                )}
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Button
+              variant={selectedType === 'collection' ? 'default' : 'outline'}
+              onClick={() => handleDeliveryTypeChange('collection')}
+              className="p-4 h-auto flex flex-col items-center gap-2"
+            >
+              <Package className="h-6 w-6" />
+              <div className="text-center">
+                <div className="font-semibold">Collection</div>
+                <div className="text-sm text-gray-600">Pick up from restaurant</div>
               </div>
-            </div>
-          )}
+            </Button>
+            
+            <Button
+              variant={selectedType === 'delivery' ? 'default' : 'outline'}
+              onClick={() => handleDeliveryTypeChange('delivery')}
+              className="p-4 h-auto flex flex-col items-center gap-2"
+              disabled={deliveryInfo && !deliveryInfo.isEligible}
+            >
+              <Truck className="h-6 w-6" />
+              <div className="text-center">
+                <div className="font-semibold">Delivery</div>
+                <div className="text-sm text-gray-600">Delivered to your door</div>
+              </div>
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
-      {/* Delivery/Collection Options */}
-      {deliveryInfo && (
+      {/* Postcode Checker - only show if delivery is selected */}
+      {selectedType === 'delivery' && (
         <Card>
           <CardHeader>
-            <CardTitle>Choose Service Type</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <MapPin className="h-5 w-5" />
+              Check Delivery Area
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Delivery Option */}
-              {deliveryInfo.isEligible && (
-                <div 
-                  className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                    selectedType === 'delivery' 
-                      ? 'border-emparo-orange bg-emparo-orange/5' 
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                  onClick={() => handleDeliveryTypeChange('delivery')}
+            <div className="space-y-2">
+              <Label htmlFor="postcode">Enter your postcode</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="postcode"
+                  placeholder="e.g. N4 3JP"
+                  value={postcode}
+                  onChange={(e) => setPostcode(e.target.value)}
+                  className="flex-1"
+                />
+                <Button 
+                  onClick={handlePostcodeCheck}
+                  disabled={isChecking || !postcode.trim()}
                 >
-                  <div className="flex items-center gap-3">
-                    <Truck className="h-6 w-6 text-emparo-orange" />
-                    <div>
-                      <h3 className="font-medium">Delivery</h3>
-                      <p className="text-sm text-gray-600">30-45 minutes</p>
-                      <Badge variant="outline" className="mt-1">
-                        £{deliveryInfo.fee.toFixed(2)} fee
-                      </Badge>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Collection Option */}
-              <div 
-                className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                  selectedType === 'collection' 
-                    ? 'border-emparo-orange bg-emparo-orange/5' 
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-                onClick={() => handleDeliveryTypeChange('collection')}
-              >
-                <div className="flex items-center gap-3">
-                  <Package className="h-6 w-6 text-emparo-orange" />
-                  <div>
-                    <h3 className="font-medium">Collection</h3>
-                    <p className="text-sm text-gray-600">15-20 minutes</p>
-                    <Badge variant="outline" className="mt-1">
-                      FREE
-                    </Badge>
-                  </div>
-                </div>
+                  {isChecking ? "Checking..." : "Check"}
+                </Button>
               </div>
             </div>
+
+            {deliveryInfo && (
+              <div className="space-y-3">
+                <div className={`p-3 rounded-lg ${
+                  deliveryInfo.isEligible 
+                    ? 'bg-green-50 border border-green-200' 
+                    : 'bg-yellow-50 border border-yellow-200'
+                }`}>
+                  <p className="text-sm font-medium">{deliveryInfo.message}</p>
+                  {deliveryInfo.isEligible && (
+                    <div className="mt-2 space-y-1">
+                      <p className="text-sm text-gray-600">
+                        • Within 1 mile: Free delivery
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        • Less than £10: £2.75 delivery fee
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        • £10-£20: £1.50 delivery fee
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        • £20+: Free delivery
+                      </p>
+                      <p className="text-sm font-medium text-emparo-orange">
+                        Your delivery fee: £{deliveryInfo.fee.toFixed(2)}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
       )}
+
+
 
       {/* Collection Time Selector */}
       {selectedType === 'collection' && (
