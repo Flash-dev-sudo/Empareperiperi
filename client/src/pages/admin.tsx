@@ -34,38 +34,9 @@ export default function Admin() {
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
   const { toast } = useToast();
 
-  // Check authentication on component mount
-  useEffect(() => {
-    const authStatus = sessionStorage.getItem("adminAuthenticated");
-    setIsAuthenticated(authStatus === "true");
-  }, []);
-
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-  };
-
-  const handleLogout = () => {
-    sessionStorage.removeItem("adminAuthenticated");
-    setIsAuthenticated(false);
-    toast({
-      title: "Logged Out",
-      description: "You have been logged out of the admin dashboard",
-    });
-  };
-
-  // Show login form if not authenticated
-  if (!isAuthenticated) {
-    return <AdminLogin onLogin={handleLogin} />;
-  }
-
+  // Always call all hooks at the top level
   const { data: menuItems = [], isLoading } = useQuery<MenuItem[]>({
     queryKey: ["/api/menu"],
-  });
-
-  const filteredItems = menuItems.filter(item => {
-    const matchesCategory = item.category === selectedCategory;
-    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
   });
 
   const addItemMutation = useMutation({
@@ -129,6 +100,36 @@ export default function Admin() {
         variant: "destructive",
       });
     },
+  });
+
+  // Check authentication on component mount
+  useEffect(() => {
+    const authStatus = sessionStorage.getItem("adminAuthenticated");
+    setIsAuthenticated(authStatus === "true");
+  }, []);
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("adminAuthenticated");
+    setIsAuthenticated(false);
+    toast({
+      title: "Logged Out",
+      description: "You have been logged out of the admin dashboard",
+    });
+  };
+
+  // Show login form if not authenticated
+  if (!isAuthenticated) {
+    return <AdminLogin onLogin={handleLogin} />;
+  }
+
+  const filteredItems = menuItems.filter(item => {
+    const matchesCategory = item.category === selectedCategory;
+    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCategory && matchesSearch;
   });
 
   const handleAddItem = (formData: FormData) => {
