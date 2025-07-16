@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Flame, Menu, X, Phone, ShoppingCart } from "lucide-react";
+import { Flame, Menu, X, Phone, ShoppingCart, Home } from "lucide-react";
 import { useLocation } from "wouter";
 
 export default function Navigation() {
@@ -22,9 +22,8 @@ export default function Navigation() {
   };
 
   const menuItems = [
-    { label: "Home", id: "home", path: "/" },
-    { label: "Order Online", id: "order", path: "/order" },
-    { label: "Contact", id: "contact", path: "/" }
+    { label: "Home", id: "home", path: "/", isHome: true },
+    { label: "Order Online", id: "order", path: "/order", isBubble: true }
   ];
 
   return (
@@ -51,9 +50,15 @@ export default function Navigation() {
               <button
                 key={item.id}
                 onClick={() => handleNavigation(item)}
-                className="text-emparo-dark hover:text-emparo-orange font-semibold transition-colors"
+                className={
+                  item.isHome 
+                    ? "text-emparo-dark hover:text-emparo-orange transition-colors p-2 rounded-full hover:bg-emparo-orange/10"
+                    : item.isBubble 
+                    ? "bg-emparo-orange hover:bg-emparo-orange/90 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-lg hover:shadow-xl"
+                    : "text-emparo-dark hover:text-emparo-orange font-semibold transition-colors"
+                }
               >
-                {item.label}
+                {item.isHome ? <Home className="w-5 h-5" /> : item.label}
               </button>
             ))}
           </div>
@@ -79,9 +84,20 @@ export default function Navigation() {
                 <button
                   key={item.id}
                   onClick={() => handleNavigation(item)}
-                  className="text-emparo-dark hover:text-emparo-orange font-semibold text-left transition-colors"
+                  className={
+                    item.isHome 
+                      ? "text-emparo-dark hover:text-emparo-orange transition-colors text-left px-4 py-2 flex items-center space-x-3"
+                      : item.isBubble 
+                      ? "bg-emparo-orange hover:bg-emparo-orange/90 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-lg mx-4"
+                      : "text-emparo-dark hover:text-emparo-orange font-semibold transition-colors text-left px-4 py-2"
+                  }
                 >
-                  {item.label}
+                  {item.isHome ? (
+                    <>
+                      <Home className="w-5 h-5" />
+                      <span>{item.label}</span>
+                    </>
+                  ) : item.label}
                 </button>
               ))}
               <Button 
