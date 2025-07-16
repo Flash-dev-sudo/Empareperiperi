@@ -21,9 +21,7 @@ export default function Navigation() {
 
   const menuItems = [
     { label: "Home", id: "home", path: "/" },
-    { label: "Menu", id: "menu", path: "/" },
     { label: "Order Online", id: "order", path: "/order" },
-    { label: "About", id: "about", path: "/" },
     { label: "Contact", id: "contact", path: "/" }
   ];
 
@@ -53,13 +51,6 @@ export default function Navigation() {
                 {item.label}
               </button>
             ))}
-            <Button 
-              onClick={() => setLocation("/order")}
-              className="bg-emparo-orange hover:bg-emparo-orange/90 text-white px-6 py-2 rounded-2xl font-bold"
-            >
-              <ShoppingCart className="mr-2 w-4 h-4" />
-              Order Online
-            </Button>
           </div>
 
           {/* Mobile Menu Button */}

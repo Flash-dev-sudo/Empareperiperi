@@ -10,6 +10,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 import DeliveryChecker from "@/components/delivery-checker";
+import Navigation from "@/components/navigation";
 
 interface CartItem {
   id: number;
@@ -48,6 +49,8 @@ export default function Cart() {
 
   useEffect(() => {
     localStorage.setItem("sessionId", sessionId);
+    // Reset scroll position when component mounts
+    window.scrollTo(0, 0);
   }, [sessionId]);
 
   const { data: cartItems = [], isLoading } = useQuery({
@@ -178,8 +181,10 @@ export default function Cart() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-20">
-      <h1 className="text-3xl font-bold mb-8">Your Cart</h1>
+    <div className="min-h-screen bg-emparo-cream">
+      <Navigation />
+      <div className="container mx-auto px-4 py-20">
+        <h1 className="text-3xl font-bold mb-8">Your Cart</h1>
       
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Cart Items */}
@@ -338,6 +343,7 @@ export default function Cart() {
             </CardContent>
           </Card>
         </div>
+      </div>
       </div>
     </div>
   );

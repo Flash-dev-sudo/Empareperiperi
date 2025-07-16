@@ -24,7 +24,7 @@ export default function Hero() {
             </h1>
             
             <div className="bg-emparo-dark rounded-3xl p-8 mb-10">
-              <p className="text-2xl md:text-3xl font-bold text-emparo-yellow mb-4">Fresh Stone Baked Pizza</p>
+              <p className="text-2xl md:text-3xl font-bold text-emparo-yellow mb-4">Flame-Grilled Chicken</p>
               <p className="text-lg text-white font-medium mb-6">Authentic Grilled Chicken & Peri Peri Specialties</p>
               <p className="text-xl text-white leading-relaxed">
                 Experience the authentic taste of flame-grilled peri peri chicken, fresh stone-baked pizzas, and mouth-watering specialties that will ignite your taste buds.
@@ -33,11 +33,11 @@ export default function Hero() {
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
               <Button 
-                onClick={() => scrollToSection("menu")}
+                onClick={() => setLocation("/order")}
                 className="bg-blue-500 hover:bg-blue-600 text-white px-10 py-6 rounded-2xl text-xl font-bold transition-all"
               >
-                <Utensils className="mr-3 w-6 h-6" />
-                View Our Menu
+                <ShoppingCart className="mr-3 w-6 h-6" />
+                Order Online
               </Button>
             </div>
           </div>

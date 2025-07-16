@@ -8,6 +8,7 @@ import { Plus, ShoppingCart, Search } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
+import Navigation from "@/components/navigation";
 
 interface MenuItem {
   id: number;
@@ -30,6 +31,8 @@ export default function Order() {
 
   useEffect(() => {
     localStorage.setItem("sessionId", sessionId);
+    // Reset scroll position when component mounts
+    window.scrollTo(0, 0);
   }, [sessionId]);
 
   const { data: menuItems = [], isLoading } = useQuery({
@@ -86,17 +89,19 @@ export default function Order() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-20">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Order Online</h1>
-        <Button 
-          onClick={() => setLocation("/cart")}
-          className="bg-emparo-orange hover:bg-emparo-orange/90"
-        >
-          <ShoppingCart className="w-4 h-4 mr-2" />
-          Cart ({cartItemCount})
-        </Button>
-      </div>
+    <div className="min-h-screen bg-emparo-cream">
+      <Navigation />
+      <div className="container mx-auto px-4 py-20">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold">Order Online</h1>
+          <Button 
+            onClick={() => setLocation("/cart")}
+            className="bg-emparo-orange hover:bg-emparo-orange/90"
+          >
+            <ShoppingCart className="w-4 h-4 mr-2" />
+            Cart ({cartItemCount})
+          </Button>
+        </div>
 
       {/* Search and Filters */}
       <div className="mb-8 space-y-4">
@@ -162,6 +167,7 @@ export default function Order() {
           <p className="text-gray-600">No items found matching your search criteria.</p>
         </div>
       )}
+      </div>
     </div>
   );
 }
