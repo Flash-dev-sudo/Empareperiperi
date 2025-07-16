@@ -26,6 +26,30 @@ const specialties = [
     spiceLevel: 0,
     badge: "Customer Favorite",
     isStarRating: true
+  },
+  {
+    name: "Peri Peri Wrap",
+    price: "£4.50",
+    description: "Succulent chicken wrapped in soft tortilla with fresh salad and peri peri sauce",
+    image: "/attached_assets/ChatGPT Image May 22, 2025, 08_27_31 PM_1750005435412.png",
+    spiceLevel: 1,
+    badge: "Mild Spice"
+  },
+  {
+    name: "Half Grilled Chicken",
+    price: "£12.50",
+    description: "Half chicken marinated overnight and grilled to perfection with authentic spices",
+    image: "/attached_assets/ChatGPT Image May 22, 2025, 10_26_10 PM_1750005388243.png",
+    spiceLevel: 2,
+    badge: "Popular Choice"
+  },
+  {
+    name: "Peri Peri Chips",
+    price: "£3.00",
+    description: "Crispy golden chips seasoned with our signature peri peri spice blend",
+    image: "/attached_assets/ChatGPT Image May 22, 2025, 10_30_37 PM_1750005388243.png",
+    spiceLevel: 1,
+    badge: "Side Favorite"
   }
 ];
 
@@ -42,7 +66,7 @@ export default function FeaturedSpecialties() {
           </p>
         </div>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {specialties.map((item, index) => (
             <Card key={index} className="bg-emparo-cream rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow group">
               <div className="relative overflow-hidden">

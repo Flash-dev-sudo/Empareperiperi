@@ -80,26 +80,35 @@ export default function ContactSection() {
             </Card>
           </div>
           
-          {/* Map placeholder */}
+          {/* Interactive Map */}
           <div className="relative">
             <Card className="bg-white rounded-3xl overflow-hidden shadow-lg h-full">
-              <div className="h-full min-h-[500px] bg-gradient-to-br from-emparo-cream to-white flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin className="w-16 h-16 text-emparo-orange mx-auto mb-4" />
-                  <h3 className="text-2xl font-bold text-emparo-dark mb-2">Find Us</h3>
-                  <p className="text-emparo-dark/70 mb-4">24 Blackstock Road, Finsbury Park</p>
-                  <Button 
-                    className="bg-emparo-orange hover:bg-emparo-orange/90 text-white rounded-2xl"
-                    asChild
-                  >
-                    <a 
-                      href="https://maps.google.com/maps?q=24+Blackstock+Road,+Finsbury+Park,+London+N4+2DW" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                    >
-                      Open in Maps
-                    </a>
-                  </Button>
+              <div className="h-full min-h-[500px] relative">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2480.7424789543997!2d-0.11030162342847156!3d51.56216797184234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761c7a8e0e3c25%3A0x1d1d1d1d1d1d1d1d!2s24%20Blackstock%20Rd%2C%20London%20N4%202DW%2C%20UK!5e0!3m2!1sen!2sus!4v1643723400000!5m2!1sen!2sus"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0, borderRadius: '1.5rem' }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Emparo Peri Peri Location"
+                  className="absolute inset-0"
+                />
+                
+                {/* Overlay with restaurant info */}
+                <div className="absolute top-4 left-4 right-4 z-10">
+                  <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-emparo-orange p-2 rounded-full">
+                        <MapPin className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-emparo-dark">Emparo Peri Peri</h3>
+                        <p className="text-sm text-emparo-dark/70">24 Blackstock Road, Finsbury Park</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </Card>

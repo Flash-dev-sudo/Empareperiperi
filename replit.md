@@ -133,6 +133,7 @@ Changelog:
 - July 15, 2025. Added password-protected admin dashboard for menu management
 - July 15, 2025. Secured admin page with password "emparo2025" and removed from public navigation
 - July 15, 2025. Enhanced admin security with server-side authentication, rate limiting, IP tracking, and session management
+- July 16, 2025. Enhanced navigation and content: Fixed hero section (chicken vs pizza), added navigation to order/cart pages, improved scroll behavior, expanded "Best Sellers" section with 6 popular items, integrated Google Maps in contact section
 ```
 
 ## User Preferences
