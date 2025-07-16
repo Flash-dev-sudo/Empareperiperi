@@ -85,7 +85,7 @@ export default function ContactSection() {
             <Card className="bg-white rounded-3xl overflow-hidden shadow-lg h-full">
               <div className="h-full min-h-[500px] relative">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2480.7424789543997!2d-0.11030162342847156!3d51.56216797184234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761c7a8e0e3c25%3A0x1d1d1d1d1d1d1d1d!2s24%20Blackstock%20Rd%2C%20London%20N4%202DW%2C%20UK!5e0!3m2!1sen!2sus!4v1643723400000!5m2!1sen!2sus"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2482.0527841799165!2d-0.10797342342859576!3d51.55407437184048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761c7b7c8c8c8c%3A0x9c9c9c9c9c9c9c9c!2s24%20Blackstock%20Rd%2C%20London%20N4%202DW%2C%20UK!5e0!3m2!1sen!2sus!4v1752675200000!5m2!1sen!2sus"
                   width="100%"
                   height="100%"
                   style={{ border: 0, borderRadius: '1.5rem' }}

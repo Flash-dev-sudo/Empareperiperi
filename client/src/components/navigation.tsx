@@ -10,6 +10,8 @@ export default function Navigation() {
   const handleNavigation = (item: any) => {
     if (item.path && item.path !== "/") {
       setLocation(item.path);
+    } else if (item.path === "/") {
+      setLocation("/");
     } else {
       const element = document.getElementById(item.id);
       if (element) {
@@ -30,7 +32,10 @@ export default function Navigation() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
+          <button 
+            onClick={() => setLocation("/")}
+            className="flex items-center space-x-3 hover:opacity-90 transition-opacity"
+          >
             <div className="bg-emparo-orange p-3 rounded-2xl">
               <Flame className="w-8 h-8 text-white" />
             </div>
@@ -38,7 +43,7 @@ export default function Navigation() {
               <h1 className="text-2xl font-black text-emparo-dark">EMPARO</h1>
               <p className="text-sm text-emparo-orange font-bold -mt-1">PERI PERI</p>
             </div>
-          </div>
+          </button>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">

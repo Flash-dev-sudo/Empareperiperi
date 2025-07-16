@@ -1,0 +1,93 @@
+Here is a **focused list of immediate fixes** for the **Emparo Peri Peri** website homepage and key sections that will **improve usability, reduce confusion, and create trust**. These are **high-impact, low-effort fixes** your developer should implement first:
+
+---
+
+## 🔧 IMMEDIATE FIXES — MAIN PAGE (Homepage)
+
+### 1. **Mismatch Between Visual and Text (Hero Section)**
+
+* ❌ **Problem**: Text says *"flame-grilled"* but the image shows **fried chicken**.
+* ✅ **Fix**: Replace the image with one that clearly shows **grill marks**, not breaded fried texture.
+
+---
+
+### 2. **Inconsistent CTA Hierarchy**
+
+* ❌ **Problem**: The “Order Online” button is small and not very noticeable.
+* ✅ **Fix**: Make it **bigger, bolder, and more central** with hover animation (e.g. slight scale or glow). Use consistent styling across homepage and header.
+
+---
+
+### 3. **Redundant or Duplicate Items**
+
+* ❌ **Problem**: “Peri Peri Wrap” appears twice in different sections, once mild, once spicy — but same title.
+* ✅ **Fix**: Rename one to **“Spicy Peri Peri Wrap”** and the other “Grilled Peri Wrap” for clarity.
+
+---
+
+### 4. **Spice Level Icon Inconsistency**
+
+* ❌ **Problem**: Some dishes show spice levels, others don’t.
+* ✅ **Fix**: Add missing spice levels to all applicable dishes for consistency. If not spicy, show a neutral icon or omit completely with clear logic.
+
+---
+
+### 5. **Unpolished Instagram Section**
+
+* ❌ **Problem**: Every image is labeled with `@Username` — looks unfinished or placeholder.
+* ✅ **Fix**: Remove the tag or replace with **real usernames** from your brand social account, or a default like `@emparopizza`.
+
+---
+
+### 6. **No Direct Menu Navigation**
+
+* ❌ **Problem**: Users cannot jump to “Burgers”, “Sides”, etc., on the homepage menu.
+* ✅ **Fix**: Add category tabs (e.g., `#Wings`, `#Burgers`, `#Wraps`) and allow anchor-based scrolling.
+
+---
+
+### 7. **Footer — Missing Links Functionality**
+
+* ❌ **Problem**: “Privacy Policy” and “Terms of Service” are unlinked.
+* ✅ **Fix**: Link them to actual placeholder/legal pages or temporarily to a PDF.
+
+---
+
+### 8. **Redundant “Order Now” Section**
+
+* ❌ **Problem**: “Order Now” button is shown multiple times but doesn’t clarify difference between phone and online orders.
+* ✅ **Fix**: Distinguish them:
+
+  * “📞 Call to Order (Phone)”
+  * “💻 Order Online (Menu + Cart)”
+
+---
+
+### 9. **Color Contrast Issue in Text**
+
+* ❌ **Problem**: Text like “Open Late Every Day!” and time info blends into light background.
+* ✅ **Fix**: Darken these texts to improve contrast and readability (WCAG compliance).
+
+---
+
+### 10. **Missing Testimonials / Reviews**
+
+* ❌ **Problem**: No proof of quality or trust.
+* ✅ **Fix**: Add 2-3 customer reviews or rating badges near “Best Sellers” to build trust.
+
+---
+
+### Bonus: **Fix "Call to Action" Scannability**
+
+* On mobile especially, there's too much text between CTA buttons.
+* ✅ Compress or reorder sections so that **Order**, **Location**, and **Popular Items** come first.
+
+---
+
+Would you like the same list for:
+
+* Order Online / Cart pages
+* Socials or Footer
+* Mobile view testing
+
+Let me know — and I can organize these into a dev-friendly task sheet or a Notion board.
