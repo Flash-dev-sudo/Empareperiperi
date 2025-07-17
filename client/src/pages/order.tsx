@@ -141,9 +141,9 @@ export default function Order() {
                 </div>
                 <div className="text-right">
                   <div className="text-xl font-bold text-emparo-orange">£{item.price}</div>
-                  {item.spiceLevel && item.spiceLevel > 0 && (
+                  {item.spiceLevel && item.spiceLevel > 0 ? (
                     <div className="text-sm">{getSpiceIndicator(item.spiceLevel)}</div>
-                  )}
+                  ) : null}
                 </div>
               </div>
             </CardHeader>
