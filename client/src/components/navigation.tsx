@@ -25,7 +25,8 @@ export default function Navigation() {
 
   const menuItems = [
     { label: "Home", id: "home", path: "/", isHome: true },
-    { label: "Call", id: "call", path: "tel:+442075551234", isCall: true }
+    { label: "ORDER NOW: 020 3441 6940", id: "call", path: "tel:+442034416940", isCall: true },
+    { label: "Order Online", id: "order", path: "/order", isBubble: true }
   ];
 
   return (
@@ -58,11 +59,11 @@ export default function Navigation() {
                     : item.isBubble 
                     ? "bg-emparo-orange hover:bg-emparo-orange/90 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-lg hover:shadow-xl"
                     : item.isCall
-                    ? "text-emparo-dark hover:text-emparo-orange transition-colors p-2 rounded-full hover:bg-emparo-orange/10"
+                    ? "bg-emparo-yellow hover:bg-emparo-yellow/90 text-emparo-dark px-6 py-3 rounded-full font-bold transition-all shadow-lg hover:shadow-xl flex items-center"
                     : "text-emparo-dark hover:text-emparo-orange font-semibold transition-colors"
                 }
               >
-                {item.isHome ? <Home className="w-5 h-5" /> : item.isCall ? <Phone className="w-5 h-5" /> : item.label}
+                {item.isHome ? <Home className="w-5 h-5" /> : item.isCall ? <><Phone className="w-4 h-4 mr-2" />{item.label}</> : item.label}
               </button>
             ))}
           </div>
@@ -94,7 +95,7 @@ export default function Navigation() {
                       : item.isBubble 
                       ? "bg-emparo-orange hover:bg-emparo-orange/90 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-lg mx-4"
                       : item.isCall
-                      ? "text-emparo-dark hover:text-emparo-orange font-semibold transition-colors text-left px-4 py-2 flex items-center space-x-3"
+                      ? "bg-emparo-yellow hover:bg-emparo-yellow/90 text-emparo-dark px-6 py-3 rounded-full font-bold transition-all shadow-lg mx-4 text-center"
                       : "text-emparo-dark hover:text-emparo-orange font-semibold transition-colors text-left px-4 py-2"
                   }
                 >
@@ -104,10 +105,10 @@ export default function Navigation() {
                       <span>{item.label}</span>
                     </>
                   ) : item.isCall ? (
-                    <>
-                      <Phone className="w-5 h-5" />
+                    <div className="flex items-center justify-center">
+                      <Phone className="w-4 h-4 mr-2" />
                       <span>{item.label}</span>
-                    </>
+                    </div>
                   ) : item.label}
                 </button>
               ))}
