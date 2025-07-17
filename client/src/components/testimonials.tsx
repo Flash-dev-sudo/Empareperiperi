@@ -53,7 +53,7 @@ export default function Testimonials() {
                   </div>
                   <div className="flex">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-emparo-orange text-emparo-orange" />
+                      <Star key={i} className="w-4 h-4 fill-emparo-yellow text-emparo-yellow" />
                     ))}
                   </div>
                 </div>
