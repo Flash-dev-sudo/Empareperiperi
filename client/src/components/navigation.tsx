@@ -8,7 +8,9 @@ export default function Navigation() {
   const [, setLocation] = useLocation();
 
   const handleNavigation = (item: any) => {
-    if (item.path && item.path !== "/") {
+    if (item.isCall) {
+      window.location.href = item.path;
+    } else if (item.path && item.path !== "/") {
       setLocation(item.path);
     } else if (item.path === "/") {
       setLocation("/");
@@ -23,8 +25,7 @@ export default function Navigation() {
 
   const menuItems = [
     { label: "Home", id: "home", path: "/", isHome: true },
-    { label: "Menu", id: "menu", path: "/" },
-    { label: "Location", id: "contact", path: "/" },
+    { label: "Call Us", id: "call", path: "tel:+442075551234", isCall: true },
     { label: "Order Online", id: "order", path: "/order", isBubble: true }
   ];
 
@@ -57,10 +58,12 @@ export default function Navigation() {
                     ? "text-emparo-dark hover:text-emparo-orange transition-colors p-2 rounded-full hover:bg-emparo-orange/10"
                     : item.isBubble 
                     ? "bg-emparo-orange hover:bg-emparo-orange/90 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-lg hover:shadow-xl"
+                    : item.isCall
+                    ? "text-emparo-dark hover:text-emparo-orange font-semibold transition-colors flex items-center"
                     : "text-emparo-dark hover:text-emparo-orange font-semibold transition-colors"
                 }
               >
-                {item.isHome ? <Home className="w-5 h-5" /> : item.label}
+                {item.isHome ? <Home className="w-5 h-5" /> : item.isCall ? <><Phone className="w-4 h-4 mr-2" />{item.label}</> : item.label}
               </button>
             ))}
           </div>
@@ -91,6 +94,8 @@ export default function Navigation() {
                       ? "text-emparo-dark hover:text-emparo-orange transition-colors text-left px-4 py-2 flex items-center space-x-3"
                       : item.isBubble 
                       ? "bg-emparo-orange hover:bg-emparo-orange/90 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-lg mx-4"
+                      : item.isCall
+                      ? "text-emparo-dark hover:text-emparo-orange font-semibold transition-colors text-left px-4 py-2 flex items-center space-x-3"
                       : "text-emparo-dark hover:text-emparo-orange font-semibold transition-colors text-left px-4 py-2"
                   }
                 >
@@ -99,18 +104,14 @@ export default function Navigation() {
                       <Home className="w-5 h-5" />
                       <span>{item.label}</span>
                     </>
+                  ) : item.isCall ? (
+                    <>
+                      <Phone className="w-4 h-4 mr-2" />
+                      <span>{item.label}</span>
+                    </>
                   ) : item.label}
                 </button>
               ))}
-              <Button 
-                className="bg-emparo-orange hover:bg-emparo-orange/90 text-white px-6 py-3 rounded-2xl font-bold w-full mt-4"
-                asChild
-              >
-                <a href="tel:02034416940">
-                  <Phone className="mr-2 w-4 h-4" />
-                  Call: 020 3441 6940
-                </a>
-              </Button>
             </div>
           </div>
         )}
