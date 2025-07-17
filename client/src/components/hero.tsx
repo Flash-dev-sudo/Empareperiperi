@@ -25,10 +25,26 @@ export default function Hero() {
             
             <div className="bg-emparo-dark rounded-3xl p-8 mb-10">
               <p className="text-2xl md:text-3xl font-bold text-emparo-yellow mb-4">Flame-Grilled Chicken</p>
-              <p className="text-lg text-white font-medium mb-6">Authentic Grilled Chicken & Peri Peri Specialties</p>
-              <p className="text-xl text-white leading-relaxed">
-                Experience the authentic taste of flame-grilled peri peri chicken, fresh stone-baked pizzas, and mouth-watering specialties that will ignite your taste buds.
+              <p className="text-lg text-white font-medium mb-6">✓ Halal Certified • ✓ Fresh Daily • ✓ Authentic Spices</p>
+              <p className="text-xl text-white leading-relaxed mb-6">
+                Order now and taste the authentic flame-grilled flavors that made us famous. Fresh ingredients, bold spices, unbeatable taste!
               </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <Button 
+                  onClick={() => window.location.href = "tel:+442034416940"}
+                  className="bg-emparo-yellow hover:bg-emparo-yellow/90 text-emparo-dark px-8 py-4 rounded-2xl text-lg font-bold transition-all shadow-lg"
+                >
+                  <Phone className="mr-2 w-5 h-5" />
+                  ORDER NOW: 020 3441 6940
+                </Button>
+                <Button 
+                  onClick={() => setLocation("/order")}
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-2xl text-lg font-bold transition-all shadow-lg"
+                >
+                  <ShoppingCart className="mr-2 w-5 h-5" />
+                  Order Online
+                </Button>
+              </div>
             </div>
             
 

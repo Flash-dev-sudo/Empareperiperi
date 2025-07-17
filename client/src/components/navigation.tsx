@@ -25,7 +25,7 @@ export default function Navigation() {
 
   const menuItems = [
     { label: "Home", id: "home", path: "/", isHome: true },
-    { label: "ORDER NOW: 020 3441 6940", id: "call", path: "tel:+442034416940", isCall: true },
+    { label: "Call Us", id: "call", path: "tel:+442034416940", isCall: true },
     { label: "Order Online", id: "order", path: "/order", isBubble: true }
   ];
 
