@@ -42,6 +42,11 @@
   background: linear-gradient(135deg, hsl(25, 100%, 50%) 0%, hsl(25, 100%, 45%) 100%);
 }
 
+.star-filled {
+  color: #f5b301 !important;
+  fill: #f5b301 !important;
+}
+
 .dark {
   --background: hsl(240, 10%, 3.9%);
   --foreground: hsl(0, 0%, 98%);
