@@ -27,7 +27,7 @@ export default function Hero() {
               <p className="text-2xl md:text-3xl font-bold text-emparo-yellow mb-4">Flame-Grilled Chicken</p>
               <p className="text-lg text-white font-medium mb-6">✓ Halal Certified • ✓ Fresh Daily • ✓ Authentic Spices</p>
               <p className="text-xl text-white leading-relaxed">
-                Experience authentic Portuguese-style peri peri chicken, grilled to perfection with traditional spices. Every bite delivers bold flavors that have made us Finsbury Park's favorite.
+                Experience authentic flame-grilled peri peri chicken, marinated with traditional African spices. Every bite delivers bold flavors that have made us Finsbury Park's favorite.
               </p>
             </div>
             
