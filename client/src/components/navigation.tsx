@@ -25,8 +25,7 @@ export default function Navigation() {
 
   const menuItems = [
     { label: "Home", id: "home", path: "/", isHome: true },
-    { label: "Call", id: "call", path: "tel:+442075551234", isCall: true },
-    { label: "Order Online", id: "order", path: "/order", isBubble: true }
+    { label: "Call", id: "call", path: "tel:+442075551234", isCall: true }
   ];
 
   return (
