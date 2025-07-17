@@ -72,7 +72,7 @@ export default function Order() {
   });
 
   const getSpiceIndicator = (level: number | null) => {
-    if (!level) return null;
+    if (!level || level === 0) return null;
     return "🌶️".repeat(level);
   };
 
@@ -141,7 +141,7 @@ export default function Order() {
                 </div>
                 <div className="text-right">
                   <div className="text-xl font-bold text-emparo-orange">£{item.price}</div>
-                  {item.spiceLevel && (
+                  {item.spiceLevel && item.spiceLevel > 0 && (
                     <div className="text-sm">{getSpiceIndicator(item.spiceLevel)}</div>
                   )}
                 </div>
