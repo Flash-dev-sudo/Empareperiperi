@@ -25,7 +25,7 @@ export default function Navigation() {
 
   const menuItems = [
     { label: "Home", id: "home", path: "/", isHome: true },
-    { label: "Call Us", id: "call", path: "tel:+442075551234", isCall: true },
+    { label: "Call", id: "call", path: "tel:+442075551234", isCall: true },
     { label: "Order Online", id: "order", path: "/order", isBubble: true }
   ];
 
@@ -59,11 +59,11 @@ export default function Navigation() {
                     : item.isBubble 
                     ? "bg-emparo-orange hover:bg-emparo-orange/90 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-lg hover:shadow-xl"
                     : item.isCall
-                    ? "text-emparo-dark hover:text-emparo-orange font-semibold transition-colors flex items-center"
+                    ? "text-emparo-dark hover:text-emparo-orange transition-colors p-2 rounded-full hover:bg-emparo-orange/10"
                     : "text-emparo-dark hover:text-emparo-orange font-semibold transition-colors"
                 }
               >
-                {item.isHome ? <Home className="w-5 h-5" /> : item.isCall ? <><Phone className="w-4 h-4 mr-2" />{item.label}</> : item.label}
+                {item.isHome ? <Home className="w-5 h-5" /> : item.isCall ? <Phone className="w-5 h-5" /> : item.label}
               </button>
             ))}
           </div>
@@ -106,7 +106,7 @@ export default function Navigation() {
                     </>
                   ) : item.isCall ? (
                     <>
-                      <Phone className="w-4 h-4 mr-2" />
+                      <Phone className="w-5 h-5" />
                       <span>{item.label}</span>
                     </>
                   ) : item.label}
