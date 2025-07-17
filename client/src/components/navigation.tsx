@@ -23,6 +23,8 @@ export default function Navigation() {
 
   const menuItems = [
     { label: "Home", id: "home", path: "/", isHome: true },
+    { label: "Menu", id: "menu", path: "/" },
+    { label: "Location", id: "contact", path: "/" },
     { label: "Order Online", id: "order", path: "/order", isBubble: true }
   ];
 

@@ -3,6 +3,7 @@ import Navigation from "@/components/navigation";
 import Hero from "@/components/hero";
 import FeaturedSpecialties from "@/components/featured-specialties";
 import MenuShowcase from "@/components/menu-showcase";
+import Testimonials from "@/components/testimonials";
 import CTABanner from "@/components/cta-banner";
 import Gallery from "@/components/gallery";
 import ContactSection from "@/components/contact-section";
@@ -20,6 +21,7 @@ export default function Home() {
       <Hero />
       <FeaturedSpecialties />
       <MenuShowcase />
+      <Testimonials />
       <CTABanner />
       <Gallery />
       <ContactSection />

@@ -5,6 +5,14 @@ import { insertCartItemSchema, insertOrderSchema, insertMenuItemSchema } from "@
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health check endpoint for keep-alive service
+  app.get('/api/health', (req, res) => {
+    res.json({ 
+      status: 'healthy', 
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime()
+    });
+  });
   // Admin authentication routes with enhanced security
   app.post('/api/admin/login', async (req, res) => {
     const { password } = req.body;

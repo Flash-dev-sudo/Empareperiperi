@@ -9,8 +9,8 @@ const showcaseItems = [
   },
   {
     image: "/attached_assets/ChatGPT Image May 22, 2025, 09_38_22 PM_1750005435413.png",
-    title: "Peri Peri Wrap",
-    description: "Spicy chicken strips wrapped with fresh vegetables",
+    title: "Crispy Peri Wrap",
+    description: "Crispy chicken strips wrapped with fresh vegetables and peri peri sauce",
     price: "£4.50"
   },
   {

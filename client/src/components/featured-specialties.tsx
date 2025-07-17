@@ -28,9 +28,9 @@ const specialties = [
     isStarRating: true
   },
   {
-    name: "Peri Peri Wrap",
+    name: "Grilled Peri Wrap",
     price: "£4.50",
-    description: "Succulent chicken wrapped in soft tortilla with fresh salad and peri peri sauce",
+    description: "Flame-grilled chicken wrapped in soft tortilla with fresh salad and peri peri sauce",
     image: "/attached_assets/ChatGPT Image May 22, 2025, 08_27_31 PM_1750005435412.png",
     spiceLevel: 1,
     badge: "Mild Spice"
@@ -55,7 +55,7 @@ const specialties = [
 
 export default function FeaturedSpecialties() {
   return (
-    <section className="py-16 bg-white">
+    <section id="menu" className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-emparo-dark mb-4">

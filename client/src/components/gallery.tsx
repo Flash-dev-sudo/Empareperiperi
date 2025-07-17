@@ -52,7 +52,7 @@ export default function Gallery() {
             Follow us on our <span className="text-emparo-orange">Socials</span>
           </h2>
           <p className="text-xl text-emparo-dark max-w-2xl mx-auto font-medium">
-            Check out our Instagram and Facebook pages to hear about our latest offers
+            Tag us on Instagram @emparoperi and follow us for the latest offers and flame-grilled specials!
           </p>
         </div>
         
@@ -66,7 +66,7 @@ export default function Gallery() {
                   className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" 
                 />
                 <div className="absolute bottom-4 left-4 bg-emparo-orange text-white px-3 py-1 rounded-full text-sm font-semibold">
-                  @Username
+                  Tag us @emparoperi
                 </div>
                 <div className="absolute bottom-4 right-4 bg-white/90 p-2 rounded-full">
                   <Instagram className="w-5 h-5 text-emparo-orange" />
