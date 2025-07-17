@@ -1,0 +1,70 @@
+
+
+Jul 15, 11:39 PM - 11:43 PM
+GMT+1
+
+Menu
+
+==> Cloning from https://github.com/Flash-dev-sudo/Empareperiperi
+==> Checking out commit 5fa61ea0ad3bd61363e916cd707ea6951cf75fea in branch main
+==> Downloading cache...
+==> Transferred 381MB in 8s. Extraction took 9s.
+==> Using Node.js version 22.16.0 (default)
+==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+==> Using Bun version 1.1.0 (default)
+==> Docs on specifying a Bun version: https://render.com/docs/bun-version
+==> Running build command 'npm install --include=dev && npm run build'...
+up to date, audited 521 packages in 1s
+70 packages are looking for funding
+  run `npm fund` for details
+8 vulnerabilities (1 low, 7 moderate)
+To address issues that do not require attention, run:
+  npm audit fix
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+Run `npm audit` for details.
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+vite v5.4.14 building for production...
+transforming...
+Browserslist: browsers data (caniuse-lite) is 9 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+✓ 1738 modules transformed.
+rendering chunks...
+computing gzip size...
+../dist/public/index.html                                                                     1.60 kB │ gzip:   0.71 kB
+../dist/public/assets/ChatGPT Image May 18_ 2025_ 11_28_06 AM_1750005342083-B_wmhopX.png  1,498.17 kB
+../dist/public/assets/ChatGPT Image May 18_ 2025_ 12_32_31 PM_1750005342084-CqL0ly7S.png  1,743.70 kB
+../dist/public/assets/ChatGPT Image May 18_ 2025_ 11_58_25 AM_1750005342083-Di7YonoQ.png  1,777.44 kB
+../dist/public/assets/ChatGPT Image May 18_ 2025_ 12_05_21 PM_1750005342083-Ag43qB-x.png  1,813.57 kB
+../dist/public/assets/ChatGPT Image May 18_ 2025_ 12_40_20 PM_1750005342084-B829CgB7.png  1,976.22 kB
+../dist/public/assets/ChatGPT Image May 18_ 2025_ 12_22_28 PM_1750005342083-B-hFP3Qn.png  2,020.55 kB
+../dist/public/assets/ChatGPT Image May 19_ 2025_ 09_37_01 PM_1750005342085-CS_N6172.png  2,336.97 kB
+../dist/public/assets/index-pybdn4s2.css                                                     66.32 kB │ gzip:  11.79 kB
+../dist/public/assets/index-CjUV1UFM.js                                                     385.85 kB │ gzip: 119.44 kB
+✓ built in 3.63s
+  dist/index.js  32.4kb
+⚡ Done in 5ms
+==> Uploading build...
+==> Uploaded in 13.2s. Compression took 4.0s
+==> Build successful 🎉
+==> Deploying...
+==> Running 'npm run start'
+> rest-express@1.0.0 start
+> NODE_ENV=production node dist/index.js
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+10:42:19 PM [express] serving on port 10000
+==> Your service is live 🎉
+==> 
+==> ///////////////////////////////////////////////////////////
+==> 
+==> Available at your primary URL https://empareperiperi.onrender.com
+==> 
+==> ///////////////////////////////////////////////////////////
+10:42:52 PM [express] GET /api/cart/h2n66y867 200 in 1ms :: []
+10:42:52 PM [express] GET /api/menu 200 in 1ms :: [{"id":1,"name":"Chips","category":"Starters","pric…
+10:42:54 PM [express] POST /api/cart 200 in 2ms :: {"sessionId":"h2n66y867","menuItemId":2,"quantity"…
+10:42:54 PM [express] GET /api/cart/h2n66y867 200 in 0ms :: [{"sessionId":"h2n66y867","menuItemId":2,…

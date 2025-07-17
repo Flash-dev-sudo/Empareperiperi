@@ -1,0 +1,160 @@
+Thanks for sharing the updated homepage. You've clearly implemented a lot of improvements — well done. Below is a focused **post-update review** listing **what’s working well**, followed by **immediate fixes still required**.
+
+---
+
+## ✅ What's Working Well
+
+1. **Header UI**:
+
+   * “Order Online” button is now visually clear and stands out well in the header.
+
+2. **Hero Section**:
+
+   * Text and design layout are nicely aligned.
+   * Good hierarchy between heading, subheading, and CTA.
+
+3. **Menu Sections**:
+
+   * Spacing and grid layout are more consistent.
+   * Tags like “Spicy Level,” “Customer Favorite,” and “Mild Spice” are readable and useful.
+   * Product cards feel visually balanced.
+
+4. **Social Section**:
+
+   * Integration with Instagram-style layout adds appeal.
+   * Clear call-to-actions: “Follow on Instagram” and “Like on Facebook”.
+
+5. **Location & Contact Section**:
+
+   * Map is working.
+   * Address and call-to-order button are now clear and functional.
+
+---
+
+## 🔧 Immediate Fixes (Post-Update)
+
+### 1. ❌ **Main Hero Image (Still fried chicken)**
+
+* 🔴 **Problem**: Image still shows deep-fried crispy chicken, which contradicts “Flame-Grilled Chicken”.
+* ✅ **Fix**: Replace with grilled chicken showing **char lines**, ideally flame-lit or on a grill to match the copy.
+
+---
+
+### 2. ❌ **Duplicate Item: “Peri Peri Wrap”**
+
+* 🔴 **Problem**: Still shown twice in different sections with different descriptions.
+* ✅ **Fix**:
+
+  * Rename one to “**Crispy Peri Peri Wrap**”
+  * Rename the other to “**Grilled Peri Wrap**”
+  * Keep spice tags consistent.
+
+---
+
+### 3. ❌ **Inconsistent Use of Tags and Icons**
+
+* 🔴 **Problem**:
+
+  * Some items have tags like "Side Favorite", "Popular Choice" — others don’t.
+  * Some have spice level icons, others don’t.
+* ✅ **Fix**:
+
+  * Ensure **every item** either has a spice level or a tag.
+  * Use a standard set:
+
+    * 🔥 Very Spicy
+    * 🌶 Medium
+    * ❄️ Mild
+    * ⭐ Best Seller / Customer Favorite
+
+---
+
+### 4. ❌ **@Username Placeholder in Social Section**
+
+* 🔴 **Problem**: “@Username” is still used across all Instagram cards.
+* ✅ **Fix**:
+
+  * Use real IG handles if possible.
+  * Or remove entirely and add CTA:
+
+    > "Tag us on Instagram @emparopizza"
+
+---
+
+### 5. ❌ **Missing Testimonials / Trust Elements**
+
+* 🔴 **Problem**: No customer feedback, reviews, or ratings shown.
+* ✅ **Fix**:
+
+  * Add a small section before or after “Popular Menu Items”:
+
+    > ⭐⭐⭐⭐⭐
+    > “Best wings in Finsbury Park — the grilled ones are unreal!”
+    > – J. Ahmed
+
+---
+
+### 6. ❌ **Call-to-Order and Order Online Redundancy**
+
+* 🔴 **Problem**: Multiple "Order Online" and "Order Now" CTAs — users may not know which is phone vs. website.
+* ✅ **Fix**:
+
+  * Update the yellow section:
+
+    > 📞 **Call to Order** – 020 3441 6940
+    > 💻 **Order Online** – Click the button in the header or menu
+
+---
+
+### 7. ❌ **Link Visibility in Footer**
+
+* 🔴 **Problem**: “Privacy Policy” and “Terms of Service” still appear unlinked.
+* ✅ **Fix**: Link them to actual static pages or PDF placeholders for now.
+
+---
+
+### 8. ❌ **Button Spacing and Hover Effects**
+
+* 🔴 **Problem**: Some CTAs (especially in “Follow Us” and “Order Now” sections) feel too static or flat.
+* ✅ **Fix**:
+
+  * Add a **hover effect**: slight scale-up or background highlight.
+  * Increase top/bottom padding in buttons for mobile readability.
+
+---
+
+### 9. ❌ **Image Quality Variation**
+
+* 🔴 **Problem**: Some images (e.g., nuggets, fries) are slightly overexposed or flat compared to others.
+* ✅ **Fix**: Slight color correction or consistent lighting to make all images pop equally.
+
+---
+
+### 10. ❌ **No Internal Page Links or Menu Navigation**
+
+* 🔴 **Problem**: Users can’t jump from top menu to "Popular Items", "Visit Us", etc.
+* ✅ **Fix**:
+
+  * Add internal anchor links in navbar or header:
+
+    > Home | Menu | Location | Contact
+    > Use `id="menu"`, `id="contact"` and scroll to them.
+
+---
+
+## ✅ Optional (But Good to Do Soon)
+
+* Add `meta description` and `og:image` for better SEO & sharing.
+* Add a favicon to match the brand.
+* Highlight offers or combos with badges.
+* Add Google Review badge or Yelp rating if available.
+
+---
+
+Let me know if you want this structured as:
+
+* ✅ Trello task board
+* ✅ PDF for the dev
+* ✅ Annotated screenshots
+
+Or if you're ready for mobile view testing next.

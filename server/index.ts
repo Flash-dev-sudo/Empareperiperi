@@ -8,14 +8,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Session configuration for admin authentication
+// Using secure cookie-based sessions for production
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'emparo-admin-secret-key',
+  secret: process.env.SESSION_SECRET || 'emparo-admin-secret-key-2025',
   resave: false,
   saveUninitialized: false,
   cookie: {
     secure: process.env.NODE_ENV === 'production',
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
-  }
+    httpOnly: true,
+    maxAge: 2 * 60 * 60 * 1000 // 2 hours for security
+  },
+  name: 'emparo.session'
 }));
 
 // Serve static assets from attached_assets folder
