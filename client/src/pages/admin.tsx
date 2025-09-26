@@ -178,110 +178,132 @@ export default function Admin() {
     }
   };
 
-  const ItemDialog = ({ 
-    isOpen, 
-    onClose, 
-    onSubmit, 
-    item, 
-    title 
-  }: { 
+  const ItemDialog = ({
+    isOpen,
+    onClose,
+    onSubmit,
+    item,
+    title
+  }: {
     isOpen: boolean;
     onClose: () => void;
     onSubmit: (formData: FormData) => void;
     item?: MenuItem | null;
     title: string;
-  }) => (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-        </DialogHeader>
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          onSubmit(new FormData(e.currentTarget));
-        }} className="space-y-4">
-          <div>
-            <Label htmlFor="name">Name</Label>
-            <Input 
-              id="name" 
-              name="name" 
-              defaultValue={item?.name || ""} 
-              required 
-            />
-          </div>
-          <div>
-            <Label htmlFor="category">Category</Label>
-            <Select name="category" defaultValue={item?.category || selectedCategory}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map(category => (
-                  <SelectItem key={category} value={category}>{category}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label htmlFor="price">Price (£)</Label>
-            <Input 
-              id="price" 
-              name="price" 
-              type="number" 
-              step="0.01" 
-              defaultValue={item?.price || ""} 
-              required 
-            />
-          </div>
-          <div>
-            <Label htmlFor="description">Description</Label>
-            <Textarea 
-              id="description" 
-              name="description" 
-              defaultValue={item?.description || ""} 
-              rows={3}
-            />
-          </div>
-          <div>
-            <Label htmlFor="spiceLevel">Spice Level (0-3)</Label>
-            <Select name="spiceLevel" defaultValue={item?.spiceLevel?.toString() || "0"}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="0">0 - Mild</SelectItem>
-                <SelectItem value="1">1 - Medium</SelectItem>
-                <SelectItem value="2">2 - Hot</SelectItem>
-                <SelectItem value="3">3 - Extra Hot</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          {item && (
+  }) => {
+    const [categoryValue, setCategoryValue] = useState<string>(item?.category || selectedCategory);
+    const [spiceLevelValue, setSpiceLevelValue] = useState<string>(item?.spiceLevel?.toString() || "0");
+    const [availabilityValue, setAvailabilityValue] = useState<string>(item?.isAvailable?.toString() || "1");
+
+    // Update state when item prop changes (important for edit dialog)
+    useEffect(() => {
+      if (item) {
+        setCategoryValue(item.category);
+        setSpiceLevelValue(item.spiceLevel.toString());
+        setAvailabilityValue(item.isAvailable.toString());
+      } else {
+        setCategoryValue(selectedCategory);
+        setSpiceLevelValue("0");
+        setAvailabilityValue("1");
+      }
+    }, [item, selectedCategory]);
+
+    return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit(new FormData(e.currentTarget));
+          }} className="space-y-4">
             <div>
-              <Label htmlFor="isAvailable">Availability</Label>
-              <Select name="isAvailable" defaultValue={item?.isAvailable?.toString() || "1"}>
+              <Label htmlFor="name">Name</Label>
+              <Input 
+                id="name" 
+                name="name" 
+                defaultValue={item?.name || ""} 
+                required 
+              />
+            </div>
+            <div>
+              <Label htmlFor="category">Category</Label>
+              <input type="hidden" name="category" value={categoryValue} />
+              <Select value={categoryValue} onValueChange={setCategoryValue}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="1">Available</SelectItem>
-                  <SelectItem value="0">Not Available</SelectItem>
+                  {categories.map(category => (
+                    <SelectItem key={category} value={category}>{category}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
-          )}
-          <div className="flex gap-2">
-            <Button type="submit" className="flex-1">
-              {title.includes("Add") ? "Add Item" : "Update Item"}
-            </Button>
-            <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-          </div>
-        </form>
-      </DialogContent>
-    </Dialog>
-  );
+            <div>
+              <Label htmlFor="price">Price (£)</Label>
+              <Input 
+                id="price" 
+                name="price" 
+                type="number" 
+                step="0.01" 
+                defaultValue={item?.price || ""} 
+                required 
+              />
+            </div>
+            <div>
+              <Label htmlFor="description">Description</Label>
+              <Textarea 
+                id="description" 
+                name="description" 
+                defaultValue={item?.description || ""} 
+                rows={3}
+              />
+            </div>
+            <div>
+              <Label htmlFor="spiceLevel">Spice Level (0-3)</Label>
+              <input type="hidden" name="spiceLevel" value={spiceLevelValue} />
+              <Select value={spiceLevelValue} onValueChange={setSpiceLevelValue}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="0">0 - Mild</SelectItem>
+                  <SelectItem value="1">1 - Medium</SelectItem>
+                  <SelectItem value="2">2 - Hot</SelectItem>
+                  <SelectItem value="3">3 - Extra Hot</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            {item && (
+              <div>
+                <Label htmlFor="isAvailable">Availability</Label>
+                <input type="hidden" name="isAvailable" value={availabilityValue} />
+                <Select value={availabilityValue} onValueChange={setAvailabilityValue}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1">Available</SelectItem>
+                    <SelectItem value="0">Not Available</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+            <div className="flex gap-2">
+              <Button type="submit" className="flex-1">
+                {title.includes("Add") ? "Add Item" : "Update Item"}
+              </Button>
+              <Button type="button" variant="outline" onClick={onClose}>
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+    );
+  };
 
   if (isLoading) {
     return (

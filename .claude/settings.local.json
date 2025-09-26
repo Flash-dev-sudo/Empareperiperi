@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev:*)",
+      "Bash(set NODE_ENV=development)",
+      "Bash(tsx:*)",
+      "Bash(npx tsx:*)",
+      "Bash(npm install)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
