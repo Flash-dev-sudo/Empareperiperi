@@ -89,3 +89,63 @@ export type InsertGallery = z.infer<typeof insertGallerySchema>;
 export type Gallery = typeof gallery.$inferSelect;
 export type InsertCartItem = z.infer<typeof insertCartItemSchema>;
 export type CartItem = typeof cartItems.$inferSelect;
+
+// Catalog replica tables (synced from queue system)
+export const catalogCategories = sqliteTable("catalog_categories", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  queueId: integer("queue_id").notNull().unique(), // ID from queue system
+  name: text("name").notNull(),
+  icon: text("icon").notNull(),
+  displayOrder: integer("display_order").notNull().default(0),
+  updatedAt: text("updated_at"),
+  deletedAt: text("deleted_at"),
+  contentHash: text("content_hash"),
+});
+
+export const catalogMenuItems = sqliteTable("catalog_menu_items", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  queueId: integer("queue_id").notNull().unique(), // ID from queue system
+  categoryId: integer("category_id").notNull().references(() => catalogCategories.id), // Local FK to catalog_categories
+  name: text("name").notNull(),
+  description: text("description"),
+  price: integer("price").notNull(), // Price in pennies
+  mealPrice: integer("meal_price"), // Price for meal upgrade in pennies
+  available: integer("available", { mode: "boolean" }).notNull().default(true),
+  image: text("image"),
+  hasFlavorOptions: integer("has_flavor_options", { mode: "boolean" }).default(false),
+  hasMealOption: integer("has_meal_option", { mode: "boolean" }).default(false),
+  isSpicyOption: integer("is_spicy_option", { mode: "boolean" }).default(false),
+  updatedAt: text("updated_at"),
+  deletedAt: text("deleted_at"),
+  contentHash: text("content_hash"),
+});
+
+// Sync events table for diagnostics
+export const syncEvents = sqliteTable("sync_events", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  eventType: text("event_type").notNull(), // 'category_sync', 'item_sync', 'full_sync'
+  status: text("status").notNull(), // 'success', 'error'
+  itemCount: integer("item_count").default(0),
+  errorMessage: text("error_message"),
+  createdAt: text("created_at").default("datetime('now')"),
+});
+
+export const insertCatalogCategorySchema = createInsertSchema(catalogCategories).omit({
+  id: true,
+});
+
+export const insertCatalogMenuItemSchema = createInsertSchema(catalogMenuItems).omit({
+  id: true,
+});
+
+export const insertSyncEventSchema = createInsertSchema(syncEvents).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type CatalogCategory = typeof catalogCategories.$inferSelect;
+export type InsertCatalogCategory = z.infer<typeof insertCatalogCategorySchema>;
+export type CatalogMenuItem = typeof catalogMenuItems.$inferSelect;
+export type InsertCatalogMenuItem = z.infer<typeof insertCatalogMenuItemSchema>;
+export type SyncEvent = typeof syncEvents.$inferSelect;
+export type InsertSyncEvent = z.infer<typeof insertSyncEventSchema>;

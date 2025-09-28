@@ -4,41 +4,57 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Plus, ShoppingCart, Search } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Plus, ShoppingCart, Search, Flame, Settings } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 import Navigation from "@/components/navigation";
+import OrderMenuItem from "@/components/order-menu-item";
+import { getCatalogData, groupItemsByCategory, formatPrice, flavorOptions, type CatalogCategory, type CatalogMenuItem } from "@/services/catalog";
 
-interface MenuItem {
-  id: number;
-  name: string;
-  category: string;
-  price: string;
-  description: string | null;
-  spiceLevel: number | null;
-  isAvailable: number | null;
+interface ItemCustomization {
+  flavor?: string;
+  isMeal?: boolean;
+  isSpicy?: boolean;
 }
 
 export default function Order() {
   const [sessionId] = useState(() => localStorage.getItem("sessionId") || Math.random().toString(36).substr(2, 9));
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  
+  const [catalogData, setCatalogData] = useState<{ categories: CatalogCategory[], items: CatalogMenuItem[] }>({ categories: [], items: [] });
+  const [isLoadingCatalog, setIsLoadingCatalog] = useState(true);
+
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [, setLocation] = useLocation();
 
   useEffect(() => {
     localStorage.setItem("sessionId", sessionId);
-    // Reset scroll position when component mounts
     window.scrollTo(0, 0);
-  }, [sessionId]);
 
-  const { data: menuItems = [], isLoading } = useQuery({
-    queryKey: ["/api/menu"],
-    queryFn: () => apiRequest("GET", "/api/menu").then(res => res.json()) as Promise<MenuItem[]>
-  });
+    // Load catalog data
+    async function loadCatalog() {
+      try {
+        const data = await getCatalogData();
+        setCatalogData(data);
+      } catch (error) {
+        console.error('Failed to load catalog:', error);
+        toast({
+          title: "Error loading menu",
+          description: "Please refresh the page to try again.",
+          variant: "destructive"
+        });
+      } finally {
+        setIsLoadingCatalog(false);
+      }
+    }
+
+    loadCatalog();
+  }, [sessionId, toast]);
 
   const { data: cartItems = [] } = useQuery({
     queryKey: ["/api/cart", sessionId],
@@ -54,35 +70,51 @@ export default function Order() {
     }
   });
 
-  const addToCart = (menuItemId: number) => {
+  const addToCart = (item: CatalogMenuItem, customization: ItemCustomization) => {
+    // Create notes from customization
+    const notes = [];
+    if (customization.flavor) notes.push(`Flavor: ${customization.flavor}`);
+    if (customization.isMeal) notes.push('Meal option');
+    if (customization.isSpicy) notes.push('Extra spicy');
+
     addToCartMutation.mutate({
       sessionId,
-      menuItemId,
-      quantity: 1
+      menuItemId: item.id, // Use the local database ID for cart
+      quantity: 1,
+      notes: notes.length > 0 ? notes.join(', ') : undefined
     });
   };
 
-  const categories = ["All", ...new Set(menuItems.map(item => item.category))];
-  
-  const filteredItems = menuItems.filter(item => {
+  // Get grouped categories for filtering
+  const groupedCategories = groupItemsByCategory(catalogData.categories, catalogData.items);
+  const categoryNames = ["All", ...groupedCategories.map(cat => cat.name)];
+
+  // Filter items based on search and category
+  const filteredItems = catalogData.items.filter(item => {
+    if (item.deletedAt || !item.available) return false;
+
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          item.description?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "All" || item.category === selectedCategory;
-    return matchesSearch && matchesCategory && item.isAvailable;
-  });
 
-  const getSpiceIndicator = (level: number | null) => {
-    if (!level || level === 0) return null;
-    return "🌶️".repeat(level);
-  };
+    if (selectedCategory === "All") return matchesSearch;
+
+    const category = catalogData.categories.find(cat => cat.id === item.categoryId);
+    const matchesCategory = category?.name === selectedCategory;
+
+    return matchesSearch && matchesCategory;
+  });
 
   const cartItemCount = cartItems.reduce((total: number, item: any) => total + item.quantity, 0);
 
-  if (isLoading) {
+  if (isLoadingCatalog) {
     return (
-      <div className="container mx-auto px-4 py-20">
-        <div className="flex items-center justify-center">
-          <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
+      <div className="min-h-screen bg-emparo-cream">
+        <Navigation />
+        <div className="container mx-auto px-4 py-20">
+          <div className="flex items-center justify-center">
+            <div className="animate-spin w-8 h-8 border-4 border-emparo-orange border-t-transparent rounded-full" />
+            <span className="ml-2 text-emparo-dark">Loading menu...</span>
+          </div>
         </div>
       </div>
     );
@@ -116,12 +148,13 @@ export default function Order() {
         </div>
         
         <div className="flex flex-wrap gap-2">
-          {categories.map(category => (
+          {categoryNames.map(category => (
             <Button
               key={category}
               variant={selectedCategory === category ? "default" : "outline"}
               onClick={() => setSelectedCategory(category)}
               size="sm"
+              className={selectedCategory === category ? "bg-emparo-orange hover:bg-emparo-orange/90" : ""}
             >
               {category}
             </Button>
@@ -131,35 +164,18 @@ export default function Order() {
 
       {/* Menu Items */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredItems.map((item) => (
-          <Card key={item.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-lg">{item.name}</CardTitle>
-                  <Badge variant="secondary" className="mt-1">{item.category}</Badge>
-                </div>
-                <div className="text-right">
-                  <div className="text-xl font-bold text-emparo-orange">£{item.price}</div>
-                  {item.spiceLevel && item.spiceLevel > 0 ? (
-                    <div className="text-sm">{getSpiceIndicator(item.spiceLevel)}</div>
-                  ) : null}
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600 mb-4">{item.description}</p>
-              <Button
-                onClick={() => addToCart(item.id)}
-                disabled={addToCartMutation.isPending}
-                className="w-full bg-emparo-orange hover:bg-emparo-orange/90"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add to Cart
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
+        {filteredItems.map((item) => {
+          const category = catalogData.categories.find(cat => cat.id === item.categoryId);
+          return (
+            <OrderMenuItem
+              key={item.id}
+              item={item}
+              category={category}
+              onAddToCart={addToCart}
+              isAddingToCart={addToCartMutation.isPending}
+            />
+          );
+        })}
       </div>
 
       {filteredItems.length === 0 && (

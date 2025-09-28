@@ -1,4 +1,12 @@
-import { users, menuItems, orders, cartItems, type User, type InsertUser, type MenuItem, type InsertMenuItem, type Order, type InsertOrder, type CartItem, type InsertCartItem } from "@shared/schema";
+import {
+  users, menuItems, orders, cartItems,
+  catalogCategories, catalogMenuItems, syncEvents,
+  type User, type InsertUser, type MenuItem, type InsertMenuItem,
+  type Order, type InsertOrder, type CartItem, type InsertCartItem,
+  type CatalogCategory, type InsertCatalogCategory,
+  type CatalogMenuItem, type InsertCatalogMenuItem,
+  type SyncEvent, type InsertSyncEvent
+} from "@shared/schema";
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 import { eq } from "drizzle-orm";
@@ -29,6 +37,21 @@ export interface IStorage {
   createOrder(order: InsertOrder): Promise<Order>;
   getOrderById(id: number): Promise<Order | undefined>;
   getOrdersByPhone(phone: string): Promise<Order[]>;
+
+  // Catalog sync operations
+  getCatalogCategories(): Promise<CatalogCategory[]>;
+  getCatalogCategoryByQueueId(queueId: number): Promise<CatalogCategory | undefined>;
+  createCatalogCategory(category: InsertCatalogCategory): Promise<CatalogCategory>;
+  updateCatalogCategory(id: number, category: Partial<CatalogCategory>): Promise<CatalogCategory | undefined>;
+
+  getCatalogMenuItems(): Promise<CatalogMenuItem[]>;
+  getCatalogMenuItemByQueueId(queueId: number): Promise<CatalogMenuItem | undefined>;
+  createCatalogMenuItem(item: InsertCatalogMenuItem): Promise<CatalogMenuItem>;
+  updateCatalogMenuItem(id: number, item: Partial<CatalogMenuItem>): Promise<CatalogMenuItem | undefined>;
+
+  // Sync events
+  createSyncEvent(event: InsertSyncEvent): Promise<SyncEvent>;
+  getSyncEvents(): Promise<SyncEvent[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -238,6 +261,48 @@ export class MemStorage implements IStorage {
     return Array.from(this.orders.values())
       .filter(order => order.customerPhone === phone);
   }
+
+  // Catalog sync operations (MemStorage implementations)
+  async getCatalogCategories(): Promise<CatalogCategory[]> {
+    // For MemStorage, return empty array since we don't store catalog data
+    return [];
+  }
+
+  async getCatalogCategoryByQueueId(queueId: number): Promise<CatalogCategory | undefined> {
+    return undefined;
+  }
+
+  async createCatalogCategory(category: InsertCatalogCategory): Promise<CatalogCategory> {
+    throw new Error('Catalog operations not supported in MemStorage');
+  }
+
+  async updateCatalogCategory(id: number, category: Partial<CatalogCategory>): Promise<CatalogCategory | undefined> {
+    throw new Error('Catalog operations not supported in MemStorage');
+  }
+
+  async getCatalogMenuItems(): Promise<CatalogMenuItem[]> {
+    return [];
+  }
+
+  async getCatalogMenuItemByQueueId(queueId: number): Promise<CatalogMenuItem | undefined> {
+    return undefined;
+  }
+
+  async createCatalogMenuItem(item: InsertCatalogMenuItem): Promise<CatalogMenuItem> {
+    throw new Error('Catalog operations not supported in MemStorage');
+  }
+
+  async updateCatalogMenuItem(id: number, item: Partial<CatalogMenuItem>): Promise<CatalogMenuItem | undefined> {
+    throw new Error('Catalog operations not supported in MemStorage');
+  }
+
+  async createSyncEvent(event: InsertSyncEvent): Promise<SyncEvent> {
+    throw new Error('Sync events not supported in MemStorage');
+  }
+
+  async getSyncEvents(): Promise<SyncEvent[]> {
+    return [];
+  }
 }
 
 export class TursoStorage implements IStorage {
@@ -414,9 +479,91 @@ export class TursoStorage implements IStorage {
       .from(orders)
       .where(eq(orders.customerPhone, phone));
   }
+
+  // Catalog sync operations
+  async getCatalogCategories(): Promise<CatalogCategory[]> {
+    return await this.db.select().from(catalogCategories);
+  }
+
+  async getCatalogCategoryByQueueId(queueId: number): Promise<CatalogCategory | undefined> {
+    const result = await this.db
+      .select()
+      .from(catalogCategories)
+      .where(eq(catalogCategories.queueId, queueId))
+      .limit(1);
+
+    return result[0];
+  }
+
+  async createCatalogCategory(category: InsertCatalogCategory): Promise<CatalogCategory> {
+    const result = await this.db
+      .insert(catalogCategories)
+      .values(category)
+      .returning();
+
+    return result[0];
+  }
+
+  async updateCatalogCategory(id: number, category: Partial<CatalogCategory>): Promise<CatalogCategory | undefined> {
+    const result = await this.db
+      .update(catalogCategories)
+      .set(category)
+      .where(eq(catalogCategories.id, id))
+      .returning();
+
+    return result[0];
+  }
+
+  async getCatalogMenuItems(): Promise<CatalogMenuItem[]> {
+    return await this.db.select().from(catalogMenuItems);
+  }
+
+  async getCatalogMenuItemByQueueId(queueId: number): Promise<CatalogMenuItem | undefined> {
+    const result = await this.db
+      .select()
+      .from(catalogMenuItems)
+      .where(eq(catalogMenuItems.queueId, queueId))
+      .limit(1);
+
+    return result[0];
+  }
+
+  async createCatalogMenuItem(item: InsertCatalogMenuItem): Promise<CatalogMenuItem> {
+    const result = await this.db
+      .insert(catalogMenuItems)
+      .values(item)
+      .returning();
+
+    return result[0];
+  }
+
+  async updateCatalogMenuItem(id: number, item: Partial<CatalogMenuItem>): Promise<CatalogMenuItem | undefined> {
+    const result = await this.db
+      .update(catalogMenuItems)
+      .set(item)
+      .where(eq(catalogMenuItems.id, id))
+      .returning();
+
+    return result[0];
+  }
+
+  // Sync events
+  async createSyncEvent(event: InsertSyncEvent): Promise<SyncEvent> {
+    const result = await this.db
+      .insert(syncEvents)
+      .values(event)
+      .returning();
+
+    return result[0];
+  }
+
+  async getSyncEvents(): Promise<SyncEvent[]> {
+    return await this.db.select().from(syncEvents);
+  }
 }
 
-// Use MemStorage for development, TursoStorage for production
-export const storage = process.env.NODE_ENV === 'production' && process.env.DATABASE_URL && process.env.DATABASE_AUTH_TOKEN
-  ? new TursoStorage() 
+// Use MemStorage for development and until sync is implemented
+// TursoStorage will be used once sync system populates the database
+export const storage = process.env.USE_TURSO_STORAGE === 'true' && process.env.DATABASE_URL && process.env.DATABASE_AUTH_TOKEN
+  ? new TursoStorage()
   : new MemStorage();
