@@ -24,6 +24,7 @@ export interface CatalogMenuItem {
   hasFlavorOptions: boolean;
   hasMealOption: boolean;
   isSpicyOption: boolean;
+  hasToppingsOptions?: boolean;
   updatedAt?: string;
   deletedAt?: string;
   contentHash?: string;
@@ -92,9 +93,10 @@ export async function getCatalogData(): Promise<CatalogData> {
             price: priceInPennies,
             categoryId: 1, // Assign to fallback category
             queueId: 0,
-            hasFlavorOptions: false,
+            hasFlavorOptions: true, // Enable flavors for all items in fallback
             hasMealOption: false,
             isSpicyOption: false,
+            hasToppingsOptions: true, // Enable toppings for all items in fallback
             available: true
           };
         })
@@ -130,12 +132,22 @@ export function groupItemsByCategory(categories: CatalogCategory[], items: Catal
 
 // Flavor options for items that support them
 export const flavorOptions = [
-  'Mild',
+  'Lemon & Herb',
+  'Garlic & Herb',
   'Medium',
   'Hot',
   'Extra Hot',
-  'BBQ',
-  'Garlic & Herb'
+  'BBQ'
+];
+
+// Toppings options for items that support them
+export const toppingsOptions = [
+  'Cheese',
+  'Lettuce',
+  'Mayo',
+  'Burger Sauce',
+  'Tomato',
+  'Onions'
 ];
 
 // Helper function to get image URL (consistent across components)
