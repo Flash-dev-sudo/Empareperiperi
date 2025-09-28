@@ -6,13 +6,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Plus, Flame, Settings, X } from "lucide-react";
-import { formatPrice, flavorOptions, toppingsOptions, getImageUrl, type CatalogMenuItem, type CatalogCategory } from "@/services/catalog";
+import { formatPrice, flavorOptions, getImageUrl, type CatalogMenuItem, type CatalogCategory } from "@/services/catalog";
 
 interface ItemCustomization {
   flavor?: string;
   isMeal?: boolean;
   isSpicy?: boolean;
-  toppings?: string[];
 }
 
 interface OrderMenuItemProps {
@@ -27,7 +26,7 @@ export default function OrderMenuItem({ item, category, onAddToCart, isAddingToC
   const [showCustomization, setShowCustomization] = useState(false);
   const uniqueId = useId(); // Generate unique ID for this component instance
 
-  const hasCustomizations = item.hasFlavorOptions || item.hasMealOption || item.isSpicyOption || item.hasToppingsOptions;
+  const hasCustomizations = item.hasFlavorOptions || item.hasMealOption || item.isSpicyOption;
   const currentPrice = customization.isMeal && item.mealPrice ? item.mealPrice : item.price;
 
   const handleAddToCart = () => {
@@ -133,37 +132,6 @@ export default function OrderMenuItem({ item, category, onAddToCart, isAddingToC
                   </div>
                 )}
 
-                {/* Toppings options */}
-                {item.hasToppingsOptions && (
-                  <div>
-                    <Label className="text-sm font-medium text-gray-700 mb-2 block">Choose Toppings</Label>
-                    <div className="grid grid-cols-2 gap-2">
-                      {toppingsOptions.map((topping) => (
-                        <div key={topping} className="flex items-center space-x-2 p-2 bg-white rounded border">
-                          <input
-                            type="checkbox"
-                            id={`${uniqueId}-topping-${topping}`}
-                            checked={customization.toppings?.includes(topping) || false}
-                            onChange={(e) => {
-                              const currentToppings = customization.toppings || [];
-                              const newToppings = e.target.checked
-                                ? [...currentToppings, topping]
-                                : currentToppings.filter(t => t !== topping);
-                              setCustomization({...customization, toppings: newToppings});
-                            }}
-                            className="rounded border-gray-300 text-emparo-orange focus:ring-emparo-orange"
-                          />
-                          <Label
-                            htmlFor={`${uniqueId}-topping-${topping}`}
-                            className="text-sm cursor-pointer flex-1"
-                          >
-                            {topping}
-                          </Label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
 
                 {/* Meal option */}
                 {item.hasMealOption && item.mealPrice && (

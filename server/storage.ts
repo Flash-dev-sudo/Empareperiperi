@@ -1,11 +1,8 @@
 import {
-  users, menuItems, orders, cartItems,
-  catalogCategories, catalogMenuItems, syncEvents,
+  users, menuItems, orders, cartItems, categories, gallery,
   type User, type InsertUser, type MenuItem, type InsertMenuItem,
-  type Order, type InsertOrder, type CartItem, type InsertCartItem,
-  type CatalogCategory, type InsertCatalogCategory,
-  type CatalogMenuItem, type InsertCatalogMenuItem,
-  type SyncEvent, type InsertSyncEvent
+  type Order, type InsertOrder, type CartItemDB, type InsertCartItemDB,
+  type Category, type InsertCategory, type Gallery, type InsertGallery
 } from "@shared/schema";
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
@@ -18,47 +15,49 @@ export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
-  
+
+  // Category operations
+  getCategories(): Promise<Category[]>;
+  getCategoryById(id: number): Promise<Category | undefined>;
+  createCategory(category: InsertCategory): Promise<Category>;
+  updateCategory(id: number, category: Partial<Category>): Promise<Category | undefined>;
+  deleteCategory(id: number): Promise<boolean>;
+
   // Menu operations
   getMenuItems(): Promise<MenuItem[]>;
+  getMenuItemsByCategory(categoryId: number): Promise<MenuItem[]>;
   getMenuItemById(id: number): Promise<MenuItem | undefined>;
   createMenuItem(item: InsertMenuItem): Promise<MenuItem>;
   updateMenuItem(id: number, item: Partial<MenuItem>): Promise<MenuItem | undefined>;
   deleteMenuItem(id: number): Promise<boolean>;
-  
+
   // Cart operations
-  getCartItems(sessionId: string): Promise<(CartItem & { menuItem: MenuItem })[]>;
-  addToCart(item: InsertCartItem): Promise<CartItem>;
-  updateCartItem(id: number, quantity: number): Promise<CartItem | undefined>;
+  getCartItems(sessionId: string): Promise<(CartItemDB & { menuItem: MenuItem })[]>;
+  addToCart(item: InsertCartItemDB): Promise<CartItemDB>;
+  updateCartItem(id: number, quantity: number): Promise<CartItemDB | undefined>;
   removeFromCart(id: number): Promise<boolean>;
   clearCart(sessionId: string): Promise<boolean>;
-  
+
   // Order operations
   createOrder(order: InsertOrder): Promise<Order>;
   getOrderById(id: number): Promise<Order | undefined>;
   getOrdersByPhone(phone: string): Promise<Order[]>;
 
-  // Catalog sync operations
-  getCatalogCategories(): Promise<CatalogCategory[]>;
-  getCatalogCategoryByQueueId(queueId: number): Promise<CatalogCategory | undefined>;
-  createCatalogCategory(category: InsertCatalogCategory): Promise<CatalogCategory>;
-  updateCatalogCategory(id: number, category: Partial<CatalogCategory>): Promise<CatalogCategory | undefined>;
-
-  getCatalogMenuItems(): Promise<CatalogMenuItem[]>;
-  getCatalogMenuItemByQueueId(queueId: number): Promise<CatalogMenuItem | undefined>;
-  createCatalogMenuItem(item: InsertCatalogMenuItem): Promise<CatalogMenuItem>;
-  updateCatalogMenuItem(id: number, item: Partial<CatalogMenuItem>): Promise<CatalogMenuItem | undefined>;
-
-  // Sync events
-  createSyncEvent(event: InsertSyncEvent): Promise<SyncEvent>;
-  getSyncEvents(): Promise<SyncEvent[]>;
+  // Gallery operations
+  getGalleryItems(): Promise<Gallery[]>;
+  getGalleryItemById(id: number): Promise<Gallery | undefined>;
+  createGalleryItem(item: InsertGallery): Promise<Gallery>;
+  updateGalleryItem(id: number, item: Partial<Gallery>): Promise<Gallery | undefined>;
+  deleteGalleryItem(id: number): Promise<boolean>;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<number, User>;
+  private categories: Map<number, Category>;
   private menuItems: Map<number, MenuItem>;
   private orders: Map<number, Order>;
-  private cartItems: Map<number, CartItem>;
+  private cartItems: Map<number, CartItemDB>;
+  private galleryItems: Map<number, Gallery>;
   private currentId: number;
 
   constructor() {
@@ -309,19 +308,13 @@ export class TursoStorage implements IStorage {
   private db: ReturnType<typeof drizzle>;
 
   constructor() {
-    if (!process.env.DATABASE_URL) {
-      throw new Error("DATABASE_URL environment variable is required for Turso");
-    }
-
-    // Clean the URL to remove any PostgreSQL parameters
-    let cleanUrl = process.env.DATABASE_URL;
-    if (cleanUrl.includes('?')) {
-      cleanUrl = cleanUrl.split('?')[0];
-    }
+    // Use queue database configuration (TURSO_DB_URL)
+    const url = process.env.TURSO_DB_URL || "file:dev.db";
+    const authToken = process.env.TURSO_AUTH_TOKEN;
 
     const client = createClient({
-      url: cleanUrl,
-      authToken: process.env.DATABASE_AUTH_TOKEN,
+      url,
+      authToken,
     });
 
     this.db = drizzle(client);
@@ -356,9 +349,62 @@ export class TursoStorage implements IStorage {
     return result[0];
   }
 
+  // Category operations
+  async getCategories(): Promise<Category[]> {
+    return await this.db
+      .select()
+      .from(categories)
+      .orderBy(categories.displayOrder);
+  }
+
+  async getCategoryById(id: number): Promise<Category | undefined> {
+    const result = await this.db
+      .select()
+      .from(categories)
+      .where(eq(categories.id, id))
+      .limit(1);
+
+    return result[0];
+  }
+
+  async createCategory(category: InsertCategory): Promise<Category> {
+    const result = await this.db
+      .insert(categories)
+      .values(category)
+      .returning();
+
+    return result[0];
+  }
+
+  async updateCategory(id: number, updates: Partial<Category>): Promise<Category | undefined> {
+    const result = await this.db
+      .update(categories)
+      .set(updates)
+      .where(eq(categories.id, id))
+      .returning();
+
+    return result[0];
+  }
+
+  async deleteCategory(id: number): Promise<boolean> {
+    const result = await this.db
+      .delete(categories)
+      .where(eq(categories.id, id))
+      .returning();
+
+    return result.length > 0;
+  }
+
   // Menu operations
   async getMenuItems(): Promise<MenuItem[]> {
     return await this.db.select().from(menuItems);
+  }
+
+  async getMenuItemsByCategory(categoryId: number): Promise<MenuItem[]> {
+    return await this.db
+      .select()
+      .from(menuItems)
+      .where(eq(menuItems.categoryId, categoryId));
   }
 
   async getMenuItemById(id: number): Promise<MenuItem | undefined> {
@@ -400,7 +446,7 @@ export class TursoStorage implements IStorage {
   }
 
   // Cart operations
-  async getCartItems(sessionId: string): Promise<(CartItem & { menuItem: MenuItem })[]> {
+  async getCartItems(sessionId: string): Promise<(CartItemDB & { menuItem: MenuItem })[]> {
     const result = await this.db
       .select({
         cartItem: cartItems,
@@ -409,29 +455,29 @@ export class TursoStorage implements IStorage {
       .from(cartItems)
       .innerJoin(menuItems, eq(cartItems.menuItemId, menuItems.id))
       .where(eq(cartItems.sessionId, sessionId));
-    
+
     return result.map(({ cartItem, menuItem }) => ({
       ...cartItem,
       menuItem
     }));
   }
 
-  async addToCart(item: InsertCartItem): Promise<CartItem> {
+  async addToCart(item: InsertCartItemDB): Promise<CartItemDB> {
     const result = await this.db
       .insert(cartItems)
       .values(item)
       .returning();
-    
+
     return result[0];
   }
 
-  async updateCartItem(id: number, quantity: number): Promise<CartItem | undefined> {
+  async updateCartItem(id: number, quantity: number): Promise<CartItemDB | undefined> {
     const result = await this.db
       .update(cartItems)
       .set({ quantity })
       .where(eq(cartItems.id, id))
       .returning();
-    
+
     return result[0];
   }
 
@@ -480,90 +526,56 @@ export class TursoStorage implements IStorage {
       .where(eq(orders.customerPhone, phone));
   }
 
-  // Catalog sync operations
-  async getCatalogCategories(): Promise<CatalogCategory[]> {
-    return await this.db.select().from(catalogCategories);
+  // Gallery operations
+  async getGalleryItems(): Promise<Gallery[]> {
+    return await this.db
+      .select()
+      .from(gallery)
+      .where(eq(gallery.isActive, true));
   }
 
-  async getCatalogCategoryByQueueId(queueId: number): Promise<CatalogCategory | undefined> {
+  async getGalleryItemById(id: number): Promise<Gallery | undefined> {
     const result = await this.db
       .select()
-      .from(catalogCategories)
-      .where(eq(catalogCategories.queueId, queueId))
+      .from(gallery)
+      .where(eq(gallery.id, id))
       .limit(1);
 
     return result[0];
   }
 
-  async createCatalogCategory(category: InsertCatalogCategory): Promise<CatalogCategory> {
+  async createGalleryItem(item: InsertGallery): Promise<Gallery> {
     const result = await this.db
-      .insert(catalogCategories)
-      .values(category)
-      .returning();
-
-    return result[0];
-  }
-
-  async updateCatalogCategory(id: number, category: Partial<CatalogCategory>): Promise<CatalogCategory | undefined> {
-    const result = await this.db
-      .update(catalogCategories)
-      .set(category)
-      .where(eq(catalogCategories.id, id))
-      .returning();
-
-    return result[0];
-  }
-
-  async getCatalogMenuItems(): Promise<CatalogMenuItem[]> {
-    return await this.db.select().from(catalogMenuItems);
-  }
-
-  async getCatalogMenuItemByQueueId(queueId: number): Promise<CatalogMenuItem | undefined> {
-    const result = await this.db
-      .select()
-      .from(catalogMenuItems)
-      .where(eq(catalogMenuItems.queueId, queueId))
-      .limit(1);
-
-    return result[0];
-  }
-
-  async createCatalogMenuItem(item: InsertCatalogMenuItem): Promise<CatalogMenuItem> {
-    const result = await this.db
-      .insert(catalogMenuItems)
+      .insert(gallery)
       .values(item)
       .returning();
 
     return result[0];
   }
 
-  async updateCatalogMenuItem(id: number, item: Partial<CatalogMenuItem>): Promise<CatalogMenuItem | undefined> {
+  async updateGalleryItem(id: number, updates: Partial<Gallery>): Promise<Gallery | undefined> {
     const result = await this.db
-      .update(catalogMenuItems)
-      .set(item)
-      .where(eq(catalogMenuItems.id, id))
+      .update(gallery)
+      .set(updates)
+      .where(eq(gallery.id, id))
       .returning();
 
     return result[0];
   }
 
-  // Sync events
-  async createSyncEvent(event: InsertSyncEvent): Promise<SyncEvent> {
+  async deleteGalleryItem(id: number): Promise<boolean> {
     const result = await this.db
-      .insert(syncEvents)
-      .values(event)
+      .update(gallery)
+      .set({ isActive: false })
+      .where(eq(gallery.id, id))
       .returning();
 
-    return result[0];
-  }
-
-  async getSyncEvents(): Promise<SyncEvent[]> {
-    return await this.db.select().from(syncEvents);
+    return result.length > 0;
   }
 }
 
-// Use MemStorage for development and until sync is implemented
-// TursoStorage will be used once sync system populates the database
-export const storage = process.env.USE_TURSO_STORAGE === 'true' && process.env.DATABASE_URL && process.env.DATABASE_AUTH_TOKEN
+// Use TursoStorage by default (connected to queue database)
+// MemStorage only for development/testing when TURSO_DB_URL is not available
+export const storage = process.env.TURSO_DB_URL
   ? new TursoStorage()
   : new MemStorage();

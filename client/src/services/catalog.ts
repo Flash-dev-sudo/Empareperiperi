@@ -1,8 +1,7 @@
-// Catalog service for fetching synced catalog data
+// Catalog service for fetching data directly from queue database
 
 export interface CatalogCategory {
   id: number;
-  queueId: number;
   name: string;
   icon: string;
   displayOrder: number;
@@ -13,7 +12,6 @@ export interface CatalogCategory {
 
 export interface CatalogMenuItem {
   id: number;
-  queueId: number;
   categoryId: number;
   name: string;
   description?: string;
@@ -24,7 +22,6 @@ export interface CatalogMenuItem {
   hasFlavorOptions: boolean;
   hasMealOption: boolean;
   isSpicyOption: boolean;
-  hasToppingsOptions?: boolean;
   updatedAt?: string;
   deletedAt?: string;
   contentHash?: string;
@@ -40,10 +37,9 @@ export function formatPrice(priceInPennies: number): string {
   return `£${(priceInPennies / 100).toFixed(2)}`;
 }
 
-// Get catalog data (from API in production, fallback to old data in development)
+// Get catalog data directly from queue database
 export async function getCatalogData(): Promise<CatalogData> {
   try {
-    // First try to get synced catalog data
     const response = await fetch('/api/catalog');
     if (!response.ok) {
       throw new Error('Failed to fetch catalog');
@@ -51,63 +47,19 @@ export async function getCatalogData(): Promise<CatalogData> {
 
     const data = await response.json();
 
-    // If we have synced data, use it
-    if (data.categories && data.categories.length > 0 && data.items && data.items.length > 0) {
-      return data;
-    }
-
-    // Otherwise fall through to legacy menu API
-    throw new Error('No synced catalog data available');
+    // Return the rich catalog data directly from queue database
+    return {
+      categories: data.categories || [],
+      items: data.categories?.flatMap((cat: any) => cat.items || []) || []
+    };
   } catch (error) {
-    console.warn('Failed to fetch synced catalog, falling back to legacy menu API:', error);
+    console.error('Failed to fetch catalog:', error);
 
-    // Fallback to legacy menu API until sync is implemented
-    try {
-      const menuResponse = await fetch('/api/menu');
-      if (!menuResponse.ok) {
-        throw new Error('Failed to fetch menu');
-      }
-
-      const menuItems = await menuResponse.json();
-
-      // Transform legacy menu items to catalog format
-      // For now, put all items in a single "Menu" category
-      const fallbackCategory = {
-        id: 1,
-        queueId: 0,
-        name: "Menu",
-        icon: "utensils",
-        displayOrder: 0
-      };
-
-      return {
-        categories: [fallbackCategory],
-        items: menuItems.map((item: any) => {
-          const priceInPennies =
-            typeof item.price === 'number'
-              ? item.price
-              : Math.round(Number(item.price) * 100);
-
-          return {
-            ...item,
-            price: priceInPennies,
-            categoryId: 1, // Assign to fallback category
-            queueId: 0,
-            hasFlavorOptions: true, // Enable flavors for all items in fallback
-            hasMealOption: false,
-            isSpicyOption: false,
-            hasToppingsOptions: true, // Enable toppings for all items in fallback
-            available: true
-          };
-        })
-      };
-    } catch (menuError) {
-      console.error('Failed to fetch legacy menu:', menuError);
-      return {
-        categories: [],
-        items: []
-      };
-    }
+    // Return empty catalog if error
+    return {
+      categories: [],
+      items: []
+    };
   }
 }
 
@@ -130,10 +82,9 @@ export function groupItemsByCategory(categories: CatalogCategory[], items: Catal
   }));
 }
 
-// Flavor options for items that support them
+// Flavor options for items that support them (from queue schema)
 export const flavorOptions = [
-  'Lemon & Herb',
-  'Garlic & Herb',
+  'Garlic & Hector',
   'Medium',
   'Hot',
   'Extra Hot',
