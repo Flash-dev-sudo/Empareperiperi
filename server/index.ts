@@ -75,13 +75,9 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 
-  // Use Render's PORT environment variable in production, fallback to 5000 for development
-  const port = process.env.PORT || 5000;
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
+  // Use Render's PORT environment variable in production, fallback to 5002 for development
+  const port = process.env.PORT || 5002;
+  server.listen(port, () => {
     log(`serving on port ${port}`);
     // Start keep-alive service for production
     startKeepAlive();
