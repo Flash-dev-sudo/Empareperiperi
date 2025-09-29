@@ -74,29 +74,33 @@ export class MemStorage implements IStorage {
   }
 
 private initializeSampleData() {
-  // First, add categories
+  // Till-style categories
   const sampleCategories = [
     { id: 1, name: "Starters", icon: "🥗", displayOrder: 1, updatedAt: new Date().toISOString(), deletedAt: null, contentHash: null },
     { id: 2, name: "Mains", icon: "🍽️", displayOrder: 2, updatedAt: new Date().toISOString(), deletedAt: null, contentHash: null },
-    { id: 3, name: "Platters", icon: "🍱", displayOrder: 3, updatedAt: new Date().toISOString(), deletedAt: null, contentHash: null },
-    { id: 4, name: "Pizzas", icon: "🍕", displayOrder: 4, updatedAt: new Date().toISOString(), deletedAt: null, contentHash: null },
+    { id: 3, name: "Burgers", icon: "🍔", displayOrder: 3, updatedAt: new Date().toISOString(), deletedAt: null, contentHash: null },
+    { id: 4, name: "Wraps", icon: "🌯", displayOrder: 4, updatedAt: new Date().toISOString(), deletedAt: null, contentHash: null },
     { id: 5, name: "Chicken", icon: "🍗", displayOrder: 5, updatedAt: new Date().toISOString(), deletedAt: null, contentHash: null },
-    { id: 6, name: "Milkshakes", icon: "🥤", displayOrder: 6, updatedAt: new Date().toISOString(), deletedAt: null, contentHash: null }
+    { id: 6, name: "Pizzas", icon: "🍕", displayOrder: 6, updatedAt: new Date().toISOString(), deletedAt: null, contentHash: null },
+    { id: 7, name: "Sides", icon: "🍟", displayOrder: 7, updatedAt: new Date().toISOString(), deletedAt: null, contentHash: null },
+    { id: 8, name: "Drinks", icon: "🥤", displayOrder: 8, updatedAt: new Date().toISOString(), deletedAt: null, contentHash: null },
+    { id: 9, name: "Platters", icon: "🍱", displayOrder: 9, updatedAt: new Date().toISOString(), deletedAt: null, contentHash: null }
   ];
 
   sampleCategories.forEach(cat => {
     this.categories.set(cat.id, cat);
   });
 
+  // Comprehensive till-style menu items
   const sampleItems = [
-    // Starters with customization
+    // STARTERS
     {
       id: 1,
-      categoryId: 1, // Starters
+      categoryId: 1,
       name: "Peri Peri Chips",
-      description: "Crispy chips with peri peri seasoning",
-      price: 300, // £3.00 in pence
-      mealPrice: 250, // £2.50 for meal upgrade
+      description: "Crispy chips with peri peri seasoning - Choose your spice level",
+      price: 300,
+      mealPrice: 250,
       available: true,
       image: null,
       hasFlavorOptions: true,
@@ -109,9 +113,9 @@ private initializeSampleData() {
     {
       id: 2,
       categoryId: 1,
-      name: "Chicken Wings",
-      description: "Spicy chicken wings",
-      price: 450, // £4.50
+      name: "Buffalo Wings (6pcs)",
+      description: "Chicken wings with buffalo sauce - Customize your flavor",
+      price: 450,
       mealPrice: 250,
       available: true,
       image: null,
@@ -125,43 +129,27 @@ private initializeSampleData() {
     {
       id: 3,
       categoryId: 1,
-      name: "Chips",
-      description: "Crispy golden chips",
-      price: 250, // £2.50
+      name: "Loaded Nachos",
+      description: "Tortilla chips with cheese, jalapeños, salsa - Add toppings",
+      price: 550,
       mealPrice: 250,
       available: true,
       image: null,
       hasFlavorOptions: false,
       hasMealOption: true,
-      isSpicyOption: false,
-      updatedAt: new Date().toISOString(),
-      deletedAt: null,
-      contentHash: null
-    },
-    {
-      id: 4,
-      categoryId: 1,
-      name: "Potato Wedges",
-      description: "Crispy seasoned potato wedges",
-      price: 350, // £3.50
-      mealPrice: 250,
-      available: true,
-      image: null,
-      hasFlavorOptions: false,
-      hasMealOption: true,
-      isSpicyOption: false,
+      isSpicyOption: true,
       updatedAt: new Date().toISOString(),
       deletedAt: null,
       contentHash: null
     },
 
-    // Mains with customization
+    // MAINS
     {
-      id: 5,
-      categoryId: 2, // Mains
-      name: "Peri Peri Burger",
-      description: "Peri peri chicken burger",
-      price: 500, // £5.00
+      id: 4,
+      categoryId: 2,
+      name: "Grilled Chicken Breast",
+      description: "Marinated chicken breast - Choose your sauce and sides",
+      price: 650,
       mealPrice: 250,
       available: true,
       image: null,
@@ -173,27 +161,45 @@ private initializeSampleData() {
       contentHash: null
     },
     {
-      id: 6,
+      id: 5,
       categoryId: 2,
-      name: "Chicken Wrap",
-      description: "Grilled chicken in a soft tortilla",
-      price: 600, // £6.00
+      name: "Fish and Chips",
+      description: "Beer battered cod with chips - Choose your chip type",
+      price: 750,
       mealPrice: 250,
       available: true,
       image: null,
-      hasFlavorOptions: true,
+      hasFlavorOptions: false,
       hasMealOption: true,
       isSpicyOption: false,
       updatedAt: new Date().toISOString(),
       deletedAt: null,
       contentHash: null
     },
+
+    // BURGERS
+    {
+      id: 6,
+      categoryId: 3,
+      name: "Peri Peri Burger",
+      description: "Chicken breast burger with peri peri sauce - Customize everything",
+      price: 550,
+      mealPrice: 250,
+      available: true,
+      image: null,
+      hasFlavorOptions: true,
+      hasMealOption: true,
+      isSpicyOption: true,
+      updatedAt: new Date().toISOString(),
+      deletedAt: null,
+      contentHash: null
+    },
     {
       id: 7,
-      categoryId: 2,
-      name: "Fish and Chips",
-      description: "Battered fish with chips",
-      price: 750, // £7.50
+      categoryId: 3,
+      name: "Classic Beef Burger",
+      description: "Beef patty with lettuce, tomato - Add your toppings",
+      price: 500,
       mealPrice: 250,
       available: true,
       image: null,
@@ -206,48 +212,218 @@ private initializeSampleData() {
     },
     {
       id: 8,
-      categoryId: 2,
-      name: "Chicken Salad",
-      description: "Fresh salad with grilled chicken",
-      price: 600, // £6.00
-      mealPrice: 250,
-      available: true,
-      image: null,
-      hasFlavorOptions: false,
-      hasMealOption: true,
-      isSpicyOption: false,
-      updatedAt: new Date().toISOString(),
-      deletedAt: null,
-      contentHash: null
-    },
-    {
-      id: 9,
-      categoryId: 2,
-      name: "Caesar Salad",
-      description: "Classic caesar salad",
-      price: 550, // £5.50
-      mealPrice: 250,
-      available: true,
-      image: null,
-      hasFlavorOptions: false,
-      hasMealOption: true,
-      isSpicyOption: false,
-      updatedAt: new Date().toISOString(),
-      deletedAt: null,
-      contentHash: null
-    },
-    {
-      id: 10,
-      categoryId: 2,
-      name: "Chicken Rice Bowl",
-      description: "Grilled chicken with seasoned rice",
-      price: 700, // £7.00
+      categoryId: 3,
+      name: "Spicy Zinger Burger",
+      description: "Crispy spicy chicken breast - Choose your heat level",
+      price: 580,
       mealPrice: 250,
       available: true,
       image: null,
       hasFlavorOptions: true,
       hasMealOption: true,
       isSpicyOption: true,
+      updatedAt: new Date().toISOString(),
+      deletedAt: null,
+      contentHash: null
+    },
+
+    // WRAPS
+    {
+      id: 9,
+      categoryId: 4,
+      name: "Chicken Peri Wrap",
+      description: "Grilled chicken in tortilla wrap - Choose your flavor & fillings",
+      price: 480,
+      mealPrice: 250,
+      available: true,
+      image: null,
+      hasFlavorOptions: true,
+      hasMealOption: true,
+      isSpicyOption: true,
+      updatedAt: new Date().toISOString(),
+      deletedAt: null,
+      contentHash: null
+    },
+    {
+      id: 10,
+      categoryId: 4,
+      name: "Caesar Chicken Wrap",
+      description: "Chicken caesar wrap with parmesan & croutons - Add extras",
+      price: 450,
+      mealPrice: 250,
+      available: true,
+      image: null,
+      hasFlavorOptions: false,
+      hasMealOption: true,
+      isSpicyOption: false,
+      updatedAt: new Date().toISOString(),
+      deletedAt: null,
+      contentHash: null
+    },
+
+    // CHICKEN
+    {
+      id: 11,
+      categoryId: 5,
+      name: "Half Chicken",
+      description: "Flame-grilled half chicken - Choose your marinade",
+      price: 650,
+      mealPrice: 250,
+      available: true,
+      image: null,
+      hasFlavorOptions: true,
+      hasMealOption: true,
+      isSpicyOption: true,
+      updatedAt: new Date().toISOString(),
+      deletedAt: null,
+      contentHash: null
+    },
+    {
+      id: 12,
+      categoryId: 5,
+      name: "Whole Chicken",
+      description: "Full flame-grilled chicken - Choose your sides",
+      price: 1200,
+      mealPrice: 300,
+      available: true,
+      image: null,
+      hasFlavorOptions: true,
+      hasMealOption: true,
+      isSpicyOption: true,
+      updatedAt: new Date().toISOString(),
+      deletedAt: null,
+      contentHash: null
+    },
+    {
+      id: 13,
+      categoryId: 5,
+      name: "Chicken Strips (5pcs)",
+      description: "Breaded chicken strips - Choose dipping sauce",
+      price: 420,
+      mealPrice: 250,
+      available: true,
+      image: null,
+      hasFlavorOptions: true,
+      hasMealOption: true,
+      isSpicyOption: false,
+      updatedAt: new Date().toISOString(),
+      deletedAt: null,
+      contentHash: null
+    },
+
+    // PIZZAS
+    {
+      id: 14,
+      categoryId: 6,
+      name: "Peri Peri Pizza",
+      description: "12\" pizza with peri peri chicken - Customize toppings",
+      price: 850,
+      mealPrice: 0,
+      available: true,
+      image: null,
+      hasFlavorOptions: true,
+      hasMealOption: false,
+      isSpicyOption: true,
+      updatedAt: new Date().toISOString(),
+      deletedAt: null,
+      contentHash: null
+    },
+    {
+      id: 15,
+      categoryId: 6,
+      name: "Margherita Pizza",
+      description: "Classic tomato and mozzarella - Add extra toppings",
+      price: 750,
+      mealPrice: 0,
+      available: true,
+      image: null,
+      hasFlavorOptions: false,
+      hasMealOption: false,
+      isSpicyOption: false,
+      updatedAt: new Date().toISOString(),
+      deletedAt: null,
+      contentHash: null
+    },
+
+    // SIDES
+    {
+      id: 16,
+      categoryId: 7,
+      name: "Regular Chips",
+      description: "Classic golden chips",
+      price: 200,
+      mealPrice: 0,
+      available: true,
+      image: null,
+      hasFlavorOptions: false,
+      hasMealOption: false,
+      isSpicyOption: false,
+      updatedAt: new Date().toISOString(),
+      deletedAt: null,
+      contentHash: null
+    },
+    {
+      id: 17,
+      categoryId: 7,
+      name: "Sweet Potato Fries",
+      description: "Crispy sweet potato fries",
+      price: 280,
+      mealPrice: 0,
+      available: true,
+      image: null,
+      hasFlavorOptions: false,
+      hasMealOption: false,
+      isSpicyOption: false,
+      updatedAt: new Date().toISOString(),
+      deletedAt: null,
+      contentHash: null
+    },
+    {
+      id: 18,
+      categoryId: 7,
+      name: "Onion Rings",
+      description: "Crispy battered onion rings",
+      price: 250,
+      mealPrice: 0,
+      available: true,
+      image: null,
+      hasFlavorOptions: false,
+      hasMealOption: false,
+      isSpicyOption: false,
+      updatedAt: new Date().toISOString(),
+      deletedAt: null,
+      contentHash: null
+    },
+
+    // DRINKS
+    {
+      id: 19,
+      categoryId: 8,
+      name: "Soft Drinks",
+      description: "Coke, Pepsi, Sprite, Fanta - Choose your size",
+      price: 180,
+      mealPrice: 0,
+      available: true,
+      image: null,
+      hasFlavorOptions: false,
+      hasMealOption: false,
+      isSpicyOption: false,
+      updatedAt: new Date().toISOString(),
+      deletedAt: null,
+      contentHash: null
+    },
+    {
+      id: 20,
+      categoryId: 8,
+      name: "Fresh Juices",
+      description: "Orange, Apple, Cranberry - Choose your flavor",
+      price: 220,
+      mealPrice: 0,
+      available: true,
+      image: null,
+      hasFlavorOptions: true,
+      hasMealOption: false,
+      isSpicyOption: false,
       updatedAt: new Date().toISOString(),
       deletedAt: null,
       contentHash: null
@@ -259,7 +435,7 @@ private initializeSampleData() {
   });
 
   // Set currentId to be higher than the sample data
-  this.currentId = 11;
+  this.currentId = 21;
 }
 
   async getUser(id: number): Promise<User | undefined> {

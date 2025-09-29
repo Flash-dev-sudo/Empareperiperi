@@ -69,14 +69,17 @@ app.use((req, res, next) => {
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
+  log(`NODE_ENV is: "${process.env.NODE_ENV}"`);
+  if (process.env.NODE_ENV?.trim() === "development") {
+    log("Setting up Vite development server");
     await setupVite(app, server);
   } else {
+    log("Setting up static file serving");
     serveStatic(app);
   }
 
-  // Use Render's PORT environment variable in production, fallback to 5002 for development
-  const port = process.env.PORT || 5002;
+  // Use Render's PORT environment variable in production, fallback to 5007 for development
+  const port = process.env.PORT ? parseInt(process.env.PORT) : 5007;
   server.listen(port, () => {
     log(`serving on port ${port}`);
     // Start keep-alive service for production

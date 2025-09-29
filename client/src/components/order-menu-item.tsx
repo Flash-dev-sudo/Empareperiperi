@@ -2,14 +2,19 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Plus, Flame, Settings } from "lucide-react";
+import { Plus, Flame } from "lucide-react";
 import { formatPrice, getImageUrl, type CatalogMenuItem, type CatalogCategory } from "@/services/catalog";
 import CustomizationModal from "./customization-modal";
 
 interface ItemCustomization {
   flavor?: string;
+  toppings?: string[];
+  sauces?: string[];
   isMeal?: boolean;
+  isPeriPeriChipsMeal?: boolean;
   isSpicy?: boolean;
+  spiceLevel?: string;
+  drinkChoice?: string;
 }
 
 interface OrderMenuItemProps {
@@ -22,14 +27,12 @@ interface OrderMenuItemProps {
 export default function OrderMenuItem({ item, category, onAddToCart, isAddingToCart }: OrderMenuItemProps) {
   const [isCustomizationOpen, setIsCustomizationOpen] = useState(false);
 
-  const hasCustomizations = item.hasFlavorOptions || item.hasMealOption || item.isSpicyOption;
-
   const handleAddToCart = (customization: ItemCustomization) => {
     onAddToCart(item, customization);
   };
 
-  const handleSimpleAddToCart = () => {
-    onAddToCart(item, {});
+  const handleButtonClick = () => {
+    setIsCustomizationOpen(true);
   };
 
   return (
@@ -54,7 +57,10 @@ export default function OrderMenuItem({ item, category, onAddToCart, isAddingToC
           <div className="text-right ml-4">
             <div className="text-xl font-bold text-emparo-orange">{formatPrice(item.price)}</div>
             {item.hasMealOption && item.mealPrice && (
-              <div className="text-sm text-gray-500">Meal: {formatPrice(item.mealPrice)}</div>
+              <div className="text-xs text-gray-500 space-y-1">
+                <div>Meal: +{formatPrice(item.mealPrice)}</div>
+                <div>Peri Meal: +{formatPrice(280)}</div>
+              </div>
             )}
           </div>
         </div>
@@ -79,25 +85,14 @@ export default function OrderMenuItem({ item, category, onAddToCart, isAddingToC
         )}
 
         {/* Add to Cart Button */}
-        {hasCustomizations ? (
-          <Button
-            onClick={() => setIsCustomizationOpen(true)}
-            disabled={isAddingToCart}
-            className="w-full bg-emparo-orange hover:bg-emparo-orange/90"
-          >
-            <Settings className="w-4 h-4 mr-2" />
-            Customize & Add to Cart
-          </Button>
-        ) : (
-          <Button
-            onClick={handleSimpleAddToCart}
-            disabled={isAddingToCart}
-            className="w-full bg-emparo-orange hover:bg-emparo-orange/90"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add to Cart
-          </Button>
-        )}
+        <Button
+          onClick={handleButtonClick}
+          disabled={isAddingToCart}
+          className="w-full bg-emparo-orange hover:bg-emparo-orange/90"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Add to Cart
+        </Button>
       </CardContent>
     </Card>
 
