@@ -74,14 +74,19 @@ export default function Order() {
     // Create notes from customization
     const notes = [];
     if (customization.flavor) notes.push(`Flavor: ${customization.flavor}`);
-    if (customization.isMeal) notes.push('Meal option');
+    if (customization.isMeal) notes.push('Meal option (+£' + ((item.mealPrice! - item.price) / 100).toFixed(2) + ')');
     if (customization.isSpicy) notes.push('Extra spicy');
+
+    // Calculate price with meal option
+    const finalPrice = customization.isMeal && item.mealPrice ? item.mealPrice : item.price;
 
     addToCartMutation.mutate({
       sessionId,
       menuItemId: item.id, // Use the local database ID for cart
       quantity: 1,
-      notes: notes.length > 0 ? notes.join(', ') : undefined
+      notes: notes.length > 0 ? notes.join(', ') : undefined,
+      // Note: The price calculation will be handled by the backend based on the menu item
+      // but we can add pricing info to the notes for clarity
     });
   };
 
