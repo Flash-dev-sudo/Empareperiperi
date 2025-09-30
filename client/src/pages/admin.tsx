@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink, ArrowRight } from "lucide-react";
 
 export default function Admin() {
-  const queueAdminUrl = "http://localhost:5001/admin"; // Queue system admin URL
+  // Use environment variable for queue admin URL, fallback to localhost for development
+  const queueAdminUrl = import.meta.env.VITE_QUEUE_ADMIN_URL || "http://localhost:5001/admin";
 
   useEffect(() => {
     // Auto-redirect after 3 seconds
