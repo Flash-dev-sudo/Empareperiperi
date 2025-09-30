@@ -231,8 +231,8 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
           )}
 
 
-          {/* Toppings Selection */}
-          {(item.name.toLowerCase().includes('burger') || item.name.toLowerCase().includes('wrap') || item.name.toLowerCase().includes('pizza')) && (
+          {/* Toppings Selection - use database field */}
+          {item.hasToppingsOption && (
             <div className="bg-green-50 p-3 rounded-lg">
               <Label className="text-sm font-semibold text-gray-800 mb-2 block">🥬 Add Toppings</Label>
               <div className="grid grid-cols-2 gap-2">
@@ -253,25 +253,27 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
             </div>
           )}
 
-          {/* Sauces Selection */}
-          <div className="bg-orange-50 p-3 rounded-lg">
-            <Label className="text-sm font-semibold text-gray-800 mb-2 block">🧂 Choose Sauces</Label>
-            <div className="grid grid-cols-2 gap-2">
-              {SAUCES.map((sauce) => (
-                <div key={sauce.value} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={sauce.value}
-                    checked={selectedSauces.includes(sauce.value)}
-                    onCheckedChange={() => handleSauceToggle(sauce.value)}
-                  />
-                  <Label htmlFor={sauce.value} className="text-xs cursor-pointer flex-1">
-                    {sauce.label}
-                    {sauce.price > 0 && <span className="text-green-600 ml-1">+{formatPrice(sauce.price)}</span>}
-                  </Label>
-                </div>
-              ))}
+          {/* Sauces Selection - use database field */}
+          {item.hasSaucesOption && (
+            <div className="bg-orange-50 p-3 rounded-lg">
+              <Label className="text-sm font-semibold text-gray-800 mb-2 block">🧂 Choose Sauces</Label>
+              <div className="grid grid-cols-2 gap-2">
+                {SAUCES.map((sauce) => (
+                  <div key={sauce.value} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={sauce.value}
+                      checked={selectedSauces.includes(sauce.value)}
+                      onCheckedChange={() => handleSauceToggle(sauce.value)}
+                    />
+                    <Label htmlFor={sauce.value} className="text-xs cursor-pointer flex-1">
+                      {sauce.label}
+                      {sauce.price > 0 && <span className="text-green-600 ml-1">+{formatPrice(sauce.price)}</span>}
+                    </Label>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Meal Options */}
           {item.hasMealOption && item.mealPrice && (
