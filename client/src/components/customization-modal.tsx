@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Flame, Plus, Minus } from "lucide-react";
+import { Flame, Plus, Minus, ShoppingCart } from "lucide-react";
 import { formatPrice } from "@/services/catalog";
 
 interface ItemCustomization {
@@ -172,54 +172,70 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh]">
-        <DialogHeader>
-          <DialogTitle className="text-lg font-semibold text-emparo-orange">
-            Customize {item.name}
-          </DialogTitle>
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-hidden">
+        <DialogHeader className="pb-4 border-b border-orange-100">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-2xl">
+              🍔
+            </div>
+            <div>
+              <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                Customize Your {item.name}
+              </DialogTitle>
+              <p className="text-sm text-gray-500 mt-1">Make it exactly how you like it!</p>
+            </div>
+          </div>
         </DialogHeader>
 
         <div className="space-y-4 max-h-96 overflow-y-auto">
           {/* Flavor Options */}
           {item.hasFlavorOptions && (
-            <div className="bg-gray-50 p-3 rounded-lg">
-              <Label className="text-sm font-semibold text-gray-800 mb-2 block">🍗 Choose Flavor</Label>
-              <Select onValueChange={setSelectedFlavor} value={selectedFlavor}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select flavor" />
-                </SelectTrigger>
-                <SelectContent>
-                  {FLAVOR_OPTIONS.map((flavor) => (
-                    <SelectItem key={flavor.value} value={flavor.value}>
-                      <div className="flex justify-between items-center w-full">
-                        <span>{flavor.label}</span>
-                        {flavor.price > 0 && <span className="text-green-600">+{formatPrice(flavor.price)}</span>}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="bg-gradient-to-br from-orange-50 to-red-50 p-4 rounded-xl border border-orange-200 shadow-sm">
+              <Label className="text-base font-bold text-gray-800 mb-3 block flex items-center gap-2">
+                <span className="text-2xl">🍗</span>
+                <span>Choose Your Flavor</span>
+              </Label>
+              <div className="grid grid-cols-2 gap-2">
+                {FLAVOR_OPTIONS.map((flavor) => (
+                  <button
+                    key={flavor.value}
+                    onClick={() => setSelectedFlavor(flavor.value)}
+                    className={`p-3 rounded-lg border-2 transition-all duration-200 text-left ${
+                      selectedFlavor === flavor.value
+                        ? 'border-orange-500 bg-orange-100 shadow-md scale-105'
+                        : 'border-gray-200 bg-white hover:border-orange-300 hover:shadow-sm'
+                    }`}
+                  >
+                    <div className="font-medium text-sm text-gray-800">{flavor.label}</div>
+                    {flavor.price > 0 && (
+                      <div className="text-xs text-green-600 font-semibold mt-1">+{formatPrice(flavor.price)}</div>
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
 
           {/* Spice Level for Spicy Items */}
           {item.isSpicyOption && (
-            <div className="bg-red-50 p-3 rounded-lg">
-              <Label className="text-sm font-semibold text-gray-800 mb-2 block flex items-center">
-                <Flame className="w-4 h-4 mr-1 text-red-500" />
-                Heat Level
+            <div className="bg-gradient-to-br from-red-50 to-orange-50 p-4 rounded-xl border border-red-200 shadow-sm">
+              <Label className="text-base font-bold text-gray-800 mb-3 block flex items-center gap-2">
+                <Flame className="w-6 h-6 text-red-500 animate-pulse" />
+                <span>Heat Level</span>
               </Label>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 {SPICE_LEVELS.map((level) => (
-                  <Button
+                  <button
                     key={level.value}
-                    variant={selectedSpiceLevel === level.value ? "default" : "outline"}
-                    size="sm"
                     onClick={() => setSelectedSpiceLevel(level.value)}
-                    className="text-xs"
+                    className={`p-3 rounded-lg border-2 transition-all duration-200 font-medium text-sm ${
+                      selectedSpiceLevel === level.value
+                        ? 'border-red-500 bg-red-100 shadow-md scale-105'
+                        : 'border-gray-200 bg-white hover:border-red-300 hover:shadow-sm'
+                    }`}
                   >
                     {level.label}
-                  </Button>
+                  </button>
                 ))}
               </div>
             </div>
@@ -228,94 +244,155 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
 
           {/* Toppings Selection - use database field */}
           {item.hasToppingsOption && (
-            <div className="bg-green-50 p-3 rounded-lg">
-              <Label className="text-sm font-semibold text-gray-800 mb-2 block">🥬 Add Toppings</Label>
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200 shadow-sm">
+              <Label className="text-base font-bold text-gray-800 mb-3 block flex items-center gap-2">
+                <span className="text-2xl">🥬</span>
+                <span>Add Toppings</span>
+              </Label>
               <div className="grid grid-cols-2 gap-2">
                 {TOPPINGS.map((topping) => (
-                  <div key={topping.value} className="flex items-center space-x-2">
+                  <label
+                    key={topping.value}
+                    className={`flex items-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+                      selectedToppings.includes(topping.value)
+                        ? 'border-green-500 bg-green-100 shadow-md'
+                        : 'border-gray-200 bg-white hover:border-green-300 hover:shadow-sm'
+                    }`}
+                  >
                     <Checkbox
                       id={topping.value}
                       checked={selectedToppings.includes(topping.value)}
                       onCheckedChange={() => handleToppingToggle(topping.value)}
+                      className="data-[state=checked]:bg-green-600"
                     />
-                    <Label htmlFor={topping.value} className="text-xs cursor-pointer flex-1">
-                      {topping.label}
-                      {topping.price > 0 && <span className="text-green-600 ml-1">+{formatPrice(topping.price)}</span>}
-                    </Label>
-                  </div>
+                    <div className="flex-1">
+                      <div className="text-sm font-medium text-gray-800">{topping.label}</div>
+                      {topping.price > 0 && (
+                        <div className="text-xs text-green-600 font-semibold">+{formatPrice(topping.price)}</div>
+                      )}
+                    </div>
+                  </label>
                 ))}
               </div>
             </div>
           )}
 
           {/* Sauces Selection - Always Available */}
-          <div className="bg-orange-50 p-3 rounded-lg">
-            <Label className="text-sm font-semibold text-gray-800 mb-2 block">🧂 Choose Sauces</Label>
+          <div className="bg-gradient-to-br from-amber-50 to-yellow-50 p-4 rounded-xl border border-amber-200 shadow-sm">
+            <Label className="text-base font-bold text-gray-800 mb-3 block flex items-center gap-2">
+              <span className="text-2xl">🧂</span>
+              <span>Choose Sauces</span>
+            </Label>
             <div className="grid grid-cols-2 gap-2">
               {SAUCES.map((sauce) => (
-                <div key={sauce.value} className="flex items-center space-x-2">
+                <label
+                  key={sauce.value}
+                  className={`flex items-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+                    selectedSauces.includes(sauce.value)
+                      ? 'border-amber-500 bg-amber-100 shadow-md'
+                      : 'border-gray-200 bg-white hover:border-amber-300 hover:shadow-sm'
+                  }`}
+                >
                   <Checkbox
                     id={sauce.value}
                     checked={selectedSauces.includes(sauce.value)}
                     onCheckedChange={() => handleSauceToggle(sauce.value)}
+                    className="data-[state=checked]:bg-amber-600"
                   />
-                  <Label htmlFor={sauce.value} className="text-xs cursor-pointer flex-1">
-                    {sauce.label}
-                    {sauce.price > 0 && <span className="text-green-600 ml-1">+{formatPrice(sauce.price)}</span>}
-                  </Label>
-                </div>
+                  <div className="flex-1">
+                    <div className="text-sm font-medium text-gray-800">{sauce.label}</div>
+                    {sauce.price > 0 && (
+                      <div className="text-xs text-green-600 font-semibold">+{formatPrice(sauce.price)}</div>
+                    )}
+                  </div>
+                </label>
               ))}
             </div>
           </div>
 
           {/* Meal Options - Dropdown */}
           {item.hasMealOption && item.mealPrice && (
-            <div className="bg-blue-50 p-3 rounded-lg border-2 border-blue-200">
-              <Label className="text-sm font-semibold text-blue-800 mb-2 block">🍽️ Meal Deal Options</Label>
-              <Select onValueChange={setSelectedMealType} value={selectedMealType}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select meal option" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">
-                    <span>No Meal Deal</span>
-                  </SelectItem>
-                  <SelectItem value="regular">
-                    <div className="flex justify-between items-center w-full">
-                      <span>🍽️ Regular Meal - Chips + Drink</span>
-                      <span className="text-green-600 ml-2">+{formatPrice(item.mealPrice)}</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="peri-peri">
-                    <div className="flex justify-between items-center w-full">
-                      <span>🌶️ Peri Peri Chips Meal - Peri Peri Chips + Drink</span>
-                      <span className="text-green-600 ml-2">+{formatPrice(280)}</span>
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-200 shadow-sm">
+              <Label className="text-base font-bold text-gray-800 mb-3 block flex items-center gap-2">
+                <span className="text-2xl">🍽️</span>
+                <span>Make it a Meal Deal</span>
+              </Label>
 
-              {/* Drink Selection - shown when any meal is selected */}
-              {selectedMealType !== 'none' && (
-                <div className="mt-3 pt-3 border-t border-blue-200">
-                  <Label className="text-xs font-medium text-blue-700 mb-1 block">Choose Your Drink:</Label>
-                  <Select onValueChange={setSelectedDrink} value={selectedDrink}>
-                    <SelectTrigger className="w-full h-8 text-xs">
-                      <SelectValue placeholder="Select drink" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {DRINK_OPTIONS.map((drink) => (
-                        <SelectItem key={drink.value} value={drink.value}>
-                          <div className="flex justify-between items-center w-full">
-                            <span>{drink.label}</span>
-                            {drink.price > 0 && <span className="text-green-600">+{formatPrice(drink.price)}</span>}
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+              <div className="space-y-3">
+                {/* Meal Type Selection */}
+                <div className="grid grid-cols-1 gap-2">
+                  <button
+                    onClick={() => setSelectedMealType('none')}
+                    className={`p-3 rounded-lg border-2 transition-all duration-200 text-left ${
+                      selectedMealType === 'none'
+                        ? 'border-blue-500 bg-blue-100 shadow-md'
+                        : 'border-gray-200 bg-white hover:border-blue-300'
+                    }`}
+                  >
+                    <div className="font-medium text-sm">Just the Item</div>
+                    <div className="text-xs text-gray-500">No meal deal</div>
+                  </button>
+
+                  <button
+                    onClick={() => setSelectedMealType('regular')}
+                    className={`p-3 rounded-lg border-2 transition-all duration-200 text-left ${
+                      selectedMealType === 'regular'
+                        ? 'border-blue-500 bg-blue-100 shadow-md'
+                        : 'border-gray-200 bg-white hover:border-blue-300'
+                    }`}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <div className="font-medium text-sm">🍟 Regular Meal</div>
+                        <div className="text-xs text-gray-500">Chips + Drink</div>
+                      </div>
+                      <div className="text-green-600 font-bold text-sm">+{formatPrice(item.mealPrice)}</div>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => setSelectedMealType('peri-peri')}
+                    className={`p-3 rounded-lg border-2 transition-all duration-200 text-left ${
+                      selectedMealType === 'peri-peri'
+                        ? 'border-orange-500 bg-orange-100 shadow-md'
+                        : 'border-gray-200 bg-white hover:border-orange-300'
+                    }`}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <div className="font-medium text-sm">🌶️ Peri Peri Chips Meal</div>
+                        <div className="text-xs text-gray-500">Peri Peri Chips + Drink</div>
+                      </div>
+                      <div className="text-green-600 font-bold text-sm">+{formatPrice(280)}</div>
+                    </div>
+                  </button>
                 </div>
-              )}
+
+                {/* Drink Selection - shown when any meal is selected */}
+                {selectedMealType !== 'none' && (
+                  <div className="pt-3 border-t border-blue-200">
+                    <Label className="text-sm font-semibold text-gray-700 mb-2 block">🥤 Choose Your Drink</Label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {DRINK_OPTIONS.map((drink) => (
+                        <button
+                          key={drink.value}
+                          onClick={() => setSelectedDrink(drink.value)}
+                          className={`p-2 rounded-lg border-2 transition-all duration-200 text-left ${
+                            selectedDrink === drink.value
+                              ? 'border-blue-500 bg-blue-100 shadow-sm'
+                              : 'border-gray-200 bg-white hover:border-blue-300'
+                          }`}
+                        >
+                          <div className="text-sm font-medium">{drink.label}</div>
+                          {drink.price > 0 && (
+                            <div className="text-xs text-green-600 font-semibold">+{formatPrice(drink.price)}</div>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -356,12 +433,22 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
           </div>
         </div>
 
-        <div className="flex gap-3 pt-4">
-          <Button variant="outline" onClick={handleClose} className="flex-1 border-gray-300 hover:bg-gray-50">
+        <div className="flex gap-3 pt-4 border-t border-gray-200">
+          <Button
+            variant="outline"
+            onClick={handleClose}
+            className="flex-1 border-2 border-gray-300 hover:bg-gray-100 hover:border-gray-400 font-semibold transition-all duration-200"
+          >
             Cancel
           </Button>
-          <Button onClick={handleConfirm} className="flex-1 bg-emparo-orange hover:bg-emparo-orange/90 text-white font-medium">
-            Add to Cart - {formatPrice(currentPrice)}
+          <Button
+            onClick={handleConfirm}
+            className="flex-1 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+          >
+            <span className="flex items-center gap-2">
+              <ShoppingCart className="w-5 h-5" />
+              Add to Cart - {formatPrice(currentPrice)}
+            </span>
           </Button>
         </div>
       </DialogContent>
