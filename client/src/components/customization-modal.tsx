@@ -83,8 +83,7 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
   const [selectedSauces, setSelectedSauces] = useState<string[]>([]);
   const [selectedSpiceLevel, setSelectedSpiceLevel] = useState<string>('');
   const [selectedDrink, setSelectedDrink] = useState<string>('');
-  const [isMeal, setIsMeal] = useState(false);
-  const [isPeriPeriChipsMeal, setIsPeriPeriChipsMeal] = useState(false);
+  const [selectedMealType, setSelectedMealType] = useState<string>('none');
   const [isSpicy, setIsSpicy] = useState(false);
 
   // Calculate dynamic pricing
@@ -92,13 +91,10 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
     let basePrice = item?.price || 0;
     let extraCost = 0;
 
-    // Regular meal upgrade (chips + drink for £2.50)
-    if (isMeal && item?.mealPrice) {
+    // Meal upgrade based on selected type
+    if (selectedMealType === 'regular' && item?.mealPrice) {
       extraCost += item.mealPrice;
-    }
-
-    // Peri Peri chips meal upgrade (peri peri chips + drink for £2.80)
-    if (isPeriPeriChipsMeal) {
+    } else if (selectedMealType === 'peri-peri') {
       extraCost += 280; // £2.80 in pence
     }
 
@@ -148,8 +144,8 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
       sauces: selectedSauces.length > 0 ? selectedSauces : undefined,
       spiceLevel: selectedSpiceLevel || undefined,
       drinkChoice: selectedDrink || undefined,
-      isMeal,
-      isPeriPeriChipsMeal,
+      isMeal: selectedMealType === 'regular',
+      isPeriPeriChipsMeal: selectedMealType === 'peri-peri',
       isSpicy
     };
     onConfirm(customization);
@@ -163,8 +159,7 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
     setSelectedSauces([]);
     setSelectedSpiceLevel('');
     setSelectedDrink('');
-    setIsMeal(false);
-    setIsPeriPeriChipsMeal(false);
+    setSelectedMealType('none');
     setIsSpicy(false);
   };
 
@@ -275,96 +270,54 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
             </div>
           )}
 
-          {/* Meal Options */}
+          {/* Meal Options - Dropdown */}
           {item.hasMealOption && item.mealPrice && (
-            <div className="space-y-3">
-              {/* Regular Meal Deal */}
-              <div className="bg-blue-50 p-3 rounded-lg border-2 border-blue-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label htmlFor="meal-option" className="text-sm font-semibold cursor-pointer text-blue-800">
-                      🍽️ Regular Meal Deal
-                    </Label>
-                    <p className="text-xs text-blue-600 mt-1">
-                      +{formatPrice(item.mealPrice)} - Includes chips + drink
-                    </p>
-                  </div>
-                  <Switch
-                    id="meal-option"
-                    checked={isMeal}
-                    onCheckedChange={(checked) => {
-                      setIsMeal(checked);
-                      if (checked) setIsPeriPeriChipsMeal(false);
-                    }}
-                  />
+            <div className="bg-blue-50 p-3 rounded-lg border-2 border-blue-200">
+              <Label className="text-sm font-semibold text-blue-800 mb-2 block">🍽️ Meal Deal Options</Label>
+              <Select onValueChange={setSelectedMealType} value={selectedMealType}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select meal option" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">
+                    <span>No Meal Deal</span>
+                  </SelectItem>
+                  <SelectItem value="regular">
+                    <div className="flex justify-between items-center w-full">
+                      <span>🍽️ Regular Meal - Chips + Drink</span>
+                      <span className="text-green-600 ml-2">+{formatPrice(item.mealPrice)}</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="peri-peri">
+                    <div className="flex justify-between items-center w-full">
+                      <span>🌶️ Peri Peri Chips Meal - Peri Peri Chips + Drink</span>
+                      <span className="text-green-600 ml-2">+{formatPrice(280)}</span>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+
+              {/* Drink Selection - shown when any meal is selected */}
+              {selectedMealType !== 'none' && (
+                <div className="mt-3 pt-3 border-t border-blue-200">
+                  <Label className="text-xs font-medium text-blue-700 mb-1 block">Choose Your Drink:</Label>
+                  <Select onValueChange={setSelectedDrink} value={selectedDrink}>
+                    <SelectTrigger className="w-full h-8 text-xs">
+                      <SelectValue placeholder="Select drink" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {DRINK_OPTIONS.map((drink) => (
+                        <SelectItem key={drink.value} value={drink.value}>
+                          <div className="flex justify-between items-center w-full">
+                            <span>{drink.label}</span>
+                            {drink.price > 0 && <span className="text-green-600">+{formatPrice(drink.price)}</span>}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
-
-                {/* Drink Selection for Regular Meals */}
-                {isMeal && (
-                  <div className="mt-3 pt-3 border-t border-blue-200">
-                    <Label className="text-xs font-medium text-blue-700 mb-1 block">Choose Your Drink:</Label>
-                    <Select onValueChange={setSelectedDrink} value={selectedDrink}>
-                      <SelectTrigger className="w-full h-8 text-xs">
-                        <SelectValue placeholder="Select drink" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {DRINK_OPTIONS.map((drink) => (
-                          <SelectItem key={drink.value} value={drink.value}>
-                            <div className="flex justify-between items-center w-full">
-                              <span>{drink.label}</span>
-                              {drink.price > 0 && <span className="text-green-600">+{formatPrice(drink.price)}</span>}
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
-              </div>
-
-              {/* Peri Peri Chips Meal Deal */}
-              <div className="bg-orange-50 p-3 rounded-lg border-2 border-orange-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label htmlFor="peri-meal-option" className="text-sm font-semibold cursor-pointer text-orange-800">
-                      🌶️ Peri Peri Chips Meal Deal
-                    </Label>
-                    <p className="text-xs text-orange-600 mt-1">
-                      +{formatPrice(280)} - Includes peri peri chips + drink
-                    </p>
-                  </div>
-                  <Switch
-                    id="peri-meal-option"
-                    checked={isPeriPeriChipsMeal}
-                    onCheckedChange={(checked) => {
-                      setIsPeriPeriChipsMeal(checked);
-                      if (checked) setIsMeal(false);
-                    }}
-                  />
-                </div>
-
-                {/* Drink Selection for Peri Peri Meals */}
-                {isPeriPeriChipsMeal && (
-                  <div className="mt-3 pt-3 border-t border-orange-200">
-                    <Label className="text-xs font-medium text-orange-700 mb-1 block">Choose Your Drink:</Label>
-                    <Select onValueChange={setSelectedDrink} value={selectedDrink}>
-                      <SelectTrigger className="w-full h-8 text-xs">
-                        <SelectValue placeholder="Select drink" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {DRINK_OPTIONS.map((drink) => (
-                          <SelectItem key={drink.value} value={drink.value}>
-                            <div className="flex justify-between items-center w-full">
-                              <span>{drink.label}</span>
-                              {drink.price > 0 && <span className="text-green-600">+{formatPrice(drink.price)}</span>}
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
-              </div>
+              )}
             </div>
           )}
 
@@ -383,13 +336,13 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
                 <span>Base Price:</span>
                 <span>{formatPrice(item?.price || 0)}</span>
               </div>
-              {isMeal && item?.mealPrice && (
+              {selectedMealType === 'regular' && item?.mealPrice && (
                 <div className="flex justify-between text-blue-600">
                   <span>Regular Meal Deal:</span>
                   <span>+{formatPrice(item.mealPrice)}</span>
                 </div>
               )}
-              {isPeriPeriChipsMeal && (
+              {selectedMealType === 'peri-peri' && (
                 <div className="flex justify-between text-orange-600">
                   <span>Peri Peri Chips Meal:</span>
                   <span>+{formatPrice(280)}</span>
