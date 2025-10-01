@@ -22,6 +22,8 @@ export interface CatalogMenuItem {
   hasFlavorOptions: boolean;
   hasMealOption: boolean;
   isSpicyOption: boolean;
+  hasToppingsOption: boolean;
+  hasSaucesOption: boolean;
   updatedAt?: string;
   deletedAt?: string;
   contentHash?: string;

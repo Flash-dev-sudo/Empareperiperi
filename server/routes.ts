@@ -37,6 +37,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Categories endpoint (matches queue API)
+  app.get("/api/categories", async (req, res) => {
+    try {
+      const categories = await storage.getCategories();
+      res.json(categories.filter(cat => !cat.deletedAt));
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch categories" });
+    }
+  });
+
+  // Menu items endpoint (matches queue API)
+  app.get("/api/menu-items", async (req, res) => {
+    try {
+      const items = await storage.getMenuItems();
+      res.json(items.filter(item => !item.deletedAt));
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch menu items" });
+    }
+  });
+
   // Legacy menu endpoint (for backward compatibility)
   app.get("/api/menu", async (req, res) => {
     try {
