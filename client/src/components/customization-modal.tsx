@@ -242,38 +242,40 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
           )}
 
 
-          {/* Toppings Selection - Always Available */}
-          <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200 shadow-sm">
-            <Label className="text-base font-bold text-gray-800 mb-3 block flex items-center gap-2">
-              <span className="text-2xl">🥬</span>
-              <span>Add Toppings</span>
-            </Label>
-            <div className="grid grid-cols-2 gap-2">
-              {TOPPINGS.map((topping) => (
-                <label
-                  key={topping.value}
-                  className={`flex items-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
-                    selectedToppings.includes(topping.value)
-                      ? 'border-green-500 bg-green-100 shadow-md'
-                      : 'border-gray-200 bg-white hover:border-green-300 hover:shadow-sm'
-                  }`}
-                >
-                  <Checkbox
-                    id={topping.value}
-                    checked={selectedToppings.includes(topping.value)}
-                    onCheckedChange={() => handleToppingToggle(topping.value)}
-                    className="data-[state=checked]:bg-green-600"
-                  />
-                  <div className="flex-1">
-                    <div className="text-sm font-medium text-gray-800">{topping.label}</div>
-                    {topping.price > 0 && (
-                      <div className="text-xs text-green-600 font-semibold">+{formatPrice(topping.price)}</div>
-                    )}
-                  </div>
-                </label>
-              ))}
+          {/* Toppings Selection - Only if item has toppings option */}
+          {item.hasToppingsOption && (
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200 shadow-sm">
+              <Label className="text-base font-bold text-gray-800 mb-3 block flex items-center gap-2">
+                <span className="text-2xl">🥬</span>
+                <span>Add Toppings</span>
+              </Label>
+              <div className="grid grid-cols-2 gap-2">
+                {TOPPINGS.map((topping) => (
+                  <label
+                    key={topping.value}
+                    className={`flex items-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+                      selectedToppings.includes(topping.value)
+                        ? 'border-green-500 bg-green-100 shadow-md'
+                        : 'border-gray-200 bg-white hover:border-green-300 hover:shadow-sm'
+                    }`}
+                  >
+                    <Checkbox
+                      id={topping.value}
+                      checked={selectedToppings.includes(topping.value)}
+                      onCheckedChange={() => handleToppingToggle(topping.value)}
+                      className="data-[state=checked]:bg-green-600"
+                    />
+                    <div className="flex-1">
+                      <div className="text-sm font-medium text-gray-800">{topping.label}</div>
+                      {topping.price > 0 && (
+                        <div className="text-xs text-green-600 font-semibold">+{formatPrice(topping.price)}</div>
+                      )}
+                    </div>
+                  </label>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Meal Options - Dropdown */}
           {item.hasMealOption && item.mealPrice && (
