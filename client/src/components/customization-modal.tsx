@@ -242,67 +242,32 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
           )}
 
 
-          {/* Toppings Selection - use database field */}
-          {item.hasToppingsOption && (
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200 shadow-sm">
-              <Label className="text-base font-bold text-gray-800 mb-3 block flex items-center gap-2">
-                <span className="text-2xl">🥬</span>
-                <span>Add Toppings</span>
-              </Label>
-              <div className="grid grid-cols-2 gap-2">
-                {TOPPINGS.map((topping) => (
-                  <label
-                    key={topping.value}
-                    className={`flex items-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
-                      selectedToppings.includes(topping.value)
-                        ? 'border-green-500 bg-green-100 shadow-md'
-                        : 'border-gray-200 bg-white hover:border-green-300 hover:shadow-sm'
-                    }`}
-                  >
-                    <Checkbox
-                      id={topping.value}
-                      checked={selectedToppings.includes(topping.value)}
-                      onCheckedChange={() => handleToppingToggle(topping.value)}
-                      className="data-[state=checked]:bg-green-600"
-                    />
-                    <div className="flex-1">
-                      <div className="text-sm font-medium text-gray-800">{topping.label}</div>
-                      {topping.price > 0 && (
-                        <div className="text-xs text-green-600 font-semibold">+{formatPrice(topping.price)}</div>
-                      )}
-                    </div>
-                  </label>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Sauces Selection - Always Available */}
-          <div className="bg-gradient-to-br from-amber-50 to-yellow-50 p-4 rounded-xl border border-amber-200 shadow-sm">
+          {/* Toppings Selection - Always Available */}
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200 shadow-sm">
             <Label className="text-base font-bold text-gray-800 mb-3 block flex items-center gap-2">
-              <span className="text-2xl">🧂</span>
-              <span>Choose Sauces</span>
+              <span className="text-2xl">🥬</span>
+              <span>Add Toppings</span>
             </Label>
             <div className="grid grid-cols-2 gap-2">
-              {SAUCES.map((sauce) => (
+              {TOPPINGS.map((topping) => (
                 <label
-                  key={sauce.value}
+                  key={topping.value}
                   className={`flex items-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
-                    selectedSauces.includes(sauce.value)
-                      ? 'border-amber-500 bg-amber-100 shadow-md'
-                      : 'border-gray-200 bg-white hover:border-amber-300 hover:shadow-sm'
+                    selectedToppings.includes(topping.value)
+                      ? 'border-green-500 bg-green-100 shadow-md'
+                      : 'border-gray-200 bg-white hover:border-green-300 hover:shadow-sm'
                   }`}
                 >
                   <Checkbox
-                    id={sauce.value}
-                    checked={selectedSauces.includes(sauce.value)}
-                    onCheckedChange={() => handleSauceToggle(sauce.value)}
-                    className="data-[state=checked]:bg-amber-600"
+                    id={topping.value}
+                    checked={selectedToppings.includes(topping.value)}
+                    onCheckedChange={() => handleToppingToggle(topping.value)}
+                    className="data-[state=checked]:bg-green-600"
                   />
                   <div className="flex-1">
-                    <div className="text-sm font-medium text-gray-800">{sauce.label}</div>
-                    {sauce.price > 0 && (
-                      <div className="text-xs text-green-600 font-semibold">+{formatPrice(sauce.price)}</div>
+                    <div className="text-sm font-medium text-gray-800">{topping.label}</div>
+                    {topping.price > 0 && (
+                      <div className="text-xs text-green-600 font-semibold">+{formatPrice(topping.price)}</div>
                     )}
                   </div>
                 </label>
