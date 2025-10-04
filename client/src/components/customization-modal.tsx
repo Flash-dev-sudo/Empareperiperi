@@ -12,11 +12,9 @@ import { formatPrice } from "@/services/catalog";
 interface ItemCustomization {
   flavor?: string;
   toppings?: string[];
-  sauces?: string[];
   isMeal?: boolean;
   isPeriPeriChipsMeal?: boolean;
   isSpicy?: boolean;
-  spiceLevel?: string;
   drinkChoice?: string;
 }
 
@@ -52,14 +50,6 @@ const TOPPINGS = [
   { value: 'pickles', label: 'Pickles', price: 0 }
 ];
 
-const SAUCES = [
-  { value: 'mayo', label: 'Mayonnaise', price: 0 },
-  { value: 'ketchup', label: 'Ketchup', price: 0 },
-  { value: 'garlic-mayo', label: 'Garlic Mayo', price: 20 },
-  { value: 'peri-mayo', label: 'Peri Peri Mayo', price: 20 },
-  { value: 'chili-sauce', label: 'Chili Sauce', price: 20 },
-  { value: 'bbq-sauce', label: 'BBQ Sauce', price: 20 }
-];
 
 const DRINK_OPTIONS = [
   { value: 'coke', label: 'Coca Cola', price: 0 },
@@ -70,18 +60,10 @@ const DRINK_OPTIONS = [
   { value: 'sparkling', label: 'Sparkling Water', price: 20 }
 ];
 
-const SPICE_LEVELS = [
-  { value: 'mild', label: '🌶️ Mild', price: 0 },
-  { value: 'medium', label: '🌶️🌶️ Medium', price: 0 },
-  { value: 'hot', label: '🌶️🌶️🌶️ Hot', price: 0 },
-  { value: 'extra-hot', label: '🌶️🌶️🌶️🌶️ Extra Hot', price: 0 }
-];
 
 export default function CustomizationModal({ isOpen, onClose, onConfirm, item }: CustomizationModalProps) {
   const [selectedFlavor, setSelectedFlavor] = useState<string>('');
   const [selectedToppings, setSelectedToppings] = useState<string[]>([]);
-  const [selectedSauces, setSelectedSauces] = useState<string[]>([]);
-  const [selectedSpiceLevel, setSelectedSpiceLevel] = useState<string>('');
   const [selectedDrink, setSelectedDrink] = useState<string>('');
   const [selectedMealType, setSelectedMealType] = useState<string>('none');
   const [isSpicy, setIsSpicy] = useState(false);
@@ -104,12 +86,6 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
       if (toppingOption) extraCost += toppingOption.price;
     });
 
-    // Sauces
-    selectedSauces.forEach(sauce => {
-      const sauceOption = SAUCES.find(s => s.value === sauce);
-      if (sauceOption) extraCost += sauceOption.price;
-    });
-
     // Drink upgrade (only for premium drinks)
     if (selectedDrink && selectedDrink !== 'coke') {
       const drinkOption = DRINK_OPTIONS.find(d => d.value === selectedDrink);
@@ -129,25 +105,31 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
     );
   };
 
-  const handleSauceToggle = (sauce: string) => {
-    setSelectedSauces(prev =>
-      prev.includes(sauce)
-        ? prev.filter(s => s !== sauce)
-        : [...prev, sauce]
-    );
-  };
 
   const handleConfirm = () => {
-    const customization: ItemCustomization = {
-      flavor: selectedFlavor || undefined,
-      toppings: selectedToppings.length > 0 ? selectedToppings : undefined,
-      sauces: selectedSauces.length > 0 ? selectedSauces : undefined,
-      spiceLevel: selectedSpiceLevel || undefined,
-      drinkChoice: selectedDrink || undefined,
-      isMeal: selectedMealType === 'regular',
-      isPeriPeriChipsMeal: selectedMealType === 'peri-peri',
-      isSpicy
-    };
+    const customization: ItemCustomization = {};
+
+    // Only add customizations if the item supports them
+    if (item.hasFlavorOptions && selectedFlavor) {
+      customization.flavor = selectedFlavor;
+    }
+
+    if (item.hasToppingsOption && selectedToppings.length > 0) {
+      customization.toppings = selectedToppings;
+    }
+
+    if (item.hasMealOption) {
+      customization.isMeal = selectedMealType === 'regular';
+      customization.isPeriPeriChipsMeal = selectedMealType === 'peri-peri';
+      if (selectedMealType !== 'none' && selectedDrink) {
+        customization.drinkChoice = selectedDrink;
+      }
+    }
+
+    if (item.isSpicyOption) {
+      customization.isSpicy = isSpicy;
+    }
+
     onConfirm(customization);
     handleReset();
     onClose();
@@ -156,8 +138,6 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
   const handleReset = () => {
     setSelectedFlavor('');
     setSelectedToppings([]);
-    setSelectedSauces([]);
-    setSelectedSpiceLevel('');
     setSelectedDrink('');
     setSelectedMealType('none');
     setIsSpicy(false);
@@ -216,27 +196,22 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
             </div>
           )}
 
-          {/* Spice Level for Spicy Items */}
+          {/* Spicy Option */}
           {item.isSpicyOption && (
             <div className="bg-gradient-to-br from-red-50 to-orange-50 p-4 rounded-xl border border-red-200 shadow-sm">
-              <Label className="text-base font-bold text-gray-800 mb-3 block flex items-center gap-2">
-                <Flame className="w-6 h-6 text-red-500 animate-pulse" />
-                <span>Heat Level</span>
-              </Label>
-              <div className="grid grid-cols-2 gap-3">
-                {SPICE_LEVELS.map((level) => (
-                  <button
-                    key={level.value}
-                    onClick={() => setSelectedSpiceLevel(level.value)}
-                    className={`p-3 rounded-lg border-2 transition-all duration-200 font-medium text-sm ${
-                      selectedSpiceLevel === level.value
-                        ? 'border-red-500 bg-red-100 shadow-md scale-105'
-                        : 'border-gray-200 bg-white hover:border-red-300 hover:shadow-sm'
-                    }`}
-                  >
-                    {level.label}
-                  </button>
-                ))}
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label htmlFor="spicy-option" className="text-base font-bold text-gray-800 flex items-center gap-2">
+                    <Flame className="w-6 h-6 text-red-500" />
+                    <span>Make it Spicy?</span>
+                  </Label>
+                  <p className="text-sm text-gray-600 mt-1">Add some heat to your order</p>
+                </div>
+                <Switch
+                  id="spicy-option"
+                  checked={isSpicy}
+                  onCheckedChange={setIsSpicy}
+                />
               </div>
             </div>
           )}
@@ -278,7 +253,7 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
           )}
 
           {/* Meal Options - Dropdown */}
-          {item.hasMealOption && item.mealPrice && (
+          {item.hasMealOption && (
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-200 shadow-sm">
               <Label className="text-base font-bold text-gray-800 mb-3 block flex items-center gap-2">
                 <span className="text-2xl">🍽️</span>
