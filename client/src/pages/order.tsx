@@ -141,7 +141,7 @@ export default function Order() {
         </div>
 
       {/* Search and Filters */}
-      <div className="mb-8 space-y-4">
+      <div className="mb-8 space-y-6">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
@@ -151,19 +151,28 @@ export default function Order() {
             className="pl-10"
           />
         </div>
-        
-        <div className="flex flex-wrap gap-2">
-          {categoryNames.map(category => (
-            <Button
-              key={category}
-              variant={selectedCategory === category ? "default" : "outline"}
-              onClick={() => setSelectedCategory(category)}
-              size="sm"
-              className={selectedCategory === category ? "bg-emparo-orange hover:bg-emparo-orange/90" : ""}
-            >
-              {category}
-            </Button>
-          ))}
+
+        {/* Categories Section - Improved visibility */}
+        <div className="bg-white rounded-xl shadow-md p-4 border-2 border-emparo-orange/20">
+          <h3 className="text-lg font-semibold text-emparo-dark mb-3 flex items-center gap-2">
+            <span>🍽️</span>
+            <span>Menu Categories</span>
+          </h3>
+          <div className="flex flex-wrap gap-3">
+            {categoryNames.map(category => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 ${
+                  selectedCategory === category
+                    ? 'bg-emparo-orange text-white shadow-lg scale-105'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
