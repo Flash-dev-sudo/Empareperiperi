@@ -51,20 +51,12 @@ const TOPPINGS = [
 ];
 
 
-const DRINK_OPTIONS = [
-  { value: 'coke', label: 'Coca Cola', price: 0 },
-  { value: 'pepsi', label: 'Pepsi', price: 0 },
-  { value: 'sprite', label: 'Sprite', price: 0 },
-  { value: 'fanta', label: 'Fanta Orange', price: 0 },
-  { value: 'water', label: 'Still Water', price: 0 },
-  { value: 'sparkling', label: 'Sparkling Water', price: 20 }
-];
+// Removed drink options - meals come with standard drink
 
 
 export default function CustomizationModal({ isOpen, onClose, onConfirm, item }: CustomizationModalProps) {
   const [selectedFlavor, setSelectedFlavor] = useState<string>('');
   const [selectedToppings, setSelectedToppings] = useState<string[]>([]);
-  const [selectedDrink, setSelectedDrink] = useState<string>('');
   const [selectedMealType, setSelectedMealType] = useState<string>('none');
   const [isSpicy, setIsSpicy] = useState(false);
 
@@ -85,12 +77,6 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
       const toppingOption = TOPPINGS.find(t => t.value === topping);
       if (toppingOption) extraCost += toppingOption.price;
     });
-
-    // Drink upgrade (only for premium drinks)
-    if (selectedDrink && selectedDrink !== 'coke') {
-      const drinkOption = DRINK_OPTIONS.find(d => d.value === selectedDrink);
-      if (drinkOption) extraCost += drinkOption.price;
-    }
 
     return basePrice + extraCost;
   };
@@ -121,9 +107,6 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
     if (item.hasMealOption) {
       customization.isMeal = selectedMealType === 'regular';
       customization.isPeriPeriChipsMeal = selectedMealType === 'peri-peri';
-      if (selectedMealType !== 'none' && selectedDrink) {
-        customization.drinkChoice = selectedDrink;
-      }
     }
 
     if (item.isSpicyOption) {
@@ -138,7 +121,6 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
   const handleReset = () => {
     setSelectedFlavor('');
     setSelectedToppings([]);
-    setSelectedDrink('');
     setSelectedMealType('none');
     setIsSpicy(false);
   };
@@ -286,7 +268,7 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
                     <div className="flex justify-between items-center">
                       <div>
                         <div className="font-medium text-sm">🍟 Regular Meal</div>
-                        <div className="text-xs text-gray-500">Chips + Drink</div>
+                        <div className="text-xs text-gray-500">Chips + Drink included</div>
                       </div>
                       <div className="text-green-600 font-bold text-sm">+{formatPrice(item.mealPrice)}</div>
                     </div>
@@ -303,37 +285,12 @@ export default function CustomizationModal({ isOpen, onClose, onConfirm, item }:
                     <div className="flex justify-between items-center">
                       <div>
                         <div className="font-medium text-sm">🌶️ Peri Peri Chips Meal</div>
-                        <div className="text-xs text-gray-500">Peri Peri Chips + Drink</div>
+                        <div className="text-xs text-gray-500">Peri Peri Chips + Drink included</div>
                       </div>
                       <div className="text-green-600 font-bold text-sm">+{formatPrice(280)}</div>
                     </div>
                   </button>
                 </div>
-
-                {/* Drink Selection - shown when any meal is selected */}
-                {selectedMealType !== 'none' && (
-                  <div className="pt-3 border-t border-blue-200">
-                    <Label className="text-sm font-semibold text-gray-700 mb-2 block">🥤 Choose Your Drink</Label>
-                    <div className="grid grid-cols-2 gap-2">
-                      {DRINK_OPTIONS.map((drink) => (
-                        <button
-                          key={drink.value}
-                          onClick={() => setSelectedDrink(drink.value)}
-                          className={`p-2 rounded-lg border-2 transition-all duration-200 text-left ${
-                            selectedDrink === drink.value
-                              ? 'border-blue-500 bg-blue-100 shadow-sm'
-                              : 'border-gray-200 bg-white hover:border-blue-300'
-                          }`}
-                        >
-                          <div className="text-sm font-medium">{drink.label}</div>
-                          {drink.price > 0 && (
-                            <div className="text-xs text-green-600 font-semibold">+{formatPrice(drink.price)}</div>
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           )}
