@@ -151,62 +151,62 @@ export default function Order() {
   }
 
   return (
-    <div className="min-h-screen bg-emparo-cream">
+    <div className="min-h-screen bg-gray-50">
       <Navigation />
 
-      {/* Floating Cart Button */}
-      <div className="fixed bottom-6 right-6 z-40">
-        <Button
-          onClick={() => setLocation("/cart")}
-          className="bg-emparo-orange hover:bg-emparo-orange/90 shadow-2xl h-16 px-6 text-lg rounded-full"
-        >
-          <ShoppingCart className="w-5 h-5 mr-2" />
-          Cart ({cartItemCount})
-        </Button>
-      </div>
+      {/* Floating Cart Button - More minimal */}
+      {cartItemCount > 0 && (
+        <div className="fixed bottom-8 right-8 z-50">
+          <Button
+            onClick={() => setLocation("/cart")}
+            className="bg-emparo-orange hover:bg-emparo-orange/90 shadow-xl h-14 px-5 rounded-full flex items-center gap-2"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            <span className="font-semibold">{cartItemCount}</span>
+          </Button>
+        </div>
+      )}
 
-      <div className="container mx-auto px-4 py-20 max-w-7xl">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-emparo-dark mb-2">Order Online</h1>
-          <p className="text-gray-600">Choose your favorite dishes and enjoy!</p>
+      <div className="container mx-auto px-4 py-24 max-w-4xl">
+        {/* Minimal Header */}
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900">Menu</h1>
         </div>
 
-        {/* Search Bar */}
-        <div className="mb-8">
-          <div className="relative max-w-2xl">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+        {/* Clean Search Bar */}
+        <div className="mb-6">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <Input
-              placeholder="Search for your favorite dish..."
+              placeholder="Search dishes..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-12 h-14 text-lg rounded-xl shadow-md"
+              className="pl-10 h-12 border-gray-200 rounded-lg"
             />
           </div>
         </div>
 
 
-        {/* Menu Items - Collapsible Swiggy-style List */}
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        {/* Menu Items - Ultra Minimal Collapsible List */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           {categoriesWithItems.length === 0 ? (
-            <div className="text-center py-20">
-              <div className="text-6xl mb-4">🔍</div>
-              <p className="text-xl text-gray-600 mb-2">No items found</p>
-              <p className="text-gray-500">Try adjusting your search or browse our categories</p>
+            <div className="text-center py-16">
+              <p className="text-gray-500">No items found</p>
             </div>
           ) : (
             categoriesWithItems.map((category, idx) => (
-              <div key={category.id} className={idx !== 0 ? "border-t-2 border-gray-100" : ""}>
-                {/* Collapsible Category Header */}
+              <div key={category.id} className={idx !== 0 ? "border-t border-gray-100" : ""}>
+                {/* Minimal Category Header */}
                 <button
                   onClick={() => toggleCategory(category.id)}
-                  className="w-full px-6 py-5 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                  className="w-full px-5 py-4 flex items-center justify-between hover:bg-gray-50/50 transition-colors text-left"
                 >
-                  <div className="flex items-center gap-4">
-                    <h2 className="text-xl font-bold text-emparo-dark">{category.name}</h2>
-                    <span className="text-sm text-gray-500">({category.items.length})</span>
+                  <div className="flex items-baseline gap-2">
+                    <h2 className="text-lg font-semibold text-gray-900">{category.name}</h2>
+                    <span className="text-sm text-gray-400">{category.items.length}</span>
                   </div>
                   <svg
-                    className={`w-6 h-6 text-gray-400 transition-transform ${
+                    className={`w-5 h-5 text-gray-400 transition-transform ${
                       expandedCategories.has(category.id) ? 'rotate-180' : ''
                     }`}
                     fill="none"
@@ -219,14 +219,13 @@ export default function Order() {
 
                 {/* Expanded Items List */}
                 {expandedCategories.has(category.id) && (
-                  <div className="bg-gray-50/50">
-                    {category.items.map((item, itemIdx) => (
+                  <div className="divide-y divide-gray-100">
+                    {category.items.map((item) => (
                       <CompactMenuItem
                         key={item.id}
                         item={item}
                         onAddToCart={addToCart}
                         isAddingToCart={addToCartMutation.isPending}
-                        isLast={itemIdx === category.items.length - 1}
                       />
                     ))}
                   </div>
@@ -240,15 +239,14 @@ export default function Order() {
   );
 }
 
-// Compact Menu Item Component (Swiggy-style)
+// Ultra Minimal Menu Item Component
 interface CompactMenuItemProps {
   item: CatalogMenuItem;
   onAddToCart: (item: CatalogMenuItem, customization: ItemCustomization) => void;
   isAddingToCart: boolean;
-  isLast: boolean;
 }
 
-function CompactMenuItem({ item, onAddToCart, isAddingToCart, isLast }: CompactMenuItemProps) {
+function CompactMenuItem({ item, onAddToCart, isAddingToCart }: CompactMenuItemProps) {
   const [showCustomization, setShowCustomization] = useState(false);
 
   const handleQuickAdd = () => {
@@ -263,44 +261,38 @@ function CompactMenuItem({ item, onAddToCart, isAddingToCart, isLast }: CompactM
 
   return (
     <>
-      <div className={`px-6 py-4 flex items-start justify-between gap-4 hover:bg-white transition-colors ${!isLast ? 'border-b border-gray-200' : ''}`}>
+      <div className="px-5 py-4 flex items-start justify-between gap-4 hover:bg-gray-50/50 transition-colors">
         <div className="flex-1 min-w-0">
-          <div className="flex items-start gap-3">
-            {/* Veg/Non-veg indicator */}
-            <div className="flex-shrink-0 w-5 h-5 border-2 border-green-600 flex items-center justify-center mt-0.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-green-600"></div>
+          <div className="flex items-start gap-2.5">
+            {/* Minimal Veg indicator */}
+            <div className="flex-shrink-0 w-4 h-4 border border-green-600 rounded-sm flex items-center justify-center mt-0.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-green-600"></div>
             </div>
 
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-gray-900 text-base mb-1">{item.name}</h3>
-              {item.description && (
-                <p className="text-sm text-gray-500 line-clamp-2 mb-2">{item.description}</p>
-              )}
-              <div className="flex items-center gap-3">
-                <span className="text-base font-bold text-gray-900">{formatPrice(item.price)}</span>
+              <h3 className="font-medium text-gray-900 text-base mb-0.5">{item.name}</h3>
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="text-sm font-semibold text-gray-900">{formatPrice(item.price)}</span>
                 {item.isSpicyOption && (
-                  <span className="inline-flex items-center text-xs text-red-600">
-                    <Flame className="w-3 h-3 mr-1" />
-                    Spicy
+                  <span className="inline-flex items-center text-xs text-red-500">
+                    <Flame className="w-3 h-3" />
                   </span>
                 )}
               </div>
-              {item.hasMealOption && item.mealPrice && (
-                <p className="text-xs text-gray-500 mt-1">
-                  Meal available at {formatPrice(item.mealPrice)}
-                </p>
+              {item.description && (
+                <p className="text-sm text-gray-500 line-clamp-2">{item.description}</p>
               )}
             </div>
           </div>
         </div>
 
-        {/* Add Button */}
+        {/* Minimal ADD Button */}
         <button
           onClick={handleQuickAdd}
           disabled={isAddingToCart}
-          className="flex-shrink-0 px-6 py-2 bg-white border-2 border-emparo-orange text-emparo-orange font-semibold rounded-lg hover:bg-emparo-orange hover:text-white transition-all active:scale-95 disabled:opacity-50"
+          className="flex-shrink-0 px-8 py-1.5 bg-white border border-green-600 text-green-600 text-sm font-semibold rounded hover:bg-green-50 transition-colors active:scale-95 disabled:opacity-50 uppercase tracking-wide"
         >
-          ADD
+          Add
         </button>
       </div>
 
