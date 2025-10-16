@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 import Navigation from "@/components/navigation";
 import OrderMenuItem from "@/components/order-menu-item";
+import CustomizationModal from "@/components/customization-modal";
 import { getCatalogData, groupItemsByCategory, formatPrice, flavorOptions, type CatalogCategory, type CatalogMenuItem } from "@/services/catalog";
 
 interface ItemCustomization {
@@ -25,8 +26,19 @@ export default function Order() {
   const [sessionId] = useState(() => localStorage.getItem("sessionId") || Math.random().toString(36).substr(2, 9));
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [expandedCategories, setExpandedCategories] = useState<Set<number>>(new Set());
   const [catalogData, setCatalogData] = useState<{ categories: CatalogCategory[], items: CatalogMenuItem[] }>({ categories: [], items: [] });
   const [isLoadingCatalog, setIsLoadingCatalog] = useState(true);
+
+  const toggleCategory = (categoryId: number) => {
+    const newExpanded = new Set(expandedCategories);
+    if (newExpanded.has(categoryId)) {
+      newExpanded.delete(categoryId);
+    } else {
+      newExpanded.add(categoryId);
+    }
+    setExpandedCategories(newExpanded);
+  };
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -172,77 +184,138 @@ export default function Order() {
           </div>
         </div>
 
-        {/* Category Tabs - Sticky */}
-        <div className="sticky top-20 z-30 bg-emparo-cream/95 backdrop-blur-sm py-4 mb-8 -mx-4 px-4">
-          <div className="bg-white rounded-xl shadow-lg p-4 border-2 border-emparo-orange/20">
-            <div className="flex items-center gap-2 mb-4">
-              <h3 className="text-lg font-semibold text-emparo-dark">Browse by Category</h3>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={() => setSelectedCategory(null)}
-                className={`px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 ${
-                  selectedCategory === null
-                    ? 'bg-emparo-orange text-white shadow-lg scale-105'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
-                }`}
-              >
-                View All Menu
-              </button>
-              {groupedCategories.map(cat => (
-                <button
-                  key={cat.id}
-                  onClick={() => setSelectedCategory(cat.name)}
-                  className={`px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 ${
-                    selectedCategory === cat.name
-                      ? 'bg-emparo-orange text-white shadow-lg scale-105'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
-                  }`}
-                >
-                  {cat.name}
-                  <span className="ml-2 text-xs opacity-70">({cat.items.length})</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
 
-        {/* Menu Items - Grouped by Category */}
-        <div className="space-y-12">
+        {/* Menu Items - Collapsible Swiggy-style List */}
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           {categoriesWithItems.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-xl shadow-md">
+            <div className="text-center py-20">
               <div className="text-6xl mb-4">🔍</div>
               <p className="text-xl text-gray-600 mb-2">No items found</p>
               <p className="text-gray-500">Try adjusting your search or browse our categories</p>
             </div>
           ) : (
-            categoriesWithItems.map(category => (
-              <div key={category.id} className="space-y-6">
-                {/* Category Header */}
-                <div className="flex items-center gap-3 pb-3 border-b-2 border-emparo-orange/30">
-                  <div>
-                    <h2 className="text-2xl font-bold text-emparo-dark">{category.name}</h2>
-                    <p className="text-sm text-gray-600">{category.items.length} items available</p>
+            categoriesWithItems.map((category, idx) => (
+              <div key={category.id} className={idx !== 0 ? "border-t-2 border-gray-100" : ""}>
+                {/* Collapsible Category Header */}
+                <button
+                  onClick={() => toggleCategory(category.id)}
+                  className="w-full px-6 py-5 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-center gap-4">
+                    <h2 className="text-xl font-bold text-emparo-dark">{category.name}</h2>
+                    <span className="text-sm text-gray-500">({category.items.length})</span>
                   </div>
-                </div>
+                  <svg
+                    className={`w-6 h-6 text-gray-400 transition-transform ${
+                      expandedCategories.has(category.id) ? 'rotate-180' : ''
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
 
-                {/* Items Grid - 2 columns max for better focus */}
-                <div className="grid md:grid-cols-2 gap-6">
-                  {category.items.map((item) => (
-                    <OrderMenuItem
-                      key={item.id}
-                      item={item}
-                      category={category}
-                      onAddToCart={addToCart}
-                      isAddingToCart={addToCartMutation.isPending}
-                    />
-                  ))}
-                </div>
+                {/* Expanded Items List */}
+                {expandedCategories.has(category.id) && (
+                  <div className="bg-gray-50/50">
+                    {category.items.map((item, itemIdx) => (
+                      <CompactMenuItem
+                        key={item.id}
+                        item={item}
+                        onAddToCart={addToCart}
+                        isAddingToCart={addToCartMutation.isPending}
+                        isLast={itemIdx === category.items.length - 1}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             ))
           )}
         </div>
       </div>
     </div>
+  );
+}
+
+// Compact Menu Item Component (Swiggy-style)
+interface CompactMenuItemProps {
+  item: CatalogMenuItem;
+  onAddToCart: (item: CatalogMenuItem, customization: ItemCustomization) => void;
+  isAddingToCart: boolean;
+  isLast: boolean;
+}
+
+function CompactMenuItem({ item, onAddToCart, isAddingToCart, isLast }: CompactMenuItemProps) {
+  const [showCustomization, setShowCustomization] = useState(false);
+
+  const handleQuickAdd = () => {
+    // Check if item needs customization
+    if (item.hasFlavorOptions || item.hasMealOption || item.isSpicyOption || item.hasToppingsOption) {
+      setShowCustomization(true);
+    } else {
+      // Quick add without customization
+      onAddToCart(item, {});
+    }
+  };
+
+  return (
+    <>
+      <div className={`px-6 py-4 flex items-start justify-between gap-4 hover:bg-white transition-colors ${!isLast ? 'border-b border-gray-200' : ''}`}>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start gap-3">
+            {/* Veg/Non-veg indicator */}
+            <div className="flex-shrink-0 w-5 h-5 border-2 border-green-600 flex items-center justify-center mt-0.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-green-600"></div>
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-gray-900 text-base mb-1">{item.name}</h3>
+              {item.description && (
+                <p className="text-sm text-gray-500 line-clamp-2 mb-2">{item.description}</p>
+              )}
+              <div className="flex items-center gap-3">
+                <span className="text-base font-bold text-gray-900">{formatPrice(item.price)}</span>
+                {item.isSpicyOption && (
+                  <span className="inline-flex items-center text-xs text-red-600">
+                    <Flame className="w-3 h-3 mr-1" />
+                    Spicy
+                  </span>
+                )}
+              </div>
+              {item.hasMealOption && item.mealPrice && (
+                <p className="text-xs text-gray-500 mt-1">
+                  Meal available at {formatPrice(item.mealPrice)}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Add Button */}
+        <button
+          onClick={handleQuickAdd}
+          disabled={isAddingToCart}
+          className="flex-shrink-0 px-6 py-2 bg-white border-2 border-emparo-orange text-emparo-orange font-semibold rounded-lg hover:bg-emparo-orange hover:text-white transition-all active:scale-95 disabled:opacity-50"
+        >
+          ADD
+        </button>
+      </div>
+
+      {/* Customization Modal */}
+      {showCustomization && (
+        <CustomizationModal
+          isOpen={showCustomization}
+          onClose={() => setShowCustomization(false)}
+          onConfirm={(customization) => {
+            onAddToCart(item, customization);
+            setShowCustomization(false);
+          }}
+          item={item}
+        />
+      )}
+    </>
   );
 }
