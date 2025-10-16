@@ -176,7 +176,6 @@ export default function Order() {
         <div className="sticky top-20 z-30 bg-emparo-cream/95 backdrop-blur-sm py-4 mb-8 -mx-4 px-4">
           <div className="bg-white rounded-xl shadow-lg p-4 border-2 border-emparo-orange/20">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl">🍽️</span>
               <h3 className="text-lg font-semibold text-emparo-dark">Browse by Category</h3>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -200,7 +199,7 @@ export default function Order() {
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
                   }`}
                 >
-                  {cat.icon || '🍽️'} {cat.name}
+                  {cat.name}
                   <span className="ml-2 text-xs opacity-70">({cat.items.length})</span>
                 </button>
               ))}
@@ -221,7 +220,6 @@ export default function Order() {
               <div key={category.id} className="space-y-6">
                 {/* Category Header */}
                 <div className="flex items-center gap-3 pb-3 border-b-2 border-emparo-orange/30">
-                  <span className="text-3xl">{category.icon || '🍽️'}</span>
                   <div>
                     <h2 className="text-2xl font-bold text-emparo-dark">{category.name}</h2>
                     <p className="text-sm text-gray-600">{category.items.length} items available</p>
